@@ -1,913 +1,1172 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Centre Spine Physiotherapy & Rehabilitation Centre</title>
-  
-  <!-- Google Fonts & Font Awesome Icons -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Dharmik Mart — Sacred Products for Every Pooja</title>
+<link href="https://fonts.googleapis.com/css2?family=Yatra+One&family=Tiro+Devanagari+Hindi:ital@0;1&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --saffron: #E8690A;
+    --deep-maroon: #6B1A1A;
+    --gold: #C8972A;
+    --ivory: #FDF6E9;
+    --cream: #F5EDD6;
+    --ink: #1C1108;
+    --muted: #7A6248;
+    --white: #FFFFFF;
+  }
 
-  <style>
-    :root {
-      --primary: #0284c7;
-      --primary-dark: #0369a1;
-      --primary-light: #e0f2fe;
-      --accent: #10b981;
-      --dark: #0f172a;
-      --gray-600: #475569;
-      --gray-100: #f8fafc;
-      --gray-200: #e2e8f0;
-      --white: #ffffff;
-      --shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.08);
-      --radius: 16px;
-    }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Plus Jakarta Sans', sans-serif;
-    }
+  html { scroll-behavior: smooth; }
 
-    body {
-      color: var(--dark);
-      background-color: var(--white);
-      line-height: 1.6;
-      scroll-behavior: smooth;
-    }
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--ivory);
+    color: var(--ink);
+    font-size: 16px;
+    line-height: 1.6;
+  }
 
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--deep-maroon);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    height: 64px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+  }
 
-    img {
-      max-width: 100%;
-      height: auto;
-      display: block;
-    }
+  .nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+  }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-    }
+  .nav-logo .om {
+    font-size: 26px;
+    color: var(--gold);
+  }
 
-    /* Buttons */
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 24px;
-      border-radius: 999px;
-      font-weight: 600;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: none;
-    }
+  .nav-logo span {
+    font-family: 'Yatra One', cursive;
+    font-size: 22px;
+    color: var(--ivory);
+    letter-spacing: 0.5px;
+  }
 
-    .btn-primary {
-      background-color: var(--primary);
-      color: var(--white);
-    }
-    .btn-primary:hover {
-      background-color: var(--primary-dark);
-      transform: translateY(-2px);
-    }
+  .nav-links {
+    display: flex;
+    gap: 28px;
+    list-style: none;
+  }
 
-    .btn-whatsapp {
-      background-color: #25D366;
-      color: var(--white);
-    }
-    .btn-whatsapp:hover {
-      background-color: #20ba59;
-      transform: translateY(-2px);
-    }
+  .nav-links a {
+    color: #E8D5B5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
 
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: var(--primary-light);
-      color: var(--primary-dark);
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      margin-bottom: 12px;
-    }
+  .nav-links a:hover { color: var(--gold); }
 
-    /* Header */
-    header {
-      position: sticky;
-      top: 0;
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      z-index: 1000;
-      border-bottom: 1px solid var(--gray-200);
-    }
+  .nav-cta {
+    background: var(--gold);
+    color: var(--ink) !important;
+    padding: 8px 18px;
+    border-radius: 4px;
+    font-weight: 600 !important;
+  }
 
-    .nav-wrap {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-    }
+  /* HERO */
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    background: linear-gradient(135deg, #3B0D0D 0%, #6B1A1A 45%, #8B3A10 100%);
+  }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 1.25rem;
-      color: var(--dark);
-    }
-    .logo i {
-      color: var(--primary);
-      font-size: 1.75rem;
-    }
-    .logo span span {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--gray-600);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
+  .hero-mandala {
+    position: absolute;
+    right: -60px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 520px;
+    height: 520px;
+    opacity: 0.12;
+    animation: slowSpin 60s linear infinite;
+  }
 
-    nav {
-      display: flex;
-      gap: 28px;
-    }
-    nav a {
-      font-weight: 600;
-      color: var(--gray-600);
-      transition: color 0.2s;
-    }
-    nav a:hover {
-      color: var(--primary);
-    }
+  @keyframes slowSpin { to { transform: translateY(-50%) rotate(360deg); } }
 
-    /* Hero */
-    .hero {
-      padding: 80px 0;
-      background: linear-gradient(180deg, #f0f9ff 0%, #ffffff 100%);
-    }
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 50px;
-      align-items: center;
-    }
-    .hero h1 {
-      font-size: 3.2rem;
-      font-weight: 800;
-      line-height: 1.15;
-      margin: 16px 0;
-    }
-    .hero h1 span {
-      color: var(--primary);
-    }
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--gray-600);
-      margin-bottom: 28px;
-    }
-    .hero-btns {
-      display: flex;
-      gap: 16px;
-      margin-bottom: 36px;
-      flex-wrap: wrap;
-    }
-    .hero-features {
-      display: flex;
-      gap: 20px;
-      flex-wrap: wrap;
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--gray-600);
-    }
-    .hero-features div {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-    .hero-features i {
-      color: var(--accent);
-    }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px 5%;
+    max-width: 680px;
+  }
 
-    .hero-image-box {
-      position: relative;
-    }
-    .hero-image-box img {
-      width: 100%;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      object-fit: cover;
-    }
-    .floating-card {
-      position: absolute;
-      background: var(--white);
-      padding: 12px 18px;
-      border-radius: 12px;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .floating-card i {
-      color: var(--primary);
-      font-size: 1.25rem;
-    }
-    .floating-card strong {
-      display: block;
-      font-size: 0.9rem;
-    }
-    .floating-card span {
-      font-size: 0.75rem;
-      color: var(--gray-600);
-    }
-    .card-top { top: 20px; left: -20px; }
-    .card-bottom { bottom: 20px; right: -20px; }
+  .hero-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(200, 151, 42, 0.2);
+    border: 1px solid var(--gold);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--gold);
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
 
-    /* Ticker Banner */
-    .ticker-bar {
-      background: var(--primary);
-      color: var(--white);
-      padding: 16px 0;
-    }
-    .ticker-items {
-      display: flex;
-      justify-content: space-between;
-      gap: 20px;
-      font-weight: 600;
-      font-size: 0.9rem;
-      flex-wrap: wrap;
-    }
+  .hero h1 {
+    font-family: 'Yatra One', cursive;
+    font-size: clamp(38px, 6vw, 68px);
+    color: var(--ivory);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
 
-    /* Sections */
-    section {
-      padding: 90px 0;
-    }
-    .section-title {
-      text-align: center;
-      max-width: 650px;
-      margin: 0 auto 50px;
-    }
-    .section-title h2 {
-      font-size: 2.25rem;
-      font-weight: 800;
-      margin: 10px 0;
-    }
-    .section-title p {
-      color: var(--gray-600);
-    }
+  .hero h1 .accent { color: var(--gold); }
 
-    /* About */
-    .about-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 60px;
-      align-items: center;
-    }
-    .about-img {
-      position: relative;
-    }
-    .about-img img {
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-    }
-    .about-stat {
-      position: absolute;
-      bottom: -20px;
-      right: -20px;
-      background: var(--primary);
-      color: var(--white);
-      padding: 20px 28px;
-      border-radius: var(--radius);
-      text-align: center;
-      box-shadow: var(--shadow);
-    }
-    .about-stat strong {
-      font-size: 2rem;
-      display: block;
-      line-height: 1;
-    }
-    .about-list {
-      list-style: none;
-      margin: 24px 0;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px;
-    }
-    .about-list li {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-weight: 600;
-      color: var(--dark);
-    }
-    .about-list i {
-      color: var(--accent);
-    }
+  .hero-sub {
+    font-size: 17px;
+    color: #D4B896;
+    max-width: 500px;
+    margin-bottom: 36px;
+    line-height: 1.7;
+  }
 
-    /* Services & Why Us Cards */
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-    }
-    .grid-4 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 24px;
-    }
-    .card {
-      background: var(--white);
-      padding: 32px;
-      border-radius: var(--radius);
-      border: 1px solid var(--gray-200);
-      transition: all 0.3s;
-    }
-    .card:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--shadow);
-      border-color: var(--primary-light);
-    }
-    .card-icon {
-      width: 54px;
-      height: 54px;
-      border-radius: 12px;
-      background: var(--primary-light);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-    }
-    .card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-    .card p {
-      color: var(--gray-600);
-      font-size: 0.95rem;
-    }
+  .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; }
 
-    /* Testimonials */
-    .testimonial-card {
-      background: var(--gray-100);
-      border: 1px solid var(--gray-200);
-      padding: 30px;
-      border-radius: var(--radius);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .stars {
-      color: #f59e0b;
-      margin-bottom: 12px;
-    }
-    .user-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-top: 20px;
-    }
-    .avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: 50%;
-      background: var(--primary);
-      color: var(--white);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-    }
+  .btn-primary {
+    background: var(--saffron);
+    color: var(--white);
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-    /* Gallery */
-    .gallery-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .gallery-grid img {
-      width: 100%;
-      height: 250px;
-      object-fit: cover;
-      border-radius: var(--radius);
-      transition: transform 0.3s;
-    }
-    .gallery-grid img:hover {
-      transform: scale(1.03);
-    }
+  .btn-primary:hover { background: #C5540A; transform: translateY(-1px); }
 
-    /* Visit / Location */
-    .visit-box {
-      background: var(--gray-100);
-      padding: 40px;
-      border-radius: var(--radius);
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 40px;
-    }
-    .timing-row {
-      display: flex;
-      justify-content: space-between;
-      padding: 10px 0;
-      border-bottom: 1px dashed var(--gray-200);
-    }
+  .btn-secondary {
+    background: transparent;
+    color: var(--ivory);
+    padding: 14px 28px;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    border: 2px solid rgba(255,255,255,0.35);
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
 
-    /* FAQ */
-    .faq-grid {
-      max-width: 800px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-    }
-    .faq-item {
-      border: 1px solid var(--gray-200);
-      border-radius: 12px;
-      padding: 20px 24px;
-      background: var(--white);
-      cursor: pointer;
-    }
-    .faq-question {
-      font-weight: 700;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .faq-answer {
-      margin-top: 10px;
-      color: var(--gray-600);
-      font-size: 0.95rem;
-    }
+  .btn-secondary:hover { border-color: var(--gold); color: var(--gold); }
 
-    /* Footer */
-    footer {
-      background: var(--dark);
-      color: var(--white);
-      padding: 70px 0 20px;
-    }
-    .footer-grid {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr 1.5fr;
-      gap: 40px;
-      margin-bottom: 40px;
-    }
-    footer h4 {
-      margin-bottom: 20px;
-      font-size: 1.1rem;
-    }
-    footer ul {
-      list-style: none;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      color: #94a3b8;
-    }
-    footer ul a:hover {
-      color: var(--white);
-    }
-    .footer-bottom {
-      border-top: 1px solid #1e293b;
-      padding-top: 24px;
-      display: flex;
-      justify-content: space-between;
-      color: #94a3b8;
-      font-size: 0.85rem;
-    }
+  .hero-badges {
+    display: flex;
+    gap: 28px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
 
-    /* Floating CTA */
-    .floating-whatsapp {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background-color: #25d366;
-      color: white;
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-      z-index: 999;
-      transition: transform 0.2s;
-    }
-    .floating-whatsapp:hover {
-      transform: scale(1.1);
-    }
+  .badge { text-align: left; }
+  .badge-num {
+    font-family: 'Yatra One', cursive;
+    font-size: 28px;
+    color: var(--gold);
+  }
+  .badge-label { font-size: 13px; color: #B09070; }
 
-    /* Responsive */
-    @media (max-width: 992px) {
-      .hero-grid, .about-grid, .visit-box, .footer-grid {
-        grid-template-columns: 1fr;
-      }
-      .gallery-grid {
-        grid-template-columns: 1fr 1fr;
-      }
-      nav {
-        display: none;
-      }
-      .card-top, .card-bottom {
-        display: none;
-      }
-    }
-  </style>
+  /* DIVIDER */
+  .divider {
+    text-align: center;
+    padding: 10px 0;
+    font-size: 22px;
+    color: var(--gold);
+    background: var(--cream);
+    letter-spacing: 8px;
+  }
+
+  /* STORES BANNER */
+  .stores-banner {
+    background: var(--cream);
+    padding: 32px 5%;
+    display: flex;
+    gap: 24px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .store-card {
+    background: var(--white);
+    border: 1px solid #E0D0B0;
+    border-radius: 10px;
+    padding: 20px 28px;
+    min-width: 260px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    box-shadow: 0 2px 8px rgba(107,26,26,0.08);
+  }
+
+  .store-icon {
+    font-size: 28px;
+    margin-top: 2px;
+  }
+
+  .store-card h3 {
+    font-family: 'Yatra One', cursive;
+    font-size: 16px;
+    color: var(--deep-maroon);
+    margin-bottom: 4px;
+  }
+
+  .store-card p { font-size: 13px; color: var(--muted); line-height: 1.5; }
+
+  .store-card .coming-soon {
+    display: inline-block;
+    background: var(--saffron);
+    color: var(--white);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 10px;
+    margin-top: 4px;
+  }
+
+  /* SECTION */
+  section { padding: 72px 5%; }
+
+  .section-header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .section-eyebrow {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 10px;
+  }
+
+  .section-header h2 {
+    font-family: 'Yatra One', cursive;
+    font-size: clamp(26px, 4vw, 40px);
+    color: var(--deep-maroon);
+    margin-bottom: 12px;
+  }
+
+  .section-header p {
+    font-size: 15px;
+    color: var(--muted);
+    max-width: 540px;
+    margin: 0 auto;
+  }
+
+  /* CATEGORIES */
+  #categories { background: var(--ivory); }
+
+  .categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .cat-card {
+    background: var(--white);
+    border: 1px solid #E8D8BB;
+    border-radius: 12px;
+    padding: 28px 16px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    text-decoration: none;
+  }
+
+  .cat-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(107,26,26,0.14);
+    border-color: var(--gold);
+  }
+
+  .cat-icon { font-size: 36px; margin-bottom: 10px; }
+
+  .cat-card h3 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--deep-maroon);
+    margin-bottom: 4px;
+  }
+
+  .cat-card p { font-size: 12px; color: var(--muted); }
+
+  /* PRODUCTS */
+  #products { background: var(--cream); }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 22px;
+  }
+
+  .product-card {
+    background: var(--white);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #E8D8BB;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(107,26,26,0.13);
+  }
+
+  .product-img {
+    height: 180px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 64px;
+    background: linear-gradient(135deg, #FEF3E2, #F5DEB3);
+  }
+
+  .product-body { padding: 16px; }
+
+  .product-tag {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--saffron);
+    margin-bottom: 6px;
+  }
+
+  .product-body h3 {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    line-height: 1.4;
+  }
+
+  .product-body p { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .price {
+    font-family: 'Yatra One', cursive;
+    font-size: 18px;
+    color: var(--deep-maroon);
+  }
+
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #25D366;
+    color: var(--white);
+    padding: 8px 14px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .btn-whatsapp:hover { background: #1EB858; }
+
+  /* BESTSELLER BADGE */
+  .product-card.bestseller { position: relative; }
+  .bestseller-badge {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    background: var(--deep-maroon);
+    color: var(--gold);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  /* WHY US */
+  #why { background: var(--deep-maroon); }
+  #why .section-header h2 { color: var(--ivory); }
+  #why .section-eyebrow { color: var(--gold); }
+  #why .section-header p { color: #C0A080; }
+
+  .why-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+  }
+
+  .why-card {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(200,151,42,0.25);
+    border-radius: 12px;
+    padding: 28px 22px;
+    text-align: center;
+  }
+
+  .why-icon { font-size: 36px; margin-bottom: 12px; }
+
+  .why-card h3 {
+    font-family: 'Yatra One', cursive;
+    font-size: 16px;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+
+  .why-card p { font-size: 13px; color: #B09070; line-height: 1.6; }
+
+  /* TESTIMONIALS */
+  #testimonials { background: var(--ivory); }
+
+  .testimonials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+
+  .testi-card {
+    background: var(--white);
+    border: 1px solid #E8D8BB;
+    border-radius: 12px;
+    padding: 24px;
+    position: relative;
+  }
+
+  .testi-quote {
+    font-size: 48px;
+    color: var(--gold);
+    line-height: 0.8;
+    margin-bottom: 8px;
+    font-family: Georgia, serif;
+  }
+
+  .testi-card p {
+    font-size: 14px;
+    color: var(--muted);
+    font-style: italic;
+    margin-bottom: 16px;
+    line-height: 1.7;
+  }
+
+  .testi-author {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .testi-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--saffron), var(--deep-maroon));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    font-weight: 700;
+    font-size: 15px;
+  }
+
+  .testi-name { font-weight: 600; font-size: 14px; color: var(--ink); }
+  .testi-loc { font-size: 12px; color: var(--muted); }
+
+  /* CONTACT */
+  #contact { background: var(--cream); }
+
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media (max-width: 720px) {
+    .contact-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    .hero-badges { gap: 16px; }
+  }
+
+  .contact-info h3 {
+    font-family: 'Yatra One', cursive;
+    font-size: 22px;
+    color: var(--deep-maroon);
+    margin-bottom: 20px;
+  }
+
+  .contact-item {
+    display: flex;
+    gap: 14px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+  }
+
+  .contact-item-icon {
+    font-size: 22px;
+    margin-top: 2px;
+    min-width: 30px;
+    text-align: center;
+  }
+
+  .contact-item h4 { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .contact-item p { font-size: 13px; color: var(--muted); }
+
+  .contact-form {
+    background: var(--white);
+    border: 1px solid #E0D0B0;
+    border-radius: 12px;
+    padding: 28px;
+  }
+
+  .contact-form h3 {
+    font-family: 'Yatra One', cursive;
+    font-size: 20px;
+    color: var(--deep-maroon);
+    margin-bottom: 20px;
+  }
+
+  .form-group { margin-bottom: 14px; }
+
+  .form-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #DDD0B5;
+    border-radius: 6px;
+    font-size: 14px;
+    font-family: 'Inter', sans-serif;
+    color: var(--ink);
+    background: var(--ivory);
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: var(--saffron);
+  }
+
+  .form-group textarea { resize: vertical; min-height: 90px; }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink);
+    color: #A09080;
+    padding: 48px 5% 24px;
+  }
+
+  .footer-top {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 36px;
+  }
+
+  @media (max-width: 640px) {
+    .footer-top { grid-template-columns: 1fr; }
+    .products-grid { grid-template-columns: 1fr 1fr; }
+    .categories-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  .footer-brand .om-large {
+    font-size: 36px;
+    color: var(--gold);
+  }
+
+  .footer-brand h3 {
+    font-family: 'Yatra One', cursive;
+    font-size: 20px;
+    color: var(--ivory);
+    margin: 4px 0 10px;
+  }
+
+  .footer-brand p { font-size: 13px; line-height: 1.7; }
+
+  .footer-col h4 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 14px;
+  }
+
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 8px; }
+  .footer-col ul li a { color: #A09080; text-decoration: none; font-size: 13px; transition: color 0.2s; }
+  .footer-col ul li a:hover { color: var(--ivory); }
+
+  .footer-bottom {
+    border-top: 1px solid #2C2418;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+  }
+
+  .social-links { display: flex; gap: 12px; }
+  .social-links a {
+    color: #A09080;
+    font-size: 18px;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .social-links a:hover { color: var(--gold); }
+
+  /* WHATSAPP FLOAT */
+  .whatsapp-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    background: #25D366;
+    color: var(--white);
+    border-radius: 50%;
+    width: 58px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.4);
+    text-decoration: none;
+    z-index: 200;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .whatsapp-float:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 28px rgba(37,211,102,0.5);
+  }
+</style>
 </head>
 <body>
 
-  <!-- Header -->
-  <header>
-    <div class="container nav-wrap">
-      <a href="#hero" class="logo">
-        <i class="fa-solid fa-bone"></i>
-        <span>
-          Centre Spine
-          <span>Physiotherapy & Rehab</span>
-        </span>
-      </a>
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span class="om">ॐ</span>
+    <span>Dharmik Mart</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#categories">Categories</a></li>
+    <li><a href="#products">Products</a></li>
+    <li><a href="#why">About Us</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="https://wa.me/919999999999" target="_blank" class="nav-cta">📲 Order on WhatsApp</a></li>
+  </ul>
+</nav>
 
-      <nav>
-        <a href="#about">About</a>
-        <a href="#services">Services</a>
-        <a href="#why">Why Us</a>
-        <a href="#testimonials">Testimonials</a>
-        <a href="#visit">Visit Us</a>
-        <a href="#contact">Contact</a>
-      </nav>
+<!-- HERO -->
+<section class="hero">
+  <!-- Mandala SVG -->
+  <svg class="hero-mandala" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="200" cy="200" r="195" stroke="white" stroke-width="1"/>
+    <circle cx="200" cy="200" r="160" stroke="white" stroke-width="0.7"/>
+    <circle cx="200" cy="200" r="120" stroke="white" stroke-width="1"/>
+    <circle cx="200" cy="200" r="80" stroke="white" stroke-width="0.7"/>
+    <circle cx="200" cy="200" r="40" stroke="white" stroke-width="1"/>
+    <circle cx="200" cy="200" r="15" stroke="white" stroke-width="1"/>
+    <!-- petals -->
+    <g stroke="white" stroke-width="0.7">
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(0 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(30 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(60 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(90 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(120 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(150 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(180 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(210 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(240 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(270 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(300 200 200)"/>
+      <ellipse cx="200" cy="120" rx="12" ry="30" transform="rotate(330 200 200)"/>
+      <!-- outer petals -->
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(0 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(45 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(90 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(135 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(180 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(225 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(270 200 200)"/>
+      <ellipse cx="200" cy="65" rx="10" ry="22" transform="rotate(315 200 200)"/>
+    </g>
+    <!-- dots -->
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(0 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(30 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(60 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(90 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(120 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(150 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(180 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(210 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(240 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(270 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(300 200 200)"/>
+    <circle cx="200" cy="5" r="3" fill="white" transform="rotate(330 200 200)"/>
+  </svg>
 
-      <div>
-        <a href="tel:09549032584" class="btn btn-primary">
-          <i class="fa-solid fa-phone"></i> 095490 32584
-        </a>
-      </div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">🪔 Bihar's Trusted Dharmik Mart</div>
+    <h1>
+      हर पूजा के लिए<br/>
+      <span class="accent">Sacred Products</span>
+    </h1>
+    <p class="hero-sub">
+      Pure, authentic dharmik products — from puja samagri to rudraksha malas, idols, and more. Now serving Bihar, and coming soon to Gurgaon.
+    </p>
+    <div class="hero-actions">
+      <a href="https://wa.me/919999999999?text=Namaste%2C%20I%20want%20to%20place%20an%20order" target="_blank" class="btn-primary">📲 Order on WhatsApp</a>
+      <a href="#products" class="btn-secondary">Browse Products →</a>
     </div>
-  </header>
-
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="container hero-grid">
-      <div>
-        <span class="badge">★★★★★ Trusted Physiotherapy Care in Vidyadhar Nagar</span>
-        <h1>Recover stronger. <span>Move</span> without limits.</h1>
-        <p>Welcome to Centre Spine Physiotherapy & Rehabilitation Centre, your trusted physiotherapy clinic in Vidyadhar Nagar, Jaipur. Our experienced team combines advanced technologies with compassionate, personalised care to help you achieve optimal health and wellness.</p>
-        
-        <div class="hero-btns">
-          <a href="#contact" class="btn btn-primary">
-            <i class="fa-solid fa-calendar-check"></i> Book Free Demo
-          </a>
-          <a href="https://wa.me/919549032584" target="_blank" rel="noopener" class="btn btn-whatsapp">
-            <i class="fa-brands fa-whatsapp"></i> Chat on WhatsApp
-          </a>
-        </div>
-
-        <div class="hero-features">
-          <div><i class="fa-solid fa-circle-check"></i> Experienced Physiotherapists</div>
-          <div><i class="fa-solid fa-location-dot"></i> Vidyadhar Nagar, Jaipur</div>
-          <div><i class="fa-solid fa-user-doctor"></i> Personalised Treatment Plans</div>
-        </div>
+    <div class="hero-badges">
+      <div class="badge">
+        <div class="badge-num">500+</div>
+        <div class="badge-label">Sacred Products</div>
       </div>
-
-      <div class="hero-image-box">
-        <img src="https://demo.24siteshop.com/wp-content/uploads/2026/08/unnamed-5.webp" alt="Centre Spine Physiotherapy and Rehabilitation Centre" />
-        
-        <div class="floating-card card-top">
-          <i class="fa-solid fa-shield-halved"></i>
-          <div>
-            <strong>Trusted Care</strong>
-            <span>Personalised recovery plans</span>
-          </div>
-        </div>
-
-        <div class="floating-card card-bottom">
-          <i class="fa-solid fa-user-nurse"></i>
-          <div>
-            <strong>Expert Team</strong>
-            <span>Advanced physiotherapy care</span>
-          </div>
-        </div>
+      <div class="badge">
+        <div class="badge-num">10k+</div>
+        <div class="badge-label">Happy Families</div>
       </div>
-    </div>
-  </section>
-
-  <!-- Ticker Banner -->
-  <div class="ticker-bar">
-    <div class="container ticker-items">
-      <div><i class="fa-solid fa-check"></i> Spine & Back Pain Care</div>
-      <div><i class="fa-solid fa-check"></i> Post-Injury Recovery</div>
-      <div><i class="fa-solid fa-check"></i> Chronic Disease Management</div>
-      <div><i class="fa-solid fa-check"></i> Joint & Mobility Care</div>
-      <div><i class="fa-solid fa-check"></i> Preventive Wellness Care</div>
+      <div class="badge">
+        <div class="badge-num">100%</div>
+        <div class="badge-label">Pure & Authentic</div>
+      </div>
     </div>
   </div>
+</section>
 
-  <!-- About Section -->
-  <section id="about">
-    <div class="container about-grid">
-      <div class="about-img">
-        <img src="https://images.unsplash.com/photo-1649751361457-01d3a696c7e6?auto=format&fit=crop&w=800&q=80" alt="Physiotherapist consulting a patient" />
-        <div class="about-stat">
-          <strong>100%</strong>
-          <span>Personalised Care</span>
-        </div>
-      </div>
-
-      <div>
-        <span class="badge">About Centre Spine</span>
-        <h2>Your trusted physiotherapy clinic in Vidyadhar Nagar</h2>
-        <p>Welcome to Centre Spine Physiotherapy & Rehabilitation Centre, your trusted physiotherapy clinic in Vidyadhar Nagar, Jaipur. Our experienced team of physiotherapy doctors is dedicated to providing comprehensive care to help you achieve optimal health and wellness.</p>
-        <p style="margin-top: 14px;">Whether you are recovering from an injury, managing a chronic disease, or looking for preventive care, our personalised treatment plans are designed to meet your unique needs.</p>
-
-        <ul class="about-list">
-          <li><i class="fa-solid fa-circle-check"></i> Experienced doctors</li>
-          <li><i class="fa-solid fa-circle-check"></i> Advanced technologies</li>
-          <li><i class="fa-solid fa-circle-check"></i> Personalised treatment</li>
-          <li><i class="fa-solid fa-circle-check"></i> Compassionate care</li>
-        </ul>
-
-        <a href="#contact" class="btn btn-primary">
-          <i class="fa-solid fa-calendar-plus"></i> Book Free Demo
-        </a>
-      </div>
+<!-- STORES BANNER -->
+<div class="divider">🔱 &nbsp; ॐ &nbsp; 🔱 &nbsp; ॐ &nbsp; 🔱</div>
+<div class="stores-banner">
+  <div class="store-card">
+    <div class="store-icon">📍</div>
+    <div>
+      <h3>Bihar Store</h3>
+      <p>Main Bazaar, [Town Name], Bihar<br/>Mon–Sun: 8 AM – 9 PM</p>
     </div>
-  </section>
-
-  <!-- Services Section -->
-  <section id="services" style="background-color: var(--gray-100);">
-    <div class="container">
-      <div class="section-title">
-        <span class="badge">What We Treat</span>
-        <h2>Physiotherapy & rehabilitation services</h2>
-        <p>Comprehensive, hands-on care designed around your specific injury or condition.</p>
-      </div>
-
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-person-walking-with-cane"></i></div>
-          <h3>Spine & Back Care</h3>
-          <p>Targeted manual therapy and posture correction for chronic and acute spine or back pain.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-person-running"></i></div>
-          <h3>Joint & Mobility Rehab</h3>
-          <p>Restore mobility and strength in joints with guided, progressive rehabilitation exercises.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-bandage"></i></div>
-          <h3>Post-Injury Recovery</h3>
-          <p>Structured recovery programs to help you regain strength and confidence after an injury.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-heart-pulse"></i></div>
-          <h3>Chronic Disease Management</h3>
-          <p>Ongoing, personalised physiotherapy support for long-term and chronic health conditions.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-kit-medical"></i></div>
-          <h3>Advanced Pain Relief</h3>
-          <p>Modern pain-relief technologies combined with hands-on therapy for faster, lasting relief.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-shield-heart"></i></div>
-          <h3>Preventive Care</h3>
-          <p>Proactive assessments and guided programs to help you avoid injury and stay active.</p>
-        </div>
-      </div>
+  </div>
+  <div class="store-card">
+    <div class="store-icon">🏙️</div>
+    <div>
+      <h3>Gurgaon Store</h3>
+      <p>Opening Soon in Gurgaon, Haryana<br/>Stay tuned for the grand opening!</p>
+      <span class="coming-soon">Coming Soon</span>
     </div>
-  </section>
-
-  <!-- Why Us Section -->
-  <section id="why">
-    <div class="container">
-      <div class="section-title">
-        <span class="badge">Why Patients Choose Us</span>
-        <h2>Care built around you, not a routine</h2>
-      </div>
-
-      <div class="grid-4">
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-user-doctor"></i></div>
-          <h3>Experienced Doctors</h3>
-          <p>A dedicated team of doctors experienced across injury, chronic disease, and preventive care.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-clipboard-list"></i></div>
-          <h3>Personalised Plans</h3>
-          <p>No generic routines — every treatment plan is tailored around your individual needs and goals.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-microchip"></i></div>
-          <h3>Advanced Tech</h3>
-          <p>We combine modern physiotherapy machines with compassionate hands-on clinical care.</p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon"><i class="fa-solid fa-location-crosshairs"></i></div>
-          <h3>Easy To Reach</h3>
-          <p>Centrally located at Agrasen Tower, Central Spine, Vidyadhar Nagar — convenient to visit.</p>
-        </div>
-      </div>
+  </div>
+  <div class="store-card">
+    <div class="store-icon">🚚</div>
+    <div>
+      <h3>Home Delivery</h3>
+      <p>Pan-India shipping available<br/>WhatsApp us to order & deliver</p>
     </div>
-  </section>
+  </div>
+</div>
 
-  <!-- Testimonials Section -->
-  <section id="testimonials" style="background-color: var(--gray-100);">
-    <div class="container">
-      <div class="section-title">
-        <span class="badge">Testimonials</span>
-        <h2>What our patients say</h2>
-      </div>
+<!-- CATEGORIES -->
+<section id="categories">
+  <div class="section-header">
+    <div class="section-eyebrow">Explore</div>
+    <h2>Shop by Category</h2>
+    <p>Everything you need for daily puja and special occasions</p>
+  </div>
+  <div class="categories-grid">
+    <a class="cat-card" href="#products">
+      <div class="cat-icon">🪔</div>
+      <h3>Puja Samagri</h3>
+      <p>Agarbatti, diyas & more</p>
+    </a>
+    <a class="cat-card" href="#products">
+      <div class="cat-icon">🙏</div>
+      <h3>Idols & Murti</h3>
+      <p>Brass, marble & clay</p>
+    </a>
+    <a class="cat-card" href="#products">
+      <div class="cat-icon">📿</div>
+      <h3>Rudraksha & Malas</h3>
+      <p>Certified & authentic</p>
+    </a>
+    <a class="cat-card" href="#products">
+      <div class="cat-icon">📖</div>
+      <h3>Books & Panchang</h3>
+      <p>Vedic texts & calendars</p>
+    </a>
+    <a class="cat-card" href="#products">
+      <div class="cat-icon">🌸</div>
+      <h3>Flowers & Garlands</h3>
+      <p>Fresh & artificial</p>
+    </a>
+    <a class="cat-card" href="#products">
+      <div class="cat-icon">🫙</div>
+      <h3>Chandan & Ghee</h3>
+      <p>Pure ritual essentials</p>
+    </a>
+  </div>
+</section>
 
-      <div class="grid-3">
-        <div class="testimonial-card">
-          <div>
-            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-            <p>"I came in with severe lower back pain after months of discomfort. The personalised treatment plan here made a real, noticeable difference within a few sessions."</p>
-          </div>
-          <div class="user-info">
-            <div class="avatar">S</div>
-            <div>
-              <strong>Sanjay R.</strong>
-              <div style="font-size: 0.8rem; color: var(--gray-600);">Back Pain Patient</div>
-            </div>
-          </div>
-        </div>
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="section-header">
+    <div class="section-eyebrow">Products</div>
+    <h2>Our Popular Items</h2>
+    <p>Handpicked, purity-verified products for your pooja room</p>
+  </div>
+  <div class="products-grid">
 
-        <div class="testimonial-card">
-          <div>
-            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-            <p>"Recovering after my surgery felt overwhelming, but the team guided me through every stage with patience and clear direction. I'm walking confidently again."</p>
-          </div>
-          <div class="user-info">
-            <div class="avatar">M</div>
-            <div>
-              <strong>Meera K.</strong>
-              <div style="font-size: 0.8rem; color: var(--gray-600);">Post-Surgery Recovery</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="testimonial-card">
-          <div>
-            <div class="stars"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
-            <p>"Professional, caring and genuinely invested in my recovery. The clinic is clean, modern, and the treatment plan was tailored exactly to my condition."</p>
-          </div>
-          <div class="user-info">
-            <div class="avatar">A</div>
-            <div>
-              <strong>Ankit V.</strong>
-              <div style="font-size: 0.8rem; color: var(--gray-600);">Joint Mobility Patient</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Image Gallery -->
-  <section>
-    <div class="container">
-      <div class="gallery-grid">
-        <img src="https://images.unsplash.com/photo-1540205895360-4ad4cffb3aa8?auto=format&fit=crop&w=500&q=80" alt="Physiotherapy treatment session" />
-        <img src="https://images.unsplash.com/photo-1645005512968-0c1fe99f0093?auto=format&fit=crop&w=500&q=80" alt="Physiotherapist assisting patient exercise" />
-        <img src="https://images.unsplash.com/photo-1645005513713-9e2b92a687d3?auto=format&fit=crop&w=500&q=80" alt="Rehabilitation therapy session" />
-        <img src="https://images.unsplash.com/photo-1586401100295-7a8096fd231a?auto=format&fit=crop&w=500&q=80" alt="Physiotherapy clinic equipment" />
-      </div>
-    </div>
-  </section>
-
-  <!-- Clinic Timings & Location -->
-  <section id="visit" style="background-color: var(--gray-100);">
-    <div class="container">
-      <div class="section-title">
-        <span class="badge">Visit The Clinic</span>
-        <h2>Clinic timings & location</h2>
-      </div>
-
-      <div class="visit-box">
-        <div>
-          <h3 style="margin-bottom: 20px;"><i class="fa-regular fa-clock" style="color: var(--primary);"></i> Clinic Timings</h3>
-          <div class="timing-row"><span>Monday – Saturday (Morning)</span><strong>9:00 AM – 1:00 PM</strong></div>
-          <div class="timing-row"><span>Monday – Saturday (Evening)</span><strong>4:00 PM – 8:00 PM</strong></div>
-          <div class="timing-row"><span>Sunday</span><strong>By Appointment</strong></div>
-          <div style="margin-top: 25px;">
-            <a href="tel:09549032584" class="btn btn-primary"><i class="fa-solid fa-phone"></i> Call To Book Appointment</a>
-          </div>
-        </div>
-
-        <div>
-          <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-map-location-dot" style="color: var(--primary);"></i> Find Us Here</h3>
-          <p style="margin-bottom: 12px;"><strong>Address:</strong> Agrasen Tower, B3 to B7, Sector 2, Central Spine, Vidyadhar Nagar, Jaipur, Rajasthan 302039</p>
-          <p style="margin-bottom: 20px;"><strong>Phone:</strong> +91 95490 32584</p>
-          <a href="https://www.google.com/maps/search/?api=1&query=Agrasen+Tower+B3+to+B7+Sector+2+Central+Spine+Vidyadhar+Nagar+Jaipur" target="_blank" rel="noopener" class="btn btn-whatsapp">
-            <i class="fa-solid fa-diamond-turn-right"></i> Open in Google Maps
+    <div class="product-card bestseller" style="position:relative">
+      <span class="bestseller-badge">Bestseller</span>
+      <div class="product-img">🪔</div>
+      <div class="product-body">
+        <div class="product-tag">Puja Samagri</div>
+        <h3>Complete Puja Thali Set</h3>
+        <p>Brass thali with diya, bell, incense holder & kumkum container</p>
+        <div class="product-footer">
+          <span class="price">₹ 599</span>
+          <a class="btn-whatsapp" href="https://wa.me/919999999999?text=I%20want%20to%20order%20Puja%20Thali%20Set" target="_blank">
+            💬 Order
           </a>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- FAQs -->
-  <section>
-    <div class="container">
-      <div class="section-title">
-        <span class="badge">FAQs</span>
-        <h2>Frequently asked questions</h2>
-      </div>
-
-      <div class="faq-grid">
-        <div class="faq-item">
-          <div class="faq-question">Do I need a doctor's referral to visit? <i class="fa-solid fa-angle-down"></i></div>
-          <div class="faq-answer">No referral is required. You can walk in or call us directly to book a consultation with our physiotherapy team.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">How many sessions will I need? <i class="fa-solid fa-angle-down"></i></div>
-          <div class="faq-answer">It depends on your condition. After the first assessment, we'll explain a realistic treatment timeline for your recovery.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">Do you treat chronic conditions as well as injuries? <i class="fa-solid fa-angle-down"></i></div>
-          <div class="faq-answer">Yes, we support both acute injury recovery and ongoing management of chronic conditions with personalised plans.</div>
-        </div>
-        <div class="faq-item">
-          <div class="faq-question">Is the clinic open on Sundays? <i class="fa-solid fa-angle-down"></i></div>
-          <div class="faq-answer">We're available on Sundays by appointment. Call or WhatsApp us to check availability.</div>
+    <div class="product-card">
+      <div class="product-img">🙏</div>
+      <div class="product-body">
+        <div class="product-tag">Murti</div>
+        <h3>Brass Ganesh Ji Idol</h3>
+        <p>Hand-crafted 6" pure brass idol, ideal for home temples</p>
+        <div class="product-footer">
+          <span class="price">₹ 1,299</span>
+          <a class="btn-whatsapp" href="https://wa.me/919999999999?text=I%20want%20to%20order%20Brass%20Ganesh%20Idol" target="_blank">
+            💬 Order
+          </a>
         </div>
       </div>
     </div>
-  </section>
 
-  <!-- Footer -->
-  <footer id="contact">
-    <div class="container footer-grid">
-      <div>
-        <div class="logo" style="color: white; margin-bottom: 16px;">
-          <i class="fa-solid fa-bone" style="color: var(--primary);"></i>
-          <span>Centre Spine</span>
+    <div class="product-card bestseller" style="position:relative">
+      <span class="bestseller-badge">Bestseller</span>
+      <div class="product-img">📿</div>
+      <div class="product-body">
+        <div class="product-tag">Rudraksha</div>
+        <h3>5-Mukhi Rudraksha Mala</h3>
+        <p>108 beads, certified authentic, comes with puja-cleansed packaging</p>
+        <div class="product-footer">
+          <span class="price">₹ 849</span>
+          <a class="btn-whatsapp" href="https://wa.me/919999999999?text=I%20want%20to%20order%20Rudraksha%20Mala" target="_blank">
+            💬 Order
+          </a>
         </div>
-        <p style="color: #94a3b8; font-size: 0.9rem; margin-bottom: 20px;">Personalised physiotherapy and rehabilitation care in Vidyadhar Nagar, Jaipur — helping you move and live pain-free.</p>
-      </div>
-
-      <div>
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="#about">About Us</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#testimonials">Testimonials</a></li>
-          <li><a href="#hero">Book Consultation</a></li>
-        </ul>
-      </div>
-
-      <div>
-        <h4>Services</h4>
-        <ul>
-          <li>Spine & Back Care</li>
-          <li>Joint & Mobility Rehab</li>
-          <li>Post-Injury Recovery</li>
-          <li>Chronic Management</li>
-        </ul>
-      </div>
-
-      <div>
-        <h4>Contact</h4>
-        <ul>
-          <li><i class="fa-solid fa-location-dot"></i> Vidyadhar Nagar, Jaipur</li>
-          <li><i class="fa-solid fa-phone"></i> 095490 32584</li>
-          <li><i class="fa-solid fa-clock"></i> Mon–Sat: 9AM–1PM, 4PM–8PM</li>
-        </ul>
       </div>
     </div>
 
-    <div class="container footer-bottom">
-      <span>© 2026 Centre Spine Physiotherapy & Rehabilitation Centre. All rights reserved.</span>
+    <div class="product-card">
+      <div class="product-img">📖</div>
+      <div class="product-body">
+        <div class="product-tag">Books</div>
+        <h3>Ramcharitmanas (Hindi)</h3>
+        <p>Gita Press edition, hardbound, large print for daily paath</p>
+        <div class="product-footer">
+          <span class="price">₹ 299</span>
+          <a class="btn-whatsapp" href="https://wa.me/919999999999?text=I%20want%20to%20order%20Ramcharitmanas" target="_blank">
+            💬 Order
+          </a>
+        </div>
+      </div>
     </div>
-  </footer>
 
-  <!-- WhatsApp Floating Button -->
-  <a href="https://wa.me/919549032584?text=Hi%2C%20I%20would%20like%20to%20book%20a%20physiotherapy%20consultation" class="floating-whatsapp" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
-    <i class="fa-brands fa-whatsapp"></i>
-  </a>
+    <div class="product-card">
+      <div class="product-img">🫙</div>
+      <div class="product-body">
+        <div class="product-tag">Ritual Essentials</div>
+        <h3>Pure Cow Ghee (500ml)</h3>
+        <p>A2 desi cow ghee, ideal for havan, deepa & prasad</p>
+        <div class="product-footer">
+          <span class="price">₹ 380</span>
+          <a class="btn-whatsapp" href="https://wa.me/919999999999?text=I%20want%20to%20order%20Pure%20Cow%20Ghee" target="_blank">
+            💬 Order
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card">
+      <div class="product-img">🌸</div>
+      <div class="product-body">
+        <div class="product-tag">Flowers</div>
+        <h3>Marigold Garland Set (Silk)</h3>
+        <p>Set of 2 — reusable, bright orange, perfect for pooja decoration</p>
+        <div class="product-footer">
+          <span class="price">₹ 199</span>
+          <a class="btn-whatsapp" href="https://wa.me/919999999999?text=I%20want%20to%20order%20Marigold%20Garland" target="_blank">
+            💬 Order
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why">
+  <div class="section-header">
+    <div class="section-eyebrow">Why Choose Us</div>
+    <h2>Our Promise to You</h2>
+    <p>Quality and devotion in every product we offer</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">✅</div>
+      <h3>100% Pure & Authentic</h3>
+      <p>Every product is sourced from trusted suppliers and verified for purity before reaching you.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🙏</div>
+      <h3>Trusted Since Years</h3>
+      <p>Bihar's own dharmik store, serving families across generations for their daily puja needs.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">🚚</div>
+      <h3>Pan-India Delivery</h3>
+      <p>Order from anywhere in India via WhatsApp. Safe packaging, timely delivery.</p>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">💰</div>
+      <h3>Fair & Honest Prices</h3>
+      <p>No middlemen. Direct sourcing means you get the best quality at the best price.</p>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section id="testimonials">
+  <div class="section-header">
+    <div class="section-eyebrow">Reviews</div>
+    <h2>What Devotees Say</h2>
+    <p>Real experiences from families across Bihar and beyond</p>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p>Bought a Ganesh idol for our new home griha pravesh. The quality was exceptional — pure brass, beautifully finished. Exactly as described!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">RD</div>
+        <div>
+          <div class="testi-name">Ramesh Dubey</div>
+          <div class="testi-loc">Patna, Bihar</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p>The rudraksha mala came with a certificate and puja packaging. Very professional. I've been a regular customer for 3 years now!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">SM</div>
+        <div>
+          <div class="testi-name">Sunita Mishra</div>
+          <div class="testi-loc">Muzaffarpur, Bihar</div>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card">
+      <div class="testi-quote">"</div>
+      <p>Ordered puja samagri in bulk for a family event. Fast delivery, proper packing, and every item was fresh and pure. Highly recommend!</p>
+      <div class="testi-author">
+        <div class="testi-avatar">AK</div>
+        <div>
+          <div class="testi-name">Arvind Kumar</div>
+          <div class="testi-loc">Gurgaon, Haryana</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-header">
+    <div class="section-eyebrow">Get in Touch</div>
+    <h2>Contact Us</h2>
+    <p>Have a question? Want to place a bulk order? We're here to help.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="contact-info">
+      <h3>Visit or Contact Us</h3>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">📍</div>
+        <div>
+          <h4>Bihar Store (Main)</h4>
+          <p>Main Bazaar, [Your Town], Bihar — 800001</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">🏙️</div>
+        <div>
+          <h4>Gurgaon Store (Coming Soon)</h4>
+          <p>Exact location to be announced. Follow us for updates!</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">📞</div>
+        <div>
+          <h4>Phone / WhatsApp</h4>
+          <p>+91 99999 99999</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">🕐</div>
+        <div>
+          <h4>Store Hours</h4>
+          <p>Monday – Sunday: 8:00 AM – 9:00 PM</p>
+        </div>
+      </div>
+
+      <div class="contact-item">
+        <div class="contact-item-icon">📧</div>
+        <div>
+          <h4>Email</h4>
+          <p>info@dharmikmart.in</p>
+        </div>
+      </div>
+
+      <a href="https://wa.me/919999999999?text=Namaste%2C%20I%20want%20to%20enquire%20about%20your%20products" target="_blank" class="btn-primary" style="margin-top:16px; display:inline-flex;">
+        💬 WhatsApp Us Now
+      </a>
+    </div>
+
+    <div class="contact-form">
+      <h3>Send an Enquiry</h3>
+      <div class="form-group">
+        <label>Your Name</label>
+        <input type="text" placeholder="Ramesh Kumar"/>
+      </div>
+      <div class="form-group">
+        <label>Phone Number</label>
+        <input type="tel" placeholder="+91 98765 43210"/>
+      </div>
+      <div class="form-group">
+        <label>What are you looking for?</label>
+        <select>
+          <option>Puja Samagri</option>
+          <option>Idols & Murti</option>
+          <option>Rudraksha & Malas</option>
+          <option>Books & Panchang</option>
+          <option>Bulk Order</option>
+          <option>Something Else</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Message</label>
+        <textarea placeholder="Tell us what you need..."></textarea>
+      </div>
+      <button class="btn-primary" style="width:100%; justify-content:center;" onclick="alert('Thank you! We will contact you soon. 🙏')">
+        Send Enquiry 🙏
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="om-large">ॐ</div>
+      <h3>Dharmik Mart</h3>
+      <p>Bihar's trusted destination for pure and authentic dharmik products. Serving families for daily puja, festivals, and special occasions. Now expanding to Gurgaon.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Categories</h4>
+      <ul>
+        <li><a href="#products">Puja Samagri</a></li>
+        <li><a href="#products">Idols & Murti</a></li>
+        <li><a href="#products">Rudraksha & Malas</a></li>
+        <li><a href="#products">Books & Panchang</a></li>
+        <li><a href="#products">Ghee & Chandan</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <ul>
+        <li><a href="#why">About Us</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="https://wa.me/919999999999" target="_blank">Order on WhatsApp</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 Dharmik Mart. All rights reserved. Made with 🙏 in Bihar.</span>
+    <div class="social-links">
+      <a href="#" title="Facebook">📘</a>
+      <a href="#" title="Instagram">📸</a>
+      <a href="#" title="YouTube">▶️</a>
+    </div>
+  </div>
+</footer>
+
+<!-- WhatsApp Float -->
+<a class="whatsapp-float" href="https://wa.me/919999999999?text=Namaste!%20I%20want%20to%20order%20from%20Dharmik%20Store" target="_blank" title="Chat on WhatsApp">
+  💬
+</a>
 
 </body>
 </html>
