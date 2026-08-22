@@ -1129,13 +1129,12 @@
       }
       .hero-grid {
         text-align: center;
-        gap: 20px;
       }
       .hero-btns, .hero-features {
         justify-content: center;
       }
       .hero-image-box {
-        margin-top: 16px;
+        margin-top: 40px;
         order: -1;
       }
       .gallery-grid {
@@ -1157,7 +1156,7 @@
         padding: 64px 0;
       }
       .hero {
-        padding: 32px 0 48px;
+        padding: 56px 0;
       }
     }
 
@@ -1793,7 +1792,8 @@
 
       <div id="bookingFormView">
         <div class="modal-header">
-          <h3>Book an Appointment</h3>
+          <span class="badge">Free Demo Session</span>
+          <h3>Book your free physiotherapy demo</h3>
           <p>Share a few details and we'll confirm your slot on WhatsApp or a quick call.</p>
         </div>
 
@@ -1955,7 +1955,7 @@
         var message = document.getElementById('bookingMessage').value.trim();
 
         var lines = [
-          'Hi, I would like to book a physiotherapy appointment.',
+          'Hi, I would like to book a free physiotherapy demo.',
           'Name: ' + name,
           'Phone: ' + phone,
           'Service: ' + service
