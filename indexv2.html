@@ -1144,21 +1144,28 @@
 
     @media (max-width: 600px) {
       .nav-wrap {
-        height: 60px;
-      }
-      /* Hide logo text — show image only */
-      .logo span {
-        display: none;
+        height: 64px;
       }
       .logo img {
-        height: 40px;
+        height: 36px;
       }
       .logo {
-        gap: 0;
+        font-size: 1rem;
+        gap: 8px;
       }
-      /* Hide phone button on mobile — it's in the drawer */
+      .logo span span {
+        font-size: 0.65rem;
+        letter-spacing: 0.5px;
+      }
+      /* Shrink the phone button on small screens */
       .nav-wrap > div > a.btn {
-        display: none;
+        padding: 7px 12px;
+        font-size: 0.72rem;
+        gap: 4px;
+        white-space: nowrap;
+      }
+      .nav-wrap > div > a.btn i {
+        font-size: 0.72rem;
       }
     }
   </style>
