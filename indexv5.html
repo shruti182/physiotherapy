@@ -33,16 +33,11 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
     }
 
-    html {
-      overflow-x: hidden;
-    }
-
     body {
       color: var(--dark);
       background-color: var(--white);
       line-height: 1.6;
       scroll-behavior: smooth;
-      overflow-x: hidden;
     }
 
     a {
@@ -1127,16 +1122,6 @@
       .hero-grid, .about-grid, .visit-box, .footer-grid {
         grid-template-columns: 1fr;
       }
-      .hero-grid {
-        text-align: center;
-      }
-      .hero-btns, .hero-features {
-        justify-content: center;
-      }
-      .hero-image-box {
-        margin-top: 40px;
-        order: -1;
-      }
       .gallery-grid {
         grid-template-columns: 1fr 1fr;
       }
@@ -1149,15 +1134,6 @@
       .form-row {
         grid-template-columns: 1fr;
       }
-      .hero h1 {
-        font-size: 2.5rem;
-      }
-      section {
-        padding: 64px 0;
-      }
-      .hero {
-        padding: 56px 0;
-      }
     }
 
     @media (max-width: 992px) {
@@ -1166,27 +1142,7 @@
       }
     }
 
-    @media (max-width: 700px) {
-      .about-grid {
-        text-align: center;
-      }
-      .about-stat {
-        position: static;
-        margin: -20px auto 0;
-        width: fit-content;
-      }
-      .about-list {
-        grid-template-columns: 1fr;
-        text-align: left;
-        max-width: 320px;
-        margin: 0 auto;
-      }
-    }
-
     @media (max-width: 600px) {
-      .container {
-        padding: 0 18px;
-      }
       .nav-wrap {
         height: 60px;
       }
@@ -1211,75 +1167,6 @@
         font-size: 0.78rem;
         gap: 5px;
         white-space: nowrap;
-      }
-
-      .hero h1 {
-        font-size: 2rem;
-      }
-      .hero p {
-        font-size: 1rem;
-      }
-      .hero-btns .btn, .hero-image-box {
-        width: 100%;
-      }
-      .hero-btns {
-        flex-direction: column;
-      }
-      .hero-btns .btn {
-        justify-content: center;
-      }
-      .hero-features {
-        gap: 12px 18px;
-        font-size: 0.85rem;
-      }
-
-      .section-title h2 {
-        font-size: 1.65rem;
-      }
-      .section-title {
-        margin-bottom: 34px;
-      }
-
-      .grid-3, .grid-4 {
-        grid-template-columns: 1fr;
-      }
-
-      .gallery-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 10px;
-      }
-      .gallery-grid img {
-        height: 140px;
-      }
-
-      .visit-card {
-        padding: 24px;
-      }
-
-      .footer-grid {
-        text-align: center;
-      }
-
-      /* Prevent iOS auto-zoom on form field focus */
-      .form-group input,
-      .form-group select,
-      .form-group textarea {
-        font-size: 16px;
-      }
-      .modal-box {
-        padding: 24px;
-      }
-    }
-
-    @media (max-width: 400px) {
-      .hero h1 {
-        font-size: 1.7rem;
-      }
-      .gallery-grid {
-        grid-template-columns: 1fr;
-      }
-      .gallery-grid img {
-        height: 200px;
       }
     }
   </style>
