@@ -1146,27 +1146,19 @@
       .nav-wrap {
         height: 60px;
       }
-      /* Hide subtitle, keep "Centre Spine" */
-      .logo span span {
+      /* Hide logo text — show image only */
+      .logo span {
         display: none;
       }
       .logo img {
-        height: 34px;
+        height: 40px;
       }
       .logo {
-        font-size: 0.95rem;
-        gap: 8px;
+        gap: 0;
       }
-      /* Hide phone button, show Book Appointment instead */
-      .nav-wrap > div > a.btn-primary {
+      /* Hide phone button on mobile — it's in the drawer */
+      .nav-wrap > div > a.btn {
         display: none;
-      }
-      .nav-wrap > div > a.btn-book-mobile {
-        display: inline-flex !important;
-        padding: 8px 14px;
-        font-size: 0.78rem;
-        gap: 5px;
-        white-space: nowrap;
       }
     }
   </style>
@@ -1209,13 +1201,9 @@
         <a href="#contact">Contact</a>
       </nav>
 
-      <div style="display:flex;align-items:center;gap:8px;">
+      <div style="display:flex;align-items:center;gap:10px;">
         <a href="tel:09549032584" class="btn btn-primary">
           <i class="fa-solid fa-phone"></i> 095490 32584
-        </a>
-        <!-- Book Appointment (mobile only) -->
-        <a href="#" class="btn btn-primary btn-book-mobile open-booking-modal" style="display:none;">
-          <i class="fa-solid fa-calendar-check"></i> Book Appointment
         </a>
         <!-- Hamburger (mobile only) -->
         <button class="hamburger-btn" id="hamburgerBtn" aria-label="Open menu">
