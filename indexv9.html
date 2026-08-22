@@ -1122,44 +1122,6 @@
     .drawer-overlay.open {
       display: block;
     }
-    .drawer-services-toggle {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: inherit;
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--dark);
-      padding: 13px 12px;
-      border-radius: 10px;
-      transition: background 0.2s;
-    }
-    .drawer-services-toggle:hover {
-      background: var(--primary-light);
-      color: var(--primary-dark);
-    }
-    .drawer-chevron {
-      font-size: 0.75rem;
-      transition: transform 0.25s ease;
-      color: var(--gray-600);
-    }
-    .drawer-services-toggle[aria-expanded="true"] .drawer-chevron {
-      transform: rotate(180deg);
-      color: var(--primary);
-    }
-    .drawer-services-list {
-      display: none;
-      flex-direction: column;
-      gap: 2px;
-      padding-left: 8px;
-    }
-    .drawer-services-list.open {
-      display: flex;
-    }
 
     /* Responsive */
     @media (max-width: 992px) {
@@ -1398,18 +1360,13 @@
       </button>
       <a href="#about" class="drawer-link">About</a>
       <div class="drawer-section">
-        <button class="drawer-link drawer-services-toggle" id="drawerServicesToggle" aria-expanded="false">
-          <span>Services</span>
-          <i class="fa-solid fa-chevron-down drawer-chevron"></i>
-        </button>
-        <div class="drawer-services-list" id="drawerServicesList">
-          <a href="#service-spine-back" class="drawer-link drawer-sub"><i class="fa-solid fa-person-walking-with-cane"></i> Spine & Back Care</a>
-          <a href="#service-joint-mobility" class="drawer-link drawer-sub"><i class="fa-solid fa-person-running"></i> Joint & Mobility Rehab</a>
-          <a href="#service-post-injury" class="drawer-link drawer-sub"><i class="fa-solid fa-bandage"></i> Post-Injury Recovery</a>
-          <a href="#service-chronic" class="drawer-link drawer-sub"><i class="fa-solid fa-heart-pulse"></i> Chronic Disease Management</a>
-          <a href="#service-pain-relief" class="drawer-link drawer-sub"><i class="fa-solid fa-kit-medical"></i> Advanced Pain Relief</a>
-          <a href="#service-preventive" class="drawer-link drawer-sub"><i class="fa-solid fa-shield-heart"></i> Preventive Care</a>
-        </div>
+        <span class="drawer-section-label">Services</span>
+        <a href="#service-spine-back" class="drawer-link drawer-sub"><i class="fa-solid fa-person-walking-with-cane"></i> Spine & Back Care</a>
+        <a href="#service-joint-mobility" class="drawer-link drawer-sub"><i class="fa-solid fa-person-running"></i> Joint & Mobility Rehab</a>
+        <a href="#service-post-injury" class="drawer-link drawer-sub"><i class="fa-solid fa-bandage"></i> Post-Injury Recovery</a>
+        <a href="#service-chronic" class="drawer-link drawer-sub"><i class="fa-solid fa-heart-pulse"></i> Chronic Disease Management</a>
+        <a href="#service-pain-relief" class="drawer-link drawer-sub"><i class="fa-solid fa-kit-medical"></i> Advanced Pain Relief</a>
+        <a href="#service-preventive" class="drawer-link drawer-sub"><i class="fa-solid fa-shield-heart"></i> Preventive Care</a>
       </div>
       <a href="#why" class="drawer-link">Why Us</a>
       <a href="#testimonials" class="drawer-link">Testimonials</a>
@@ -2056,15 +2013,6 @@
       // Close drawer on any link click inside it
       drawer.querySelectorAll('a').forEach(function(link) {
         link.addEventListener('click', closeDrawer);
-      });
-
-      // Services accordion toggle
-      var servicesToggle = document.getElementById('drawerServicesToggle');
-      var servicesList = document.getElementById('drawerServicesList');
-      servicesToggle.addEventListener('click', function() {
-        var isOpen = servicesList.classList.contains('open');
-        servicesList.classList.toggle('open', !isOpen);
-        servicesToggle.setAttribute('aria-expanded', String(!isOpen));
       });
 
       document.addEventListener('keydown', function(e) {
