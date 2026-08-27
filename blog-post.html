@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18369083814"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18369083814');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="pageTitle">Blog — Learners Academy</title>
+<meta name="description" id="pageDescription" content="Study tips, exam strategy and career-skill guides from Learners Academy's instructors.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .post-wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:56px 24px 24px;
+  }
+  .post-back{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    font-family:'Poppins', sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:#5b6b81;
+    text-decoration:none;
+    margin-bottom:22px;
+  }
+  .post-back:hover{ color:#0f2a4a; }
+
+  .post-tag{
+    display:inline-block;
+    font-family:'Poppins', sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:.03em;
+    text-transform:uppercase;
+    color:#0ea86c;
+    background:#eafaf3;
+    padding:4px 10px;
+    border-radius:999px;
+    margin-bottom:14px;
+  }
+  .post-title{
+    font-family:'Baloo 2', sans-serif;
+    font-size:34px;
+    font-weight:800;
+    color:#0f2a4a;
+    line-height:1.25;
+    margin-bottom:14px;
+  }
+  .post-meta{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Poppins', sans-serif;
+    font-size:13px;
+    color:#8a97a8;
+    margin-bottom:28px;
+  }
+  .post-meta__avatar{
+    width:32px; height:32px;
+    border-radius:50%;
+    background:#0f2a4a;
+    color:#fff;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    font-family:'Poppins', sans-serif;
+    font-size:12px;
+    font-weight:700;
+  }
+  .post-cover{
+    width:100%;
+    border-radius:16px;
+    aspect-ratio:16/9;
+    object-fit:cover;
+    background:#eef2f6;
+    margin-bottom:32px;
+  }
+  .post-body{
+    font-family:'Poppins', sans-serif;
+    font-size:16px;
+    line-height:1.75;
+    color:#2e3a4d;
+  }
+  .post-body h2{
+    font-family:'Baloo 2', sans-serif;
+    font-size:24px;
+    color:#0f2a4a;
+    margin:34px 0 12px;
+  }
+  .post-body h3{
+    font-family:'Baloo 2', sans-serif;
+    font-size:19px;
+    color:#0f2a4a;
+    margin:26px 0 10px;
+  }
+  .post-body p{ margin:0 0 18px; }
+  .post-body ul, .post-body ol{ margin:0 0 18px; padding-left:22px; }
+  .post-body li{ margin-bottom:8px; }
+  .post-body a{ color:#0ea86c; font-weight:600; }
+  .post-body img{ width:100%; border-radius:12px; margin:18px 0; }
+  .post-body blockquote{
+    border-left:3px solid #0ea86c;
+    padding:4px 0 4px 18px;
+    color:#5b6b81;
+    font-style:italic;
+    margin:24px 0;
+  }
+  .post-body code{
+    background:#f1f5f9;
+    padding:2px 6px;
+    border-radius:4px;
+    font-family:'Space Mono', monospace;
+    font-size:14px;
+  }
+  .post-body pre{
+    background:#0f2a4a;
+    color:#e6edf5;
+    padding:16px;
+    border-radius:10px;
+    overflow-x:auto;
+    margin:0 0 18px;
+  }
+  .post-body pre code{ background:none; padding:0; color:inherit; }
+
+  .post-cta{
+    max-width:760px;
+    margin:48px auto 0;
+    padding:0 24px;
+  }
+  .post-cta__box{
+    background:#f6f9fc;
+    border:1px solid #e2e9ef;
+    border-radius:16px;
+    padding:28px;
+    text-align:center;
+  }
+  .post-cta__box h4{
+    font-family:'Baloo 2', sans-serif;
+    font-size:20px;
+    color:#0f2a4a;
+    margin-bottom:8px;
+  }
+  .post-cta__box p{
+    font-family:'Poppins', sans-serif;
+    color:#5b6b81;
+    font-size:14px;
+    margin-bottom:18px;
+  }
+
+  .post-loading, .post-error{
+    max-width:760px;
+    margin:0 auto;
+    padding:56px 24px;
+    text-align:center;
+    color:#5b6b81;
+    font-family:'Poppins', sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="road-progress" aria-hidden="true"><div class="road-progress__fill" id="roadFill"></div></div>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-mark">LA</span>
+      <span class="nav__logo-text">Learners Academy</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="live-classes.html">Live Classes</a>
+      <a href="faculty.html">Faculty</a>
+      <a href="blog.html" class="is-active">Blog</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <div class="nav__actions">
+      <a href="login.html" class="btn btn--ghost">Log in</a>
+      <button type="button" class="btn btn--solid" id="demoOpenBtn">Book a free demo</button>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+  <div id="postLoading" class="post-loading">Loading post…</div>
+
+  <article id="postWrap" class="post-wrap" hidden>
+    <a href="blog.html" class="post-back">← Back to blog</a>
+    <span class="post-tag" id="postTag" hidden></span>
+    <h1 class="post-title" id="postTitle"></h1>
+    <div class="post-meta">
+      <span class="post-meta__avatar" id="postAvatar"></span>
+      <span id="postAuthor"></span>
+      <span>·</span>
+      <span id="postDate"></span>
+    </div>
+    <img class="post-cover" id="postCover" alt="">
+    <div class="post-body" id="postBody"></div>
+  </article>
+
+  <div class="post-cta" id="postCtaWrap" hidden>
+    <div class="post-cta__box">
+      <h4>Want this explained live?</h4>
+      <p>Book a free 30-minute demo with one of our instructors — no card required.</p>
+      <button type="button" class="btn btn--solid btn--lg" id="demoOpenBtn2">Book a free demo</button>
+    </div>
+  </div>
+</main>
+
+<section class="newsletter">
+  <h3>Stay updated with Learners Academy</h3>
+  <p>Free study tips, course updates, and offers — straight to your inbox.</p>
+  <form class="newsletter__form" onsubmit="return false;">
+    <input type="email" placeholder="you@email.com" aria-label="Email address" required>
+    <button type="submit" class="btn btn--solid">Subscribe</button>
+  </form>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="nav__logo-mark">LA</span> <span class="nav__logo-text">Learners Academy</span>
+      <p>A path from Grade 6 to your next promotion — video lessons, live classes, real certificates.</p>
+      <p class="footer__contact">
+        <a href="mailto:khandelwalshrutika@gmail.com">khandelwalshrutika@gmail.com</a><br>
+        <a href="tel:+917409859114">+91 7409859114</a><br>
+        Lansdowne, India
+      </p>
+    </div>
+    <div class="footer__col">
+      <h6>School</h6>
+      <a href="courses.html?tag=grade-6">Grade 6–10</a><a href="courses.html?tag=grade-11">Grade 11–12</a><a href="courses.html?tag=board-prep">Board Exam Prep</a><a href="courses.html?tag=competitive">JEE / NEET</a>
+    </div>
+    <div class="footer__col">
+      <h6>Career Tools</h6>
+      <a href="courses.html?subject=python">Python</a><a href="courses.html?subject=sql">SQL</a><a href="courses.html?subject=power-bi">Power BI</a><a href="courses.html?subject=tableau">Tableau</a>
+    </div>
+    <div class="footer__col">
+      <h6>Company</h6>
+      <a href="about.html">About</a><a href="blog.html">Blog</a><a href="teach.html">Teach on Learners Academy</a><a href="#">Careers</a><a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Learners Academy Learning. All rights reserved.</span>
+    <span class="footer__legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<!-- BOOK A FREE DEMO — POPUP -->
+<div class="demo-modal" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle" hidden>
+  <div class="demo-modal__backdrop" id="demoModalBackdrop"></div>
+  <div class="demo-modal__panel">
+    <button type="button" class="demo-modal__close" id="demoCloseBtn" aria-label="Close">&times;</button>
+
+    <span class="eyebrow eyebrow--coral">Free · 30 minutes · No card needed</span>
+    <h3 id="demoModalTitle">Book your free demo</h3>
+    <p>See a real lesson, meet an instructor, and get a personalised path — for your grade or your career track.</p>
+
+    <div class="demo-modal__points">
+      <span>✓ Live 1:1 walkthrough</span>
+      <span>✓ Pick School or Career path</span>
+      <span>✓ No commitment required</span>
+    </div>
+
+    <a href="login.html?mode=signup&intent=demo" class="btn btn--solid btn--lg demo-modal__cta">Continue to sign up →</a>
+  </div>
+</div>
+
+<script>
+  (function () {
+    document.addEventListener('error', function (e) {
+      var img = e.target;
+      if (!img || img.tagName !== 'IMG' || img.dataset.fallbackApplied) return;
+      img.dataset.fallbackApplied = 'true';
+      var label = (img.alt || 'Image unavailable').trim();
+      var svg =
+        '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="450">' +
+        '<rect width="100%" height="100%" fill="#eef2f6"/>' +
+        '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" ' +
+        'font-family="Poppins, sans-serif" font-size="20" fill="#7a8aa0">' +
+        label.replace(/&/g, '&amp;').replace(/</g, '&lt;').slice(0, 60) +
+        '</text></svg>';
+      img.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+    }, true);
+  })();
+</script>
+<script src="script.js"></script>
+<script type="module">
+  import { supabase } from "./supabase-client.js";
+
+  function escapeHtml(str) {
+    return String(str || "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function initials(name) {
+    return (name || "LA").trim().split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+  }
+
+  function formatDate(iso) {
+    if (!iso) return "";
+    return new Date(iso).toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const slug = params.get("slug");
+  const loadingEl = document.getElementById("postLoading");
+  const wrapEl = document.getElementById("postWrap");
+  const ctaEl = document.getElementById("postCtaWrap");
+
+  if (!slug) {
+    loadingEl.textContent = "No post specified.";
+  } else {
+    const { data: post, error } = await supabase
+      .from("blog_posts")
+      .select("title, excerpt, content_html, cover_image, category, author_name, published_at")
+      .eq("slug", slug)
+      .eq("status", "published")
+      .single();
+
+    if (error || !post) {
+      console.error("Could not load blog post:", error && error.message);
+      loadingEl.textContent = "This post couldn't be found.";
+    } else {
+      document.getElementById("pageTitle").textContent = post.title + " — Learners Academy Blog";
+      if (post.excerpt) document.getElementById("pageDescription").setAttribute("content", post.excerpt);
+
+      document.getElementById("postTitle").textContent = post.title;
+      document.getElementById("postAuthor").textContent = post.author_name || "Learners Academy";
+      document.getElementById("postAvatar").textContent = initials(post.author_name);
+      document.getElementById("postDate").textContent = formatDate(post.published_at);
+
+      const coverEl = document.getElementById("postCover");
+      if (post.cover_image) {
+        coverEl.src = post.cover_image;
+        coverEl.alt = post.title;
+      } else {
+        coverEl.hidden = true;
+      }
+
+      if (post.category) {
+        const tagEl = document.getElementById("postTag");
+        tagEl.textContent = post.category;
+        tagEl.hidden = false;
+      }
+
+      // content_html is written by the author in Supabase as sanitized HTML
+      // (see admin notes) — rendered directly since it's first-party content.
+      document.getElementById("postBody").innerHTML = post.content_html || `<p>${escapeHtml(post.excerpt || "")}</p>`;
+
+      loadingEl.hidden = true;
+      wrapEl.hidden = false;
+      ctaEl.hidden = false;
+    }
+  }
+</script>
+<script>
+  (function () {
+    var modal = document.getElementById('demoModal');
+    var openBtns = [document.getElementById('demoOpenBtn'), document.getElementById('demoOpenBtn2')];
+    var closeBtn = document.getElementById('demoCloseBtn');
+    var backdrop = document.getElementById('demoModalBackdrop');
+    var lastFocused = null;
+
+    function openModal() {
+      lastFocused = document.activeElement;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    openBtns.forEach(function (btn) { if (btn) btn.addEventListener('click', openModal); });
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  })();
+</script>
+
+</body>
+</html>

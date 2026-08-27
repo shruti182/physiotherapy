@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213D;
+    --paper:#FBF6E9;
+    --paper-dim:#F1E8CE;
+    --marigold:#E8A33D;
+    --vermillion:#C1432D;
+    --peacock:#1F6F5C;
+    --charcoal:#2A2A2A;
+    --line: rgba(20,33,61,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(20,33,61,0.07) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 24px 48px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(232,163,61,0.18), transparent 40%),
+      radial-gradient(circle at 88% 15%, rgba(31,111,89,0.16), transparent 42%),
+      var(--ink);
+    color:var(--paper);
+    overflow:hidden;
+  }
+  header.hero::before, header.hero::after{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; width:1px;
+    background:repeating-linear-gradient(180deg, rgba(251,246,233,0.18) 0 6px, transparent 6px 14px);
+  }
+  header.hero::before{ left:28px; }
+  header.hero::after{ right:28px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(34px, 6vw, 58px);
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  header.hero .tagline{
+    font-size:16px;
+    max-width:480px;
+    margin:0 auto 36px;
+    color:rgba(251,246,233,0.78);
+  }
+  .hero-demo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(12px, 2.4vw, 17px);
+    font-weight:600;
+    min-height:52px;
+    flex-wrap:wrap;
+    padding:0 12px;
+  }
+  .hero-demo .op{ color:rgba(251,246,233,0.5); }
+  .hero-demo .digit{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(6px);
+    animation:riseIn 0.4s ease forwards;
+  }
+  .hero-demo .result-digit{ color:var(--marigold); }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    padding:22px 16px;
+    max-width:960px;
+    margin:0 auto;
+  }
+  nav.tabs button{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all 0.18s ease;
+  }
+  nav.tabs button:hover{ border-color:var(--marigold); }
+  nav.tabs button.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  nav.tabs button:focus-visible, .reveal-btn:focus-visible, input:focus-visible, select:focus-visible{
+    outline:3px solid var(--peacock);
+    outline-offset:2px;
+  }
+
+  /* ---------- Panels ---------- */
+  main{ max-width:760px; margin:0 auto; padding:8px 20px 80px; }
+  .panel{ display:none; animation:fadeUp 0.35s ease; }
+  .panel.active{ display:block; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  .panel-head h2{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    margin:28px 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .sutra{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:15px;
+    color:var(--peacock);
+  }
+  .panel-head p{
+    color:#555;
+    font-size:15px;
+    max-width:58ch;
+  }
+
+  .workspace{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    margin-top:16px;
+    position:relative;
+  }
+  .workspace::before{
+    content:"";
+    position:absolute;
+    top:0; left:22px; right:22px; height:3px;
+    background:linear-gradient(90deg, var(--marigold), var(--vermillion), var(--peacock));
+    border-radius:0 0 3px 3px;
+  }
+  .field-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-bottom:16px;
+  }
+  .field-row label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field-row input{
+    font-family:'JetBrains Mono', monospace;
+    font-size:15px;
+    padding:9px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    width:150px;
+    background:var(--paper-dim);
+    color:var(--ink);
+  }
+  .field-row input.wide{ width:220px; }
+  .field-row input.narrow{ width:90px; }
+  .field-row input:focus{ border-color:var(--marigold); outline:none; }
+  .field-row select{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    padding:9.5px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:var(--paper-dim);
+    color:var(--ink);
+    min-width:140px;
+  }
+  .field-row select:focus{ border-color:var(--marigold); outline:none; }
+
+  .reveal-btn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:8px;
+    border:none;
+    background:var(--vermillion);
+    color:#fff;
+    cursor:pointer;
+    transition:transform 0.12s ease, background 0.18s ease;
+  }
+  .reveal-btn:hover{ background:#a53523; }
+  .reveal-btn:active{ transform:scale(0.97); }
+
+  .steps{ margin-top:20px; display:flex; flex-direction:column; gap:0; }
+  .step{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+    opacity:0;
+    transform:translateX(-8px);
+  }
+  .step.show{ animation:stepIn 0.4s ease forwards; }
+  @keyframes stepIn{ to{opacity:1; transform:translateX(0);} }
+  .step:last-child{ border-bottom:none; }
+  .step-marker{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:var(--paper-dim);
+    border:1.5px solid var(--marigold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .step-body .label{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+  .step-body .detail{ font-family:'JetBrains Mono', monospace; font-size:14.5px; color:var(--charcoal); }
+  .step-body .detail .muted{ color:#999; }
+
+  .answer{
+    margin-top:18px;
+    padding:16px 18px;
+    border-radius:10px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:19px;
+    font-weight:600;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    opacity:0;
+  }
+  .answer.show{ display:flex; animation:fadeUp 0.4s ease forwards; }
+  .answer.code{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .answer.code pre{
+    margin:0;
+    white-space:pre-wrap;
+    word-break:break-word;
+    font-family:'JetBrains Mono', monospace;
+    font-size:14.5px;
+    font-weight:500;
+    line-height:1.6;
+    color:var(--paper);
+  }
+  .answer .tag{
+    font-family:'Work Sans', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    flex:0 0 auto;
+  }
+  .note{
+    font-size:13px;
+    color:var(--vermillion);
+    margin-top:12px;
+    display:none;
+  }
+  .note.show{ display:block; }
+
+  footer{
+    text-align:center;
+    padding:28px 20px 40px;
+    font-size:13px;
+    color:#888;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Learners Academy · Query Lab</div>
+  <h1>Python Lab</h1>
+  <p class="tagline">Five core Python patterns, assembled live from your own variable and column names. Fill in the fields, watch the code — and the logic behind it — take shape.</p>
+  <div class="hero-demo" id="heroDemo"></div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="active" data-tab="vars">Variables & Types</button>
+  <button data-tab="loops">Loops</button>
+  <button data-tab="funcs">Functions</button>
+  <button data-tab="comp">List Comprehensions</button>
+  <button data-tab="pandas">Pandas Basics</button>
+</nav>
+
+<main>
+
+  <section class="panel active" data-panel="vars">
+    <div class="panel-head">
+      <h2>Variables & Types <span class="sutra">Name a value, Python infers the rest</span></h2>
+      <p>Python doesn't ask you to declare a type up front — it looks at the value on the right of the <code>=</code> and figures out what kind of thing it's holding.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Variable name
+          <input type="text" id="v-name" value="student_score">
+        </label>
+        <label>Value
+          <input type="text" class="wide" id="v-value" value="87.5">
+        </label>
+        <label>Type
+          <select id="v-type">
+            <option value="int">int</option>
+            <option value="float" selected>float</option>
+            <option value="str">str</option>
+            <option value="bool">bool</option>
+            <option value="list">list</option>
+          </select>
+        </label>
+        <button class="reveal-btn" data-target="vars">Reveal the trick</button>
+      </div>
+      <div class="steps" id="vars-steps"></div>
+      <div class="answer" id="vars-answer"></div>
+      <div class="note" id="vars-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="loops">
+    <div class="panel-head">
+      <h2>Loops <span class="sutra">Repeat, with a running variable</span></h2>
+      <p>A <code>for</code> loop walks through a sequence one item at a time. A <code>while</code> loop keeps going as long as a condition holds — you control when it stops.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Loop type
+          <select id="l-type">
+            <option value="for">for</option>
+            <option value="while">while</option>
+          </select>
+        </label>
+        <label>Sequence / list name
+          <input type="text" id="l-seq" value="scores">
+        </label>
+        <label>Item variable
+          <input type="text" class="narrow" id="l-item" value="s">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Condition (while only)
+          <input type="text" class="wide" id="l-cond" value="count < 5">
+        </label>
+        <label>Body action
+          <input type="text" class="wide" id="l-action" value="print(s)">
+        </label>
+        <button class="reveal-btn" data-target="loops">Reveal the trick</button>
+      </div>
+      <div class="steps" id="loops-steps"></div>
+      <div class="answer" id="loops-answer"></div>
+      <div class="note" id="loops-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="funcs">
+    <div class="panel-head">
+      <h2>Functions <span class="sutra">Name a block, reuse it anywhere</span></h2>
+      <p>A function packages up a piece of logic under a name, with inputs (parameters) and an output (the return value) — write it once, call it as many times as you need.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Function name
+          <input type="text" id="f-name" value="average">
+        </label>
+        <label>Parameters
+          <input type="text" class="wide" id="f-params" value="numbers">
+        </label>
+        <label>Return expression
+          <input type="text" class="wide" id="f-return" value="sum(numbers) / len(numbers)">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Example call arguments
+          <input type="text" class="wide" id="f-call" value="[85, 90, 78, 92]">
+        </label>
+        <button class="reveal-btn" data-target="funcs">Reveal the trick</button>
+      </div>
+      <div class="steps" id="funcs-steps"></div>
+      <div class="answer" id="funcs-answer"></div>
+      <div class="note" id="funcs-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="comp">
+    <div class="panel-head">
+      <h2>List Comprehensions <span class="sutra">A loop and a filter, in one line</span></h2>
+      <p>A list comprehension builds a new list by transforming each item from an existing one — optionally keeping only the items that pass a condition.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Source list
+          <input type="text" id="c-source" value="scores">
+        </label>
+        <label>Item variable
+          <input type="text" class="narrow" id="c-item" value="s">
+        </label>
+        <label>Expression
+          <input type="text" class="wide" id="c-expr" value="s * 1.05">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Condition <span style="font-weight:400;color:#888;">(optional)</span>
+          <input type="text" class="wide" id="c-cond" value="s >= 60">
+        </label>
+        <button class="reveal-btn" data-target="comp">Reveal the trick</button>
+      </div>
+      <div class="steps" id="comp-steps"></div>
+      <div class="answer" id="comp-answer"></div>
+      <div class="note" id="comp-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="pandas">
+    <div class="panel-head">
+      <h2>Pandas Basics <span class="sutra">Load, filter, summarize</span></h2>
+      <p>A DataFrame is a table in memory. Most everyday work is three moves: read the data in, filter down to the rows you care about, and summarize a column.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>DataFrame variable
+          <input type="text" id="p-df" value="df">
+        </label>
+        <label>CSV filename
+          <input type="text" class="wide" id="p-file" value="student_scores.csv">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Filter column
+          <input type="text" class="wide" id="p-col" value="Score">
+        </label>
+        <label>Operator
+          <select id="p-op">
+            <option value=">=">&gt;=</option>
+            <option value=">">&gt;</option>
+            <option value="==">==</option>
+            <option value="<">&lt;</option>
+            <option value="<=">&lt;=</option>
+          </select>
+        </label>
+        <label>Value
+          <input type="text" id="p-val" value="80">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Column to summarize
+          <input type="text" class="wide" id="p-summary" value="Score">
+        </label>
+        <button class="reveal-btn" data-target="pandas">Reveal the trick</button>
+      </div>
+      <div class="steps" id="pandas-steps"></div>
+      <div class="answer" id="pandas-answer"></div>
+      <div class="note" id="pandas-note"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Built for Learners Academy — a self-contained page, ready to drop into your course library.</footer>
+
+<script>
+/* ---------------- Tab switching ---------------- */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+/* ---------------- Helpers ---------------- */
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+/* ---------------- Step + answer rendering ---------------- */
+function renderSteps(containerId, answerId, noteId, steps, answerText, answerTag, isCode){
+  const stepsEl = document.getElementById(containerId);
+  const answerEl = document.getElementById(answerId);
+  const noteEl = document.getElementById(noteId);
+  stepsEl.innerHTML = '';
+  answerEl.classList.remove('show');
+  answerEl.classList.toggle('code', !!isCode);
+  noteEl.classList.remove('show');
+  noteEl.textContent = '';
+
+  steps.forEach((s, i)=>{
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.innerHTML = `<div class="step-marker">${i+1}</div>
+      <div class="step-body">
+        <div class="label">${s.label}</div>
+        <div class="detail">${s.detail}</div>
+      </div>`;
+    stepsEl.appendChild(div);
+    setTimeout(()=>div.classList.add('show'), i*260);
+  });
+
+  setTimeout(()=>{
+    if(isCode){
+      answerEl.innerHTML = `<span class="tag">${answerTag||'Python'}</span><pre>${escapeHtml(answerText)}</pre>`;
+    } else {
+      answerEl.innerHTML = `<span class="tag">${answerTag||'Answer'}</span><span>${answerText}</span>`;
+    }
+    answerEl.classList.add('show');
+  }, steps.length*260 + 150);
+}
+
+function showNote(noteId, msg){
+  const noteEl = document.getElementById(noteId);
+  noteEl.textContent = msg;
+  noteEl.classList.add('show');
+  document.getElementById(noteId.replace('-note','-steps')).innerHTML = '';
+  document.getElementById(noteId.replace('-note','-answer')).classList.remove('show');
+}
+
+/* ---------------- 1. Variables & Types ---------------- */
+const TYPE_EXPLAIN = {
+  int:'A whole number — no decimal point. Python stores it exactly, with no size limit.',
+  float:'A number with a decimal point. Used for anything measured or averaged.',
+  str:'Text, wrapped in quotes. Even a single character is a string in Python.',
+  bool:'Only two possible values — True or False. Used for conditions and flags.',
+  list:'An ordered, changeable collection — written with square brackets, items separated by commas.'
+};
+function formatValue(value, type){
+  if(type === 'str') return `"${value}"`;
+  if(type === 'bool') return /true/i.test(value) ? 'True' : 'False';
+  if(type === 'list') return value.startsWith('[') ? value : `[${value}]`;
+  return value;
+}
+document.querySelector('[data-target="vars"]').addEventListener('click', ()=>{
+  const name = document.getElementById('v-name').value.trim() || 'value';
+  const rawValue = document.getElementById('v-value').value.trim() || '0';
+  const type = document.getElementById('v-type').value;
+  const formatted = formatValue(rawValue, type);
+
+  const sql = `${name} = ${formatted}\nprint(type(${name}))\n# <class '${type}'>`;
+
+  const steps = [
+    { label:'Write the value on the right of =', detail:`${name} = ${formatted}` },
+    { label:'Python looks at the value and infers the type', detail: TYPE_EXPLAIN[type] },
+    { label:'Confirm it with type()', detail:`type(${name}) → <span class="muted">${type}</span>` }
+  ];
+  renderSteps('vars-steps','vars-answer','vars-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 2. Loops ---------------- */
+document.querySelector('[data-target="loops"]').addEventListener('click', ()=>{
+  const type = document.getElementById('l-type').value;
+  const seq = document.getElementById('l-seq').value.trim() || 'items';
+  const item = document.getElementById('l-item').value.trim() || 'x';
+  const cond = document.getElementById('l-cond').value.trim() || 'count < 5';
+  const action = document.getElementById('l-action').value.trim() || `print(${item})`;
+
+  let sql, steps;
+  if(type === 'for'){
+    sql = `for ${item} in ${seq}:\n    ${action}`;
+    steps = [
+      { label:'Start from a sequence you can walk through', detail:`for ${item} in ${seq}:` },
+      { label:'Each pass, the item variable becomes the next element', detail:`${item} takes each value in ${seq}, one at a time, in order` },
+      { label:'Run the body once per item', detail: action }
+    ];
+  } else {
+    sql = `count = 0\nwhile ${cond}:\n    ${action}\n    count += 1`;
+    steps = [
+      { label:'Set up whatever the condition depends on', detail:'count = 0' },
+      { label:'Keep looping while the condition is true', detail:`while ${cond}:` },
+      { label:'Update the condition variable each pass — or it loops forever', detail:'count += 1' }
+    ];
+  }
+  renderSteps('loops-steps','loops-answer','loops-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 3. Functions ---------------- */
+document.querySelector('[data-target="funcs"]').addEventListener('click', ()=>{
+  const name = document.getElementById('f-name').value.trim() || 'my_function';
+  const params = document.getElementById('f-params').value.trim() || '';
+  const ret = document.getElementById('f-return').value.trim() || 'None';
+  const call = document.getElementById('f-call').value.trim() || '';
+
+  if(!ret){ showNote('funcs-note','Fill in what the function should return.'); return; }
+
+  const sql = `def ${name}(${params}):\n    return ${ret}\n\nresult = ${name}(${call})\nprint(result)`;
+
+  const steps = [
+    { label:'def names the function and lists its inputs', detail:`def ${name}(${params}):` },
+    { label:'return sends a value back to wherever it was called', detail:`return ${ret}` },
+    { label:'Call it anywhere, as many times as you need', detail:`${name}(${call})` }
+  ];
+  renderSteps('funcs-steps','funcs-answer','funcs-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 4. List Comprehensions ---------------- */
+document.querySelector('[data-target="comp"]').addEventListener('click', ()=>{
+  const source = document.getElementById('c-source').value.trim() || 'items';
+  const item = document.getElementById('c-item').value.trim() || 'x';
+  const expr = document.getElementById('c-expr').value.trim() || item;
+  const cond = document.getElementById('c-cond').value.trim();
+
+  const hasCond = !!cond;
+  const sql = hasCond
+    ? `[${expr} for ${item} in ${source} if ${cond}]`
+    : `[${expr} for ${item} in ${source}]`;
+
+  const steps = [
+    { label:'Start from the loop, just written inline', detail:`for ${item} in ${source}` },
+    { label:'Transform each item before it goes in the new list', detail: expr },
+    { label: hasCond ? 'Keep only the items that pass the condition' : 'No filter — every transformed item is kept', detail: hasCond ? `if ${cond}` : '<span class="muted">optional — add an if clause to filter</span>' }
+  ];
+  renderSteps('comp-steps','comp-answer','comp-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 5. Pandas Basics ---------------- */
+document.querySelector('[data-target="pandas"]').addEventListener('click', ()=>{
+  const df = document.getElementById('p-df').value.trim() || 'df';
+  const file = document.getElementById('p-file').value.trim() || 'data.csv';
+  const col = document.getElementById('p-col').value.trim();
+  const op = document.getElementById('p-op').value;
+  const val = document.getElementById('p-val').value.trim();
+  const summary = document.getElementById('p-summary').value.trim() || col;
+
+  if(!col || !val){ showNote('pandas-note','Fill in the filter column and value.'); return; }
+
+  const filterExpr = isNaN(val) ? `'${val}'` : val;
+  const sql = `import pandas as pd\n\n${df} = pd.read_csv("${file}")\nfiltered = ${df}[${df}["${col}"] ${op} ${filterExpr}]\nprint(filtered["${summary}"].mean())`;
+
+  const steps = [
+    { label:'Load the CSV into a DataFrame', detail:`${df} = pd.read_csv("${file}")` },
+    { label:'Filter rows with a boolean mask', detail:`${df}["${col}"] ${op} ${filterExpr} — this returns True/False for every row` },
+    { label:'Summarize whatever column you care about', detail:`filtered["${summary}"].mean()` }
+  ];
+  renderSteps('pandas-steps','pandas-answer','pandas-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- Hero auto-demo ---------------- */
+const heroExamples = [
+  ['for','s','in','scores:','print(s)'],
+  ['[','s','*','1.05','for','s','in','scores','if','s',' >= ','60',']'],
+  ['def','average(numbers):','return','sum(numbers)','/','len(numbers)'],
+  ['df','=','pd.read_csv(','"scores.csv"',')']
+];
+let heroIdx = 0;
+function playHeroDemo(){
+  const parts = heroExamples[heroIdx % heroExamples.length];
+  heroIdx++;
+  const el = document.getElementById('heroDemo');
+  el.innerHTML = '';
+  parts.forEach((word,i)=>{
+    const span = document.createElement('span');
+    span.textContent = word;
+    let cls = 'digit';
+    if(word === '(' || word === ')' || word === ',') cls += ' op';
+    else if(i===0) cls += ' result-digit';
+    span.className = cls;
+    span.style.animationDelay = (i*90) + 'ms';
+    el.appendChild(span);
+  });
+}
+playHeroDemo();
+setInterval(playHeroDemo, 3800);
+</script>
+
+</body>
+</html>

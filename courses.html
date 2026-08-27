@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18369083814"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18369083814');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Courses — Learners Academy</title>
+<meta name="description" content="Browse School Path (Grade 6–12) and Career Path courses on Learners Academy.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ---- Class (grade) filter panel — uses tokens from style.css ---- */
+  .school-layout{ display:flex; align-items:flex-start; gap:28px; }
+  .filters-panel{
+    display:none;
+    width:230px;
+    flex-shrink:0;
+    position:sticky;
+    top:96px;
+    background:var(--panel);
+    border:2px solid var(--line);
+    border-radius:var(--radius-sm);
+    padding:22px;
+  }
+  .filters-panel.is-visible{ display:block; }
+  .filters-panel__title{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-family:var(--display);
+    font-size:1.05rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 4px;
+  }
+  .filters-panel__title svg{ flex-shrink:0; color:var(--purple); }
+  .filter-section{ border-top:2px solid var(--line); margin-top:16px; padding-top:16px; }
+  .filter-section__head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    cursor:pointer;
+    font-family:var(--body);
+    font-size:0.92rem;
+    font-weight:700;
+    color:var(--ink);
+    -webkit-user-select:none; user-select:none;
+  }
+  .filter-section__head svg{ transition:transform .15s ease; color:var(--text-soft); }
+  .filter-section.is-collapsed .filter-section__head svg{ transform:rotate(-90deg); }
+  .filter-section.is-collapsed .filter-section__body{ display:none; }
+  .filter-section__body{ margin-top:10px; display:flex; flex-direction:column; }
+  .filter-option{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding:6px 0;
+    font-family:var(--body);
+    font-size:0.9rem;
+    color:var(--ink);
+    cursor:pointer;
+  }
+  .filter-option__label{ display:flex; align-items:center; gap:9px; }
+  .filter-option input[type="checkbox"]{
+    width:16px; height:16px;
+    accent-color:var(--purple);
+    cursor:pointer;
+  }
+  .filter-option__count{ color:var(--text-soft); font-size:0.78rem; }
+  .filters-panel__clear{
+    margin-top:16px;
+    background:none;
+    border:none;
+    color:var(--purple);
+    font-family:var(--body);
+    font-size:0.82rem;
+    font-weight:600;
+    cursor:pointer;
+    padding:0;
+  }
+  .filters-panel__clear:hover{ text-decoration:underline; }
+  .school-layout #schoolGrid{ flex:1; min-width:0; }
+  /* Branch chip row — appears conditionally after subject selection */
+  .branch-row{
+    display:none;
+    margin-top:20px;
+    margin-bottom:8px;
+  }
+  .branch-row.is-visible{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    align-items:center;
+  }
+  .branch-row__label{
+    font-family:var(--body);
+    font-size:0.85rem;
+    font-weight:600;
+    color:var(--text-soft);
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+    margin-right:4px;
+  }
+  .branch-chip{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    padding:8px 14px;
+    background:var(--panel);
+    border:1.5px solid var(--line);
+    border-radius:24px;
+    font-family:var(--body);
+    font-size:0.88rem;
+    font-weight:500;
+    color:var(--text);
+    cursor:pointer;
+    transition:all .15s ease;
+    -webkit-user-select:none;
+    user-select:none;
+  }
+  .branch-chip:hover{
+    background:var(--surface-hover, #f5f5f5);
+    border-color:var(--purple);
+  }
+  .branch-chip.branch-chip--active{
+    background:var(--purple);
+    color:white;
+    border-color:var(--purple);
+  }
+  @media (max-width: 860px){
+    .school-layout{ flex-direction:column; }
+    .filters-panel{ position:static; width:100%; }
+  }
+  /* ---- Bundle nudge (school section) ---- */
+  .bundle-nudge{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin:8px 0 24px;
+    padding:18px 22px;
+    background:var(--panel, #F7F5FF);
+    border:1.5px solid var(--line, #E4E0F5);
+    border-radius:var(--radius-sm, 12px);
+  }
+  .bundle-nudge p{
+    margin:0;
+    font-family:var(--body, inherit);
+    font-size:0.95rem;
+    color:var(--ink, #12203A);
+    max-width:620px;
+  }
+  .bundle-nudge strong{ color:var(--purple, #7C3AED); }
+  .bundle-nudge .btn{ flex-shrink:0; white-space:nowrap; }
+  @media (max-width:640px){
+    .bundle-nudge{ flex-direction:column; align-items:flex-start; }
+  }
+</style>
+</head>
+<body>
+
+<div class="road-progress" aria-hidden="true"><div class="road-progress__fill" id="roadFill"></div></div>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-mark">LA</span>
+      <span class="nav__logo-text">Learners Academy</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="courses.html" class="is-active">Courses</a>
+      <a href="live-classes.html">Live Classes</a>
+      <a href="faculty.html">Faculty</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <div class="nav__actions">
+      <a href="login.html" class="btn btn--ghost">Log in</a>
+      <a href="login.html?mode=signup" class="btn btn--solid">Start free</a>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <span class="eyebrow eyebrow--coral">All courses</span>
+    <h1>Every subject. Every skill. Pick your path.</h1>
+    <p>Search or filter to find the right course — school syllabus on one side, career tracks on the other.</p>
+    <div class="search-bar">
+      <input type="search" id="courseSearch" placeholder="Search courses, e.g. &quot;Computers&quot; or &quot;SQL&quot;" aria-label="Search courses">
+      <button type="button" class="search-bar__btn" id="courseSearchBtn" aria-label="Search">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="7"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </button>
+    </div>
+  </section>
+
+  <!-- SCHOOL -->
+  <section class="section" id="school">
+    <div class="section__head">
+      <span class="eyebrow eyebrow--coral">School Path, Grade 6–12</span>
+      <h2>CBSE &amp; ICSE Courses</h2>
+      <p>Syllabus-aligned lessons with quizzes and live classes.</p>
+    </div>
+
+    <div class="bundle-nudge">
+      <p><strong>Enrolling in more than one subject?</strong> Ask about a class bundle price on a free demo call — most families save by covering the whole grade together.</p>
+      <a href="index.html" class="btn btn--outline">Book a free demo →</a>
+    </div>
+
+    <div class="chip-row" data-filter-group="school">
+      <span class="chip chip--active" data-subject="all">All</span>
+      <span class="chip" data-subject="Mathematics">Mathematics</span>
+      <span class="chip" data-subject="Science">Science</span>
+      <span class="chip" data-subject="English">English</span>
+      <span class="chip" data-subject="Social Studies">Social Studies</span>
+      <span class="chip" data-subject="Computers">Computers</span>
+    </div>
+
+    <!-- Branch selection row (Science / English only) -->
+    <div class="branch-row" id="branchRow">
+      <span class="branch-row__label">Branch:</span>
+      <span class="branch-chip branch-chip--active" data-branch="all">All</span>
+      <span class="branch-chip" data-branch="physics" data-for-subject="Science">Physics</span>
+      <span class="branch-chip" data-branch="chemistry" data-for-subject="Science">Chemistry</span>
+      <span class="branch-chip" data-branch="biology" data-for-subject="Science">Biology</span>
+      <span class="branch-chip" data-branch="grammar" data-for-subject="English">Grammar</span>
+      <span class="branch-chip" data-branch="spoken" data-for-subject="English">Spoken</span>
+      <span class="branch-chip" data-branch="writing" data-for-subject="English">Writing</span>
+    </div>
+
+    <div class="school-layout">
+      <aside class="filters-panel" id="classSidebar" aria-label="Filter by class">
+        <p class="filters-panel__title">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="12" x2="14" y2="12"></line><line x1="4" y1="18" x2="10" y2="18"></line></svg>
+          Filters
+        </p>
+        <div class="filter-section" id="classFilterSection">
+          <div class="filter-section__head" id="classFilterHead">
+            <span>Class</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </div>
+          <div class="filter-section__body" id="classFilterBody">
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="6"> Class 6</span><span class="filter-option__count" data-count-for="6"></span></label>
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="7"> Class 7</span><span class="filter-option__count" data-count-for="7"></span></label>
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="8"> Class 8</span><span class="filter-option__count" data-count-for="8"></span></label>
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="9"> Class 9</span><span class="filter-option__count" data-count-for="9"></span></label>
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="10"> Class 10</span><span class="filter-option__count" data-count-for="10"></span></label>
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="11"> Class 11</span><span class="filter-option__count" data-count-for="11"></span></label>
+            <label class="filter-option"><span class="filter-option__label"><input type="checkbox" class="class-check" value="12"> Class 12</span><span class="filter-option__count" data-count-for="12"></span></label>
+          </div>
+        </div>
+        <button type="button" class="filters-panel__clear" id="clearClassFilters">Clear filters</button>
+      </aside>
+    <div class="course-grid course-grid--wide" id="schoolGrid">
+
+      <!-- MATHEMATICS -->
+      <article class="course-card" data-subject="Mathematics" data-name="Mathematics" data-course-id="mathematics-school">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/6238050/pexels-photo-6238050.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mathematics equations on a blackboard" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Bestseller</span>
+          <span class="course-card__level">Class 6–12</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Mathematics · CBSE &amp; ICSE</p>
+          <h4>Mathematics</h4>
+          <p class="course-card__desc">Numbers, algebra, geometry, trigonometry, and statistics — complete syllabus-aligned mathematics for Class 6 through 12 with board exam prep built in.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">DP</span> Dr. Priya Sharma</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,920)</span></p>
+          <div class="course-card__stats"><span>⏱ 80 hours</span><span>▤ 200 lessons</span><span>👥 14K</span></div>
+          <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Board Exam</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹999</span><span class="price-old">₹1,499</span><span class="price-off">-33%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="mathematics-school">Choose Your Class</button>
+          <a href="course-detail.html?course=mathematics-school" class="course-card__lessons">▶ View Lessons</a>
+        </div>
+      </article>
+
+      <!-- SCIENCE -->
+      <article class="course-card" data-subject="Science" data-name="Science" data-course-id="science-school">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/8544960/pexels-photo-8544960.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Colourful chemistry test tubes in a lab" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Bestseller</span>
+          <span class="course-card__level">Class 6–12</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Science · CBSE &amp; ICSE</p>
+          <h4>Science</h4>
+          <p class="course-card__desc">Physics, Chemistry, and Biology through animated experiments and interactive quizzes — complete school science from Class 6 to 12.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">PR</span> Prof. Rajesh Kumar</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.7 <span>(1,610)</span></p>
+          <div class="course-card__stats"><span>⏱ 72 hours</span><span>▤ 180 lessons</span><span>👥 11K</span></div>
+          <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Experiment</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹799</span><span class="price-old">₹1,199</span><span class="price-off">-33%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="science-school">Choose Your Class</button>
+          <a href="course-detail.html?course=science-school" class="course-card__lessons">▶ View Lessons</a>
+        </div>
+      </article>
+
+      <!-- SOCIAL SCIENCE -->
+      <article class="course-card" data-subject="Social Studies" data-name="Social Science" data-course-id="social-science-school">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/5428002/pexels-photo-5428002.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Teacher pointing at a globe in class" loading="lazy">
+          <span class="course-card__badge">Free</span>
+          <span class="course-card__level">Class 6–12</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Social Science · CBSE &amp; ICSE</p>
+          <h4>Social Science</h4>
+          <p class="course-card__desc">History, Geography, Civics, and Economics — made interactive and memorable for every class from 6 to 12.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">KM</span> Mr. Karan Mehta</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.5 <span>(980)</span></p>
+          <div class="course-card__stats"><span>⏱ 60 hours</span><span>▤ 130 lessons</span><span>👥 7K</span></div>
+          <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Geography</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">Free</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="social-science-school">Choose Your Class</button>
+          <a href="course-detail.html?course=social-science-school" class="course-card__lessons">▶ View Lessons</a>
+        </div>
+      </article>
+
+      <!-- ENGLISH -->
+      <article class="course-card" data-subject="English" data-name="English" data-course-id="english-school">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Open notebook with English grammar notes and a pen" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Premium</span>
+          <span class="course-card__level">Class 6–12</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">English · CBSE &amp; ICSE</p>
+          <h4>English</h4>
+          <p class="course-card__desc">Grammar, literature, writing, and comprehension — interactive drills and board-exam essay frameworks for Class 6 through 12.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">AR</span> Ms. Ananya Rao</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,152)</span></p>
+          <div class="course-card__stats"><span>⏱ 54 hours</span><span>▤ 105 lessons</span><span>👥 6.1K</span></div>
+          <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Grammar</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹1,799</span><span class="price-off">-33%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="english-school">Choose Your Class</button>
+          <a href="english-grammar-lab-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+      <!-- COMPUTERS -->
+      <article class="course-card" data-subject="Computers" data-name="Computers" data-course-id="computers-school">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Student learning coding on a laptop" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Bestseller</span>
+          <span class="course-card__level">Class 6–12</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Computers · CBSE &amp; ICSE</p>
+          <h4>Computers</h4>
+          <p class="course-card__desc">From MS Office basics to Python programming — complete school computer science covering the full syllabus from Class 6 through 12.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">NG</span> Ms. Neha Gupta</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,140)</span></p>
+          <div class="course-card__stats"><span>⏱ 60 hours</span><span>▤ 110 lessons</span><span>👥 7.2K</span></div>
+          <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Coding</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹1,799</span><span class="price-off">-33%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="computers-school">Choose Your Class</button>
+          <a href="course-detail.html?course=computers-school" class="course-card__lessons">▶ View Lessons</a>
+        </div>
+      </article>
+
+      <!-- VEDIC MATHS (specialty add-on) -->
+      <article class="course-card" data-subject="Mathematics" data-name="Advanced Vedic Maths" data-course-id="vedic-maths-advanced">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/6325944/pexels-photo-6325944.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Advanced mathematical equations and vedic patterns on whiteboard" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Premium</span>
+          <span class="course-card__level">Class 6–12</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Mathematics · Advanced Methods</p>
+          <h4>Advanced Vedic Maths</h4>
+          <p class="course-card__desc">Master ancient Vedic techniques for lightning-fast mental calculations — multiply, square, and solve instantly.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">DM</span> Dr. Mithun Sharma</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(847)</span></p>
+          <div class="course-card__stats"><span>⏱ 24 hours</span><span>▤ 35 lessons</span><span>👥 3.2K</span></div>
+          <div class="course-card__tags"><span class="tag">Mental Math</span><span class="tag">Vedic Sutras</span><span class="tag">Speed Tricks</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,499</span><span class="price-old">₹3,999</span><span class="price-off">-62%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="vedic-maths-advanced">Add to Cart</button>
+          <a href="vedic-maths-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+    </div>
+    </div>
+  </section>
+
+  <!-- CAREER -->
+  <section class="section" id="career">
+    <div class="section__head">
+      <span class="eyebrow eyebrow--teal">Career Path, Working Professionals</span>
+      <h2>Skills Your Manager Will Notice</h2>
+      <p>Self-paced career tracks built on real-world projects and datasets.</p>
+    </div>
+
+    <div class="chip-row" data-filter-group="career">
+      <span class="chip chip--active" data-subject="all">All</span>
+      <span class="chip" data-subject="AI &amp; Data Science">AI &amp; Data Science</span>
+      <span class="chip" data-subject="Python">Python</span>
+      <span class="chip" data-subject="SQL">SQL</span>
+      <span class="chip" data-subject="Power BI">Power BI</span>
+      <span class="chip" data-subject="Tableau">Tableau</span>
+      <span class="chip" data-subject="Data Analytics">Data Analytics</span>
+    </div>
+
+    <div class="course-grid course-grid--wide" id="careerGrid">
+      <!-- ⭐ DATA SCIENCE, GENAI & AGENTIC AI - PREMIUM COURSE (Featured at top) -->
+      <article class="course-card" data-subject="AI &amp; Data Science" data-name="Data Science Generative AI Agentic AI" data-course-id="data-science-genai-agentic-ai">
+        <div class="course-card__media" style="background: linear-gradient(135deg, #7C3AED 0%, #0F766E 100%); display: flex; align-items: center; justify-content: center; min-height: 240px; position: relative;">
+          <svg viewBox="0 0 300 280" width="190" height="190" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));">
+            <circle cx="150" cy="140" r="86" fill="none" stroke="white" stroke-width="2" opacity="0.35"/>
+            <circle cx="150" cy="140" r="60" fill="none" stroke="white" stroke-width="2" opacity="0.5"/>
+            <circle cx="150" cy="60" r="10" fill="#D946EF"/>
+            <circle cx="222" cy="105" r="8" fill="white" opacity="0.85"/>
+            <circle cx="222" cy="175" r="8" fill="white" opacity="0.85"/>
+            <circle cx="150" cy="220" r="10" fill="#D946EF"/>
+            <circle cx="78" cy="175" r="8" fill="white" opacity="0.85"/>
+            <circle cx="78" cy="105" r="8" fill="white" opacity="0.85"/>
+            <line x1="150" y1="60" x2="222" y2="105" stroke="white" stroke-width="1.5" opacity="0.5"/>
+            <line x1="222" y1="105" x2="222" y2="175" stroke="white" stroke-width="1.5" opacity="0.5"/>
+            <line x1="222" y1="175" x2="150" y2="220" stroke="white" stroke-width="1.5" opacity="0.5"/>
+            <line x1="150" y1="220" x2="78" y2="175" stroke="white" stroke-width="1.5" opacity="0.5"/>
+            <line x1="78" y1="175" x2="78" y2="105" stroke="white" stroke-width="1.5" opacity="0.5"/>
+            <line x1="78" y1="105" x2="150" y2="60" stroke="white" stroke-width="1.5" opacity="0.5"/>
+            <circle cx="150" cy="140" r="34" fill="white"/>
+            <text x="150" y="132" text-anchor="middle" font-size="11" font-weight="700" fill="#12203A">AGENT</text>
+            <text x="150" y="148" text-anchor="middle" font-size="9" font-weight="600" fill="#7C3AED">Data · GenAI</text>
+          </svg>
+          <span class="course-card__badge course-card__badge--teal">Premium</span>
+          <span class="course-card__level">All Levels</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">AI &amp; Data Science · Career Path</p>
+          <h4>Data Science, Generative AI &amp; Agentic AI</h4>
+          <p class="course-card__desc">From data pipelines to prompt engineering to building AI agents that plan and take action — the complete AI career track.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">SI</span> Ms. Sneha Iyer</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(1,150)</span></p>
+          <div class="course-card__stats"><span>⏱ 60 hours</span><span>▤ 96 lessons</span><span>👥 11K</span></div>
+          <div class="course-card__tags"><span class="tag">Data Science</span><span class="tag">Generative AI</span><span class="tag">Agentic AI</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹4,499</span><span class="price-old">₹11,999</span><span class="price-off">-62%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="data-science-genai-agentic-ai">Add to Cart</button>
+          <a href="data-science-genai-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+      <article class="course-card" data-subject="SQL" data-name="SQL Complete Database Mastery" data-course-id="sql-mastery">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/17323801/pexels-photo-17323801.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Server room with blue lighting" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">SQL · Career Path</p>
+          <h4>SQL — Complete Database Mastery</h4>
+          <p class="course-card__desc">From SELECT to stored procedures — master databases with real-world practice.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">VS</span> Mr. Vikram Singh</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(3,200)</span></p>
+          <div class="course-card__stats"><span>⏱ 48 hours</span><span>▤ 75 lessons</span><span>👥 12K</span></div>
+          <div class="course-card__tags"><span class="tag">Database</span><span class="tag">Career Path</span><span class="tag">Certification</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,499</span><span class="price-old">₹4,499</span><span class="price-off">-67%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="sql-mastery">Add to Cart</button>
+          <a href="sql-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+      <article class="course-card" data-subject="Power BI" data-name="Power BI Business Intelligence Bootcamp" data-course-id="powerbi-bootcamp">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/10653886/pexels-photo-10653886.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Business data chart on a monitor" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Intermediate</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Power BI · Career Path</p>
+          <h4>Power BI — Business Intelligence Bootcamp</h4>
+          <p class="course-card__desc">Build dashboards and reports that drive business decisions — end-to-end BI.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">AV</span> Mr. Arjun Verma</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,870)</span></p>
+          <div class="course-card__stats"><span>⏱ 52 hours</span><span>▤ 88 lessons</span><span>👥 9K</span></div>
+          <div class="course-card__tags"><span class="tag">BI</span><span class="tag">Dashboard</span><span class="tag">Career Path</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹2,499</span><span class="price-old">₹6,999</span><span class="price-off">-64%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="powerbi-bootcamp">Add to Cart</button>
+          <a href="power-bi-dax-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+      <article class="course-card" data-subject="Tableau" data-name="Tableau From Zero to Dashboard Pro" data-course-id="tableau-dashboard-pro">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Colourful analytics dashboard on a monitor" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Tableau · Career Path</p>
+          <h4>Tableau — From Zero to Dashboard Pro</h4>
+          <p class="course-card__desc">LODs, table calcs, calculated fields, and dashboard actions — build portfolio-ready Tableau dashboards from scratch.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">AV</span> Mr. Arjun Verma</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(1,540)</span></p>
+          <div class="course-card__stats"><span>⏱ 40 hours</span><span>▤ 72 lessons</span><span>👥 6.5K</span></div>
+          <div class="course-card__tags"><span class="tag">LOD</span><span class="tag">Dashboard</span><span class="tag">Career Path</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹2,199</span><span class="price-old">₹5,999</span><span class="price-off">-63%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="tableau-dashboard-pro">Add to Cart</button>
+          <a href="tableau-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+      <article class="course-card" data-subject="Python" data-name="Python for Data Science Automation" data-course-id="python-data-science">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/6424590/pexels-photo-6424590.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Python programming code on a dark screen" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Python · Career Path</p>
+          <h4>Python for Data Science &amp; Automation</h4>
+          <p class="course-card__desc">NumPy, Pandas, and automation scripts — build real projects from day one.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">NG</span> Ms. Neha Gupta</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(2,640)</span></p>
+          <div class="course-card__stats"><span>⏱ 56 hours</span><span>▤ 92 lessons</span><span>👥 10.5K</span></div>
+          <div class="course-card__tags"><span class="tag">Python</span><span class="tag">Data Science</span><span class="tag">Career Path</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,799</span><span class="price-old">₹4,999</span><span class="price-off">-64%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="python-data-science">Add to Cart</button>
+          <a href="python-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+
+      <article class="course-card" data-subject="Data Analytics" data-name="Data Analytics Complete Career Path" data-course-id="data-analytics-career">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/3912976/pexels-photo-3912976.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Data graph analysis on a laptop screen" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Advanced</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Data Analytics · Career Path</p>
+          <h4>Data Analytics — Complete Career Path</h4>
+          <p class="course-card__desc">SQL, Python, Power BI, and Tableau together in one end-to-end analytics track.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">SI</span> Ms. Sneha Iyer</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(3,980)</span></p>
+          <div class="course-card__stats"><span>⏱ 65 hours</span><span>▤ 60 lessons</span><span>👥 21K</span></div>
+          <div class="course-card__tags"><span class="tag">Data Analytics</span><span class="tag">Career Path</span><span class="tag">Certification</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹3,999</span><span class="price-old">₹9,999</span><span class="price-off">-60%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="data-analytics-career">Add to Cart</button>
+          <a href="course-detail.html?course=data-analytics-career" class="course-card__lessons">▶ View Lessons</a>
+        </div>
+      </article>
+
+      <article class="course-card" data-subject="Data Analytics" data-name="Machine Learning AI Fundamentals" data-course-id="ml-ai-fundamentals">
+        <div class="course-card__media" style="background: linear-gradient(135deg, #7c3aed 0%, #ec4899 100%); display: flex; align-items: center; justify-content: center; min-height: 240px; position: relative;">
+          <svg viewBox="0 0 300 340" width="200" height="200" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 2px 8px rgba(0,0,0,0.15));">
+            <circle cx="30" cy="40" r="6" fill="white" opacity="0.3"/>
+            <circle cx="50" cy="30" r="4" fill="white" opacity="0.2"/>
+            <circle cx="260" cy="80" r="5" fill="white" opacity="0.25"/>
+            <circle cx="270" cy="120" r="6" fill="white" opacity="0.2"/>
+            <circle cx="150" cy="120" r="110" fill="#7c3aed" stroke="white" stroke-width="2" opacity="0.9"/>
+            <circle cx="150" cy="120" r="85" fill="#d946ef" stroke="white" stroke-width="2" opacity="0.95"/>
+            <circle cx="150" cy="110" r="60" fill="#ec4899" stroke="white" stroke-width="2"/>
+            <circle cx="150" cy="220" r="45" fill="#ff1493" stroke="white" stroke-width="2"/>
+            <text x="150" y="75" text-anchor="middle" font-size="14" font-weight="600" fill="white">Artificial</text>
+            <text x="150" y="95" text-anchor="middle" font-size="14" font-weight="600" fill="white">Intelligence</text>
+            <text x="150" y="105" text-anchor="middle" font-size="12" font-weight="600" fill="white">Machine Learning</text>
+            <text x="150" y="125" text-anchor="middle" font-size="12" font-weight="600" fill="white"> </text>
+            <text x="150" y="95" text-anchor="middle" font-size="11" font-weight="600" fill="white">Deep Learning</text>
+            <text x="150" y="215" text-anchor="middle" font-size="11" font-weight="600" fill="white">Data Science</text>
+          </svg>
+          <span class="course-card__badge course-card__badge--new">New</span>
+          <span class="course-card__level">Advanced</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Machine Learning · Career Path</p>
+          <h4>Machine Learning &amp; AI Fundamentals</h4>
+          <p class="course-card__desc">Master the complete AI hierarchy: from foundational machine learning to deep neural networks and practical data science applications.</p>
+          <p class="course-card__instructor"><span class="course-card__avatar">VS</span> Mr. Vikram Singh</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,120)</span></p>
+          <div class="course-card__stats"><span>⏱ 48 hours</span><span>▤ 42 lessons</span><span>👥 9K</span></div>
+          <div class="course-card__tags"><span class="tag">Machine Learning</span><span class="tag">AI</span><span class="tag">Certification</span></div>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹2,999</span><span class="price-old">₹7,999</span><span class="price-off">-63%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+          <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="ml-ai-fundamentals">Add to Cart</button>
+          <a href="ml-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <p class="empty-state" id="emptyState" hidden>No courses match that search — try a different keyword.</p>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="nav__logo-mark">LA</span> <span class="nav__logo-text">Learners Academy</span>
+      <p>A path from Grade 6 to your next promotion — video lessons, live classes, real certificates.</p>
+    </div>
+    <div class="footer__col">
+      <h6>School</h6>
+      <a href="courses.html?tag=grade-6">Grade 6–10</a><a href="courses.html?tag=grade-11">Grade 11–12</a><a href="courses.html?tag=board-prep">Board Exam Prep</a><a href="courses.html?tag=competitive">JEE / NEET</a>
+    </div>
+    <div class="footer__col">
+      <h6>Career Tools</h6>
+      <a href="courses.html?subject=python">Python</a><a href="courses.html?subject=sql">SQL</a><a href="courses.html?subject=power-bi">Power BI</a><a href="courses.html?subject=tableau">Tableau</a>
+    </div>
+    <div class="footer__col">
+      <h6>Company</h6>
+      <a href="#">About</a><a href="teach.html">Teach on Learners Academy</a><a href="#">Careers</a><a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Learners Academy Learning. All rights reserved.</span>
+    <span class="footer__legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script type="module">
+  import { supabase } from "./supabase-client.js";
+
+  // ---------- LIVE PRICES (Supabase → course cards) ----------
+  // Pull live prices from the "courses" table and drop them into each
+  // course card in `scope` that has a matching data-course-id. Edit prices
+  // any time in Supabase → Table Editor → courses — no code changes needed.
+  async function applyLivePrices(scope = document) {
+    const { data: courses, error } = await supabase
+      .from("courses")
+      .select("id, price_now, price_old, is_free");
+
+    if (error) {
+      console.error("Could not load course prices:", error.message);
+      return;
+    }
+
+    const bySlug = Object.fromEntries(courses.map(c => [c.id, c]));
+
+    scope.querySelectorAll(".course-card[data-course-id]").forEach(card => {
+      const row = bySlug[card.dataset.courseId];
+      if (!row) return; // no matching row yet — leave the fallback price shown
+
+      const priceEl = card.querySelector(".course-card__price");
+      if (!priceEl) return;
+
+      if (row.is_free) {
+        priceEl.innerHTML = `<span class="price-now">Free</span>`;
+        return;
+      }
+
+      const now = Number(row.price_now);
+      const old = row.price_old ? Number(row.price_old) : null;
+      const fmt = n => "₹" + n.toLocaleString("en-IN");
+
+      let html = `<span class="price-now">${fmt(now)}</span>`;
+      if (old && old > now) {
+        const off = Math.round(((old - now) / old) * 100);
+        html += `<span class="price-old">${fmt(old)}</span><span class="price-off">-${off}%</span>`;
+      }
+      priceEl.innerHTML = html;
+    });
+  }
+
+  // Generic school-overview cards (Class 6–12 in one card) don't map to a
+  // single purchasable course — clicking their button should send the
+  // visitor into the Class filter instead of adding a vague item to cart.
+  const GENERIC_SUBJECT_CARD_SUBJECTS = {
+    "mathematics-school": "Mathematics",
+    "science-school": "Science",
+    "english-school": "English",
+    "social-science-school": "Social Studies",
+    "computers-school": "Computers"
+  };
+
+  // ---------- ADD TO CART ----------
+
+  // Cache of courseId → quantity for items already in cart
+  let cartCache = {};
+
+  function markAddedButtons(scope = document) {
+    scope.querySelectorAll("[data-add-to-cart]").forEach(btn => {
+      const courseId = btn.dataset.addToCart;
+      if (GENERIC_SUBJECT_CARD_SUBJECTS[courseId]) return; // skip "Choose Your Class" buttons
+      const qty = cartCache[courseId];
+      if (qty) {
+        btn.textContent = qty > 1 ? `In Cart (${qty}) ✓` : "Added ✓";
+        btn.style.background = "#1a9e6e";
+        btn.style.opacity = "1";
+      } else {
+        btn.textContent = "Add to Cart";
+        btn.style.background = "";
+      }
+    });
+  }
+
+  async function loadCartCache() {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return;
+    const { data: items } = await supabase
+      .from("cart_items")
+      .select("course_id, quantity")
+      .eq("user_id", user.id);
+    cartCache = {};
+    (items || []).forEach(i => { cartCache[i.course_id] = i.quantity || 1; });
+    markAddedButtons(document);
+  }
+
+  function wireCartButtons(scope = document) {
+    scope.querySelectorAll("[data-add-to-cart]").forEach(btn => {
+      if (btn.dataset.cartWired) return; // avoid double-binding re-rendered cards
+      btn.dataset.cartWired = "1";
+
+      const genericSubject = GENERIC_SUBJECT_CARD_SUBJECTS[btn.dataset.addToCart];
+      if (genericSubject) {
+        btn.addEventListener("click", () => {
+          const chip = document.querySelector(
+            `.chip-row[data-filter-group="school"] .chip[data-subject="${CSS.escape(genericSubject)}"]`
+          );
+          if (chip) chip.click();
+
+          const target = document.getElementById("classSidebar") || document.getElementById("schoolGrid");
+          if (target) target.scrollIntoView({ behavior: "smooth", block: "start" });
+        });
+        return; // skip normal cart binding below
+      }
+
+      btn.addEventListener("click", async () => {
+        const courseId = btn.dataset.addToCart;
+        const { data: { user } } = await supabase.auth.getUser();
+
+        if (!user) {
+          window.location.href = `login.html?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+          return;
+        }
+
+        btn.disabled = true; btn.textContent = "Adding…";
+
+        const { data: existing } = await supabase
+          .from("cart_items")
+          .select("id, quantity")
+          .eq("user_id", user.id)
+          .eq("course_id", courseId)
+          .maybeSingle();
+
+        let error;
+        if (existing) {
+          const newQty = (existing.quantity || 1) + 1;
+          ({ error } = await supabase
+            .from("cart_items")
+            .update({ quantity: newQty })
+            .eq("id", existing.id));
+          if (!error) cartCache[courseId] = newQty;
+        } else {
+          ({ error } = await supabase
+            .from("cart_items")
+            .insert({ user_id: user.id, course_id: courseId, quantity: 1 }));
+          if (!error) cartCache[courseId] = 1;
+        }
+
+        btn.disabled = false;
+        if (error) {
+          btn.textContent = "Try again";
+          btn.style.background = "";
+        } else {
+          markAddedButtons(document); // update ALL buttons for this courseId
+        }
+      });
+    });
+
+    // Apply current cart state to newly wired buttons
+    markAddedButtons(scope);
+  }
+
+  wireCartButtons(document);
+  applyLivePrices(document);
+  loadCartCache(); // fetch existing cart and highlight already-added buttons
+
+  // ---------- CLASS (GRADE) BROWSING FOR SCHOOL SUBJECTS ----------
+  // Selecting a subject chip (Mathematics, Science, English, Social Studies,
+  // Computers) reveals a Class sidebar (6–12). Picking a class renders course
+  // cards with id "{subject-slug}-grade-{class}" — matching the ids used in
+  // the Supabase `courses` table, e.g. "math-grade-6", "science-grade-9".
+  // Add a row for any subject+grade in Supabase and its real price/strike
+  // price will show up automatically; until then the template's fallback
+  // price is shown, same as any other card.
+
+  const GRADES = [6, 7, 8, 9, 10, 11, 12];
+
+  const BRANCH_CONFIGS = {
+    "Science": {
+      branches: ["physics", "chemistry", "biology"],
+      branchLabels: { physics: "Physics", chemistry: "Chemistry", biology: "Biology" }
+    },
+    "English": {
+      branches: ["grammar", "spoken", "writing"],
+      branchLabels: { grammar: "Grammar", spoken: "Spoken", writing: "Writing" }
+    }
+  };
+
+  const SUBJECT_TEMPLATES = {
+    "Mathematics": {
+      slug: "math",
+      image: "https://images.pexels.com/photos/6238050/pexels-photo-6238050.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageAlt: "Mathematics equations on a blackboard",
+      badge: "Bestseller", badgeClass: "course-card__badge--coral",
+      catLabel: "Mathematics · CBSE &amp; ICSE",
+      descTemplate: g => `Numbers, algebra, geometry, and problem-solving — complete syllabus-aligned mathematics for Class ${g}, with board exam prep built in.`,
+      instructorInitials: "DP", instructorName: "Dr. Priya Sharma",
+      rating: "4.8", reviews: "1,920",
+      hours: "80 hours", lessons: "200 lessons", students: "14K",
+      tags: ["CBSE", "ICSE", "Board Exam"],
+      priceNow: 999, priceOld: 1499, isFree: false,
+      hasBranches: false
+    },
+    "Science": {
+      slug: "science",
+      image: "https://images.pexels.com/photos/8544960/pexels-photo-8544960.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageAlt: "Colourful chemistry test tubes in a lab",
+      badge: "Bestseller", badgeClass: "course-card__badge--coral",
+      catLabel: "Science · CBSE &amp; ICSE",
+      descTemplate: (g, branch) => {
+        const branchLabel = branch && branch !== "all" ? branch.charAt(0).toUpperCase() + branch.slice(1) : "Science";
+        return `${branchLabel} through animated experiments and interactive quizzes for Class ${g}.`;
+      },
+      instructorInitials: "PR", instructorName: "Prof. Rajesh Kumar",
+      rating: "4.7", reviews: "1,610",
+      hours: "72 hours", lessons: "180 lessons", students: "11K",
+      tags: ["CBSE", "ICSE", "Experiment"],
+      priceNow: 799, priceOld: 1199, isFree: false,
+      hasBranches: true
+    },
+    "Social Studies": {
+      slug: "social-studies",
+      image: "https://images.pexels.com/photos/5428002/pexels-photo-5428002.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageAlt: "Teacher pointing at a globe in class",
+      badge: "Free", badgeClass: "",
+      catLabel: "Social Science · CBSE &amp; ICSE",
+      descTemplate: g => `History, Geography, Civics, and Economics made interactive and memorable for Class ${g}.`,
+      instructorInitials: "KM", instructorName: "Mr. Karan Mehta",
+      rating: "4.5", reviews: "980",
+      hours: "60 hours", lessons: "130 lessons", students: "7K",
+      tags: ["CBSE", "ICSE", "Geography"],
+      priceNow: null, priceOld: null, isFree: true,
+      hasBranches: false
+    },
+    "English": {
+      slug: "english",
+      image: "https://images.pexels.com/photos/261909/pexels-photo-261909.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageAlt: "Open notebook with English grammar notes and a pen",
+      badge: "Premium", badgeClass: "course-card__badge--coral",
+      catLabel: "English · CBSE &amp; ICSE",
+      descTemplate: (g, branch) => {
+        const branchLabel = branch && branch !== "all" ? branch.charAt(0).toUpperCase() + branch.slice(1) : "Grammar, literature, and writing";
+        return `${branchLabel} — interactive drills and board-exam essay frameworks for Class ${g}.`;
+      },
+      instructorInitials: "AR", instructorName: "Ms. Ananya Rao",
+      rating: "4.8", reviews: "1,152",
+      hours: "54 hours", lessons: "105 lessons", students: "6.1K",
+      tags: ["CBSE", "ICSE", "Grammar"],
+      priceNow: 1199, priceOld: 1799, isFree: false,
+      hasBranches: true
+    },
+    "Computers": {
+      slug: "computers",
+      image: "https://images.pexels.com/photos/574071/pexels-photo-574071.jpeg?auto=compress&cs=tinysrgb&w=800",
+      imageAlt: "Student learning coding on a laptop",
+      badge: "Bestseller", badgeClass: "course-card__badge--coral",
+      catLabel: "Computers · CBSE &amp; ICSE",
+      descTemplate: g => `From MS Office basics to Python programming — computer science for Class ${g}.`,
+      instructorInitials: "NG", instructorName: "Ms. Neha Gupta",
+      rating: "4.8", reviews: "1,140",
+      hours: "60 hours", lessons: "110 lessons", students: "7.2K",
+      tags: ["CBSE", "ICSE", "Coding"],
+      priceNow: 1199, priceOld: 1799, isFree: false,
+      hasBranches: false
+    }
+  };
+
+  function priceFallbackHTML(t) {
+    if (t.isFree) return `<span class="price-now">Free</span>`;
+    const fmt = n => "₹" + Number(n).toLocaleString("en-IN");
+    let html = `<span class="price-now">${fmt(t.priceNow)}</span>`;
+    if (t.priceOld && t.priceOld > t.priceNow) {
+      const off = Math.round(((t.priceOld - t.priceNow) / t.priceOld) * 100);
+      html += `<span class="price-old">${fmt(t.priceOld)}</span><span class="price-off">-${off}%</span>`;
+    }
+    return html;
+  }
+
+  function buildGradeCard(subjectName, grade, branch = "all") {
+    const t = SUBJECT_TEMPLATES[subjectName];
+    const courseId = `${t.slug}-grade-${grade}`;
+    const badgeHtml = t.badge ? `<span class="course-card__badge ${t.badgeClass}">${t.badge}</span>` : "";
+    const tagsHtml = t.tags.map(tag => `<span class="tag">${tag}</span>`).join("");
+
+    const article = document.createElement("article");
+    article.className = "course-card";
+    article.dataset.subject = subjectName;
+    article.dataset.name = subjectName;
+    article.dataset.courseId = courseId;
+    article.dataset.grade = String(grade);
+    article.dataset.branch = branch;
+    article.innerHTML = `
+      <div class="course-card__media">
+        <img src="${t.image}" alt="${t.imageAlt}" loading="lazy">
+        ${badgeHtml}
+        <span class="course-card__level">Class ${grade}</span>
+      </div>
+      <div class="course-card__body">
+        <p class="course-card__cat">${t.catLabel}</p>
+        <h4>${subjectName} — Class ${grade}</h4>
+        <p class="course-card__desc">${t.descTemplate(grade, branch)}</p>
+        <p class="course-card__instructor"><span class="course-card__avatar">${t.instructorInitials}</span> ${t.instructorName}</p>
+        <p class="course-card__rating"><span class="star">★</span> ${t.rating} <span>(${t.reviews})</span></p>
+        <div class="course-card__stats"><span>⏱ ${t.hours}</span><span>▤ ${t.lessons}</span><span>👥 ${t.students}</span></div>
+        <div class="course-card__tags">${tagsHtml}</div>
+        <div class="course-card__footer">
+          <p class="course-card__price">${priceFallbackHTML(t)}</p>
+          <span class="course-card__cert">🎓 Certificate</span>
+        </div>
+        <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="${courseId}">Add to Cart</button>
+        <a href="course-detail.html?course=${courseId}" class="course-card__lessons">▶ View Lessons</a>
+      </div>
+    `;
+    return article;
+  }
+
+  const schoolGrid = document.getElementById("schoolGrid");
+  const classSidebar = document.getElementById("classSidebar");
+  const schoolChipRow = document.querySelector('.chip-row[data-filter-group="school"]');
+  const branchRow = document.getElementById("branchRow");
+  const classChecks = Array.from(classSidebar.querySelectorAll(".class-check"));
+  const classFilterHead = document.getElementById("classFilterHead");
+  const classFilterSection = document.getElementById("classFilterSection");
+  const clearClassFiltersBtn = document.getElementById("clearClassFilters");
+  const originalSchoolGridHTML = schoolGrid.innerHTML; // snapshot of the hand-authored overview cards
+
+  let currentSubject = "all";
+  let currentBranch = "all";
+  let selectedGrades = new Set(); // empty = show every class
+
+  function updateClassCounts() {
+    // One template-generated card per class per subject.
+    classChecks.forEach(cb => {
+      const countEl = classSidebar.querySelector(`[data-count-for="${cb.value}"]`);
+      if (countEl) countEl.textContent = "1";
+    });
+  }
+
+  function renderSchoolGrid() {
+    if (currentSubject === "all" || !SUBJECT_TEMPLATES[currentSubject]) {
+      schoolGrid.innerHTML = originalSchoolGridHTML;
+      classSidebar.classList.remove("is-visible");
+      branchRow.classList.remove("is-visible");
+      wireCartButtons(schoolGrid);
+      applyLivePrices(schoolGrid);
+      return;
+    }
+
+    const template = SUBJECT_TEMPLATES[currentSubject];
+    
+    // Show/hide branch row based on whether subject has branches
+    if (template.hasBranches) {
+      branchRow.classList.add("is-visible");
+      // Show only relevant branch chips for this subject
+      branchRow.querySelectorAll(".branch-chip").forEach(chip => {
+        const forSubject = chip.dataset.forSubject;
+        if (forSubject === currentSubject || chip.dataset.branch === "all") {
+          chip.style.display = "inline-flex";
+        } else {
+          chip.style.display = "none";
+        }
+      });
+    } else {
+      branchRow.classList.remove("is-visible");
+    }
+
+    classSidebar.classList.add("is-visible");
+    updateClassCounts();
+    schoolGrid.innerHTML = "";
+
+    const gradesToShow = selectedGrades.size === 0 ? GRADES : GRADES.filter(g => selectedGrades.has(String(g)));
+    gradesToShow.forEach(g => schoolGrid.appendChild(buildGradeCard(currentSubject, g, currentBranch)));
+
+    // Keep any hand-authored bonus cards for this subject (e.g. Advanced Vedic
+    // Maths, which isn't grade-specific) visible when no class filter is active.
+    if (selectedGrades.size === 0) {
+      const temp = document.createElement("div");
+      temp.innerHTML = originalSchoolGridHTML;
+      temp.querySelectorAll(`.course-card[data-subject="${CSS.escape(currentSubject)}"]`).forEach(el => {
+        if (!el.dataset.courseId || !el.dataset.courseId.includes("-grade-")) {
+          // Clear wired flag so wireCartButtons re-binds the cloned button
+          el.querySelectorAll("[data-cart-wired]").forEach(b => delete b.dataset.cartWired);
+          schoolGrid.appendChild(el);
+        }
+      });
+    }
+
+    wireCartButtons(schoolGrid);
+    applyLivePrices(schoolGrid);
+  }
+
+  if (schoolChipRow) {
+    schoolChipRow.querySelectorAll(".chip").forEach(chip => {
+      chip.addEventListener("click", () => {
+        schoolChipRow.querySelectorAll(".chip").forEach(c => c.classList.remove("chip--active"));
+        chip.classList.add("chip--active");
+
+        currentSubject = chip.dataset.subject;
+        currentBranch = "all"; // Reset branch when subject changes
+        selectedGrades.clear();
+        classChecks.forEach(cb => { cb.checked = false; });
+
+        // Reset branch chips to show "All" as active
+        if (branchRow) {
+          branchRow.querySelectorAll(".branch-chip").forEach(bchip => {
+            if (bchip.dataset.branch === "all") {
+              bchip.classList.add("branch-chip--active");
+            } else {
+              bchip.classList.remove("branch-chip--active");
+            }
+          });
+        }
+
+        // Default to Class 10 to reduce clutter
+        if (currentSubject !== "all") {
+          selectedGrades.add("10");
+          const cb10 = classSidebar.querySelector('.class-check[value="10"]');
+          if (cb10) cb10.checked = true;
+        }
+
+        renderSchoolGrid();
+      });
+    });
+  }
+
+  classChecks.forEach(cb => {
+    cb.addEventListener("change", () => {
+      if (cb.checked) selectedGrades.add(cb.value);
+      else selectedGrades.delete(cb.value);
+      renderSchoolGrid();
+    });
+  });
+
+  clearClassFiltersBtn.addEventListener("click", () => {
+    selectedGrades.clear();
+    classChecks.forEach(cb => { cb.checked = false; });
+    renderSchoolGrid();
+  });
+
+  classFilterHead.addEventListener("click", () => {
+    classFilterSection.classList.toggle("is-collapsed");
+  });
+
+  // Branch chip event listeners
+  if (branchRow) {
+    branchRow.querySelectorAll(".branch-chip").forEach(branchChip => {
+      branchChip.addEventListener("click", () => {
+        // Only allow clicking visible branches
+        if (branchChip.style.display === "none") return;
+
+        // Remove active class from all branch chips
+        branchRow.querySelectorAll(".branch-chip").forEach(bc => {
+          bc.classList.remove("branch-chip--active");
+        });
+        
+        // Add active class to clicked chip
+        branchChip.classList.add("branch-chip--active");
+        
+        // Update current branch
+        currentBranch = branchChip.dataset.branch;
+        
+        // Reset grade selection when branch changes
+        selectedGrades.clear();
+        classChecks.forEach(cb => { cb.checked = false; });
+        
+        // Default to Class 10
+        if (currentSubject !== "all") {
+          selectedGrades.add("10");
+          const cb10 = classSidebar.querySelector('.class-check[value="10"]');
+          if (cb10) cb10.checked = true;
+        }
+        
+        // Re-render grid with new branch
+        renderSchoolGrid();
+      });
+    });
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Science, Generative AI &amp; Agentic AI — Try Free Lab + Enroll</title>
+<meta name="description" content="Try our free interactive AI lab — prompt engineering, agent planning, and a data science pipeline. Then enroll for the complete career-track course with certificates.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  :root {
+    --violet: #7C3AED;
+    --magenta: #D946EF;
+    --teal: #0F766E;
+    --ink: #12203A;
+    --paper: #F5F3FF;
+    --paper-dim: #EAE5FB;
+    --line: rgba(18, 32, 58, 0.14);
+  }
+
+  body { background: var(--paper); }
+
+  /* Lab Wrapper */
+  .vedic-lab-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+  }
+
+  /* Header Hero with Lab Embed */
+  .vedic-hero {
+    background: linear-gradient(135deg, var(--ink) 0%, #1a2d4d 100%);
+    color: #fff;
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .vedic-hero h1 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(28px, 5vw, 42px);
+    font-weight: 700;
+    margin: 0 0 12px;
+  }
+
+  .vedic-hero p {
+    font-size: 16px;
+    opacity: 0.9;
+    max-width: 620px;
+    margin: 0 auto 8px;
+  }
+
+  .trial-badge {
+    display: inline-block;
+    background: var(--magenta);
+    color: #fff;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* Lab Container */
+  .lab-section {
+    background: var(--paper);
+    padding: 32px 24px;
+    border-top: 3px solid var(--violet);
+  }
+
+  .lab-section iframe {
+    width: 100%;
+    height: 1100px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(18, 32, 58, 0.12);
+  }
+
+  /* Course Benefits Section */
+  .benefits-section {
+    background: #fff;
+    padding: 56px 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .benefits-inner {
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .benefits-head {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  .benefits-head h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+
+  .benefits-head p {
+    font-size: 16px;
+    color: #666;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  .benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 24px;
+    margin-bottom: 48px;
+  }
+
+  .benefit-card {
+    background: #f9f7ff;
+    padding: 24px;
+    border-radius: 12px;
+    border-left: 4px solid var(--violet);
+  }
+
+  .benefit-card h3 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 8px;
+  }
+
+  .benefit-card p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+    line-height: 1.6;
+  }
+
+  .benefit-icon {
+    font-size: 24px;
+    margin-bottom: 12px;
+  }
+
+  /* Enrollment CTA Section */
+  .enrollment-cta {
+    background: linear-gradient(135deg, var(--violet) 0%, var(--magenta) 100%);
+    color: #fff;
+    padding: 56px 24px;
+    text-align: center;
+    border-radius: 0;
+  }
+
+  .enrollment-cta h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: clamp(24px, 4vw, 36px);
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+
+  .course-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    margin: 32px auto;
+  }
+
+  .info-stat {
+    background: rgba(255, 255, 255, 0.15);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+  }
+
+  .info-stat-value {
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .info-stat-label {
+    font-size: 12px;
+    opacity: 0.9;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .price-display {
+    margin: 32px 0;
+  }
+
+  .price-now {
+    font-size: 48px;
+    font-weight: 700;
+    display: block;
+  }
+
+  .price-old {
+    font-size: 18px;
+    opacity: 0.8;
+    text-decoration: line-through;
+    display: inline-block;
+    margin-right: 12px;
+  }
+
+  .price-off {
+    background: rgba(255, 255, 255, 0.25);
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .enroll-btn {
+    display: inline-block;
+    background: #fff;
+    color: var(--violet);
+    padding: 16px 48px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin: 0 8px;
+  }
+
+  .enroll-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.2);
+  }
+
+  .enroll-btn.secondary {
+    background: transparent;
+    color: #fff;
+    border: 2px solid #fff;
+  }
+
+  .enroll-btn.secondary:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+
+  /* Course Highlights */
+  .highlights-section {
+    background: #fff;
+    padding: 48px 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .highlights-inner {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .highlights-head {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .highlights-head h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 12px;
+  }
+
+  .highlights-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+  }
+
+  .highlight-item {
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: #fafafa;
+  }
+
+  .highlight-item h3 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0 0 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .highlight-item p {
+    font-size: 13px;
+    color: #666;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  /* FAQ Section */
+  .faq-section {
+    background: var(--paper);
+    padding: 48px 24px;
+    border-top: 1px solid var(--line);
+  }
+
+  .faq-inner {
+    max-width: 700px;
+    margin: 0 auto;
+  }
+
+  .faq-head {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .faq-head h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  .faq-item {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .faq-question {
+    padding: 20px;
+    cursor: pointer;
+    background: #fff;
+    border: none;
+    width: 100%;
+    text-align: left;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.2s ease;
+  }
+
+  .faq-question:hover {
+    background: #f9f7ff;
+  }
+
+  .faq-question::after {
+    content: '▼';
+    font-size: 12px;
+    transition: transform 0.3s ease;
+  }
+
+  .faq-item.open .faq-question::after {
+    transform: rotate(180deg);
+  }
+
+  .faq-answer {
+    padding: 0 20px 20px;
+    display: none;
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    border-top: 1px solid var(--line);
+  }
+
+  .faq-item.open .faq-answer {
+    display: block;
+  }
+
+  /* Rating Card */
+  .rating-card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 24px;
+    margin: 32px 0;
+    text-align: center;
+  }
+
+  .rating-stars {
+    font-size: 24px;
+    color: var(--violet);
+    margin-bottom: 8px;
+  }
+
+  .rating-text {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+  }
+
+  /* Footer CTA */
+  .footer-cta {
+    background: var(--ink);
+    color: #fff;
+    padding: 48px 24px;
+    text-align: center;
+  }
+
+  .footer-cta h2 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 28px;
+    font-weight: 700;
+    margin: 0 0 16px;
+  }
+
+  .footer-cta p {
+    font-size: 16px;
+    margin: 0 0 24px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    opacity: 0.9;
+  }
+
+  .footer-cta .enroll-btn {
+    background: var(--magenta);
+    color: #fff;
+  }
+
+  .footer-cta .enroll-btn:hover {
+    background: #c026d3;
+  }
+
+  @media (max-width: 768px) {
+    .lab-section iframe {
+      height: 900px;
+    }
+
+    .course-info-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .price-now {
+      font-size: 36px;
+    }
+
+    .enroll-btn {
+      display: block;
+      width: 100%;
+      margin: 12px 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-mark">LA</span>
+      <span class="nav__logo-text">Learners Academy</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="live-classes.html">Live Classes</a>
+      <a href="faculty.html">Faculty</a>
+    </nav>
+    <div class="nav__actions">
+      <a href="login.html" class="btn btn--ghost">Log in</a>
+      <a href="login.html?mode=signup" class="btn btn--solid">Enroll Now</a>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main class="vedic-lab-wrapper">
+
+  <!-- Hero Section -->
+  <section class="vedic-hero">
+    <span class="trial-badge">✨ Free Interactive Lab</span>
+    <h1>Data Science, Generative AI &amp; Agentic AI</h1>
+    <p>From data pipelines to prompt engineering to building AI agents that take action — the skills employers are hiring for right now.</p>
+  </section>
+
+  <!-- Free Lab Embed -->
+  <section class="lab-section">
+    <iframe src="data-science-genai-lab.html" title="Data Science, GenAI &amp; Agentic AI Interactive Lab"></iframe>
+  </section>
+
+  <!-- What You'll Learn in Full Course -->
+  <section class="benefits-section">
+    <div class="benefits-inner">
+      <div class="benefits-head">
+        <h2>Why Choose This Course?</h2>
+        <p>From the free lab to complete mastery — here's what makes this course special</p>
+      </div>
+
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">🧬</div>
+          <h3>Real Data Science Foundations</h3>
+          <p>Data cleaning, exploratory analysis, feature engineering, and model evaluation — the fundamentals under every AI system.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">✨</div>
+          <h3>Generative AI, Hands-On</h3>
+          <p>Work directly with large language models: prompt design, fine-tuning basics, and retrieval-augmented generation (RAG).</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">🤖</div>
+          <h3>Build Real Agentic AI Systems</h3>
+          <p>Go beyond chatbots — design agents that plan, call tools, and complete multi-step tasks on their own.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">🏆</div>
+          <h3>Live Doubt Sessions</h3>
+          <p>Weekly live classes with the instructor. Ask questions, debug together, share your builds.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">📦</div>
+          <h3>Portfolio-Ready Projects</h3>
+          <p>Ship 3 real projects — a data pipeline, a GenAI app, and an autonomous agent — for your resume and GitHub.</p>
+        </div>
+
+        <div class="benefit-card">
+          <div class="benefit-icon">🎓</div>
+          <h3>Verifiable Certificate</h3>
+          <p>Prove your skills with a shareable certificate. Add it to LinkedIn and your resume.</p>
+        </div>
+      </div>
+
+      <div class="rating-card">
+        <div class="rating-stars">★★★★★</div>
+        <p class="rating-text"><strong>4.9/5 rating</strong> • 1,150+ students enrolled this quarter</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Course Details -->
+  <section class="highlights-section">
+    <div class="highlights-inner">
+      <div class="highlights-head">
+        <h2>Course Breakdown</h2>
+      </div>
+
+      <div class="highlights-grid">
+        <div class="highlight-item">
+          <h3>📺 Video Lessons</h3>
+          <p>60 hours of recorded content. Learn at your pace, rewatch anytime.</p>
+        </div>
+
+        <div class="highlight-item">
+          <h3>🗂️ 96 Lessons</h3>
+          <p>Data science, GenAI, and agentic AI — one focused topic per lesson.</p>
+        </div>
+
+        <div class="highlight-item">
+          <h3>💬 Live Classes</h3>
+          <p>Weekly 2-hour live build sessions. Q&amp;A, live debugging, community.</p>
+        </div>
+
+        <div class="highlight-item">
+          <h3>🧪 Hands-On Labs</h3>
+          <p>Guided notebooks and agent-building exercises after every module.</p>
+        </div>
+
+        <div class="highlight-item">
+          <h3>📊 Capstone Projects</h3>
+          <p>Ship a data pipeline, a GenAI application, and an autonomous agent.</p>
+        </div>
+
+        <div class="highlight-item">
+          <h3>🎓 Certificate</h3>
+          <p>Shareable credential after course completion.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enrollment CTA -->
+  <section class="enrollment-cta">
+    <h2>Ready to Build with AI?</h2>
+    <p style="font-size: 16px; margin: 0 0 24px;">Join 1,150+ students already building data pipelines, GenAI apps, and autonomous agents</p>
+
+    <div class="price-display">
+      <span class="price-now">₹4,499</span>
+      <span class="price-old">₹11,999</span>
+      <span class="price-off">Save 62%</span>
+    </div>
+
+    <div class="course-info-grid">
+      <div class="info-stat">
+        <span class="info-stat-value">60</span>
+        <span class="info-stat-label">Hours of Video</span>
+      </div>
+      <div class="info-stat">
+        <span class="info-stat-value">96</span>
+        <span class="info-stat-label">Complete Lessons</span>
+      </div>
+      <div class="info-stat">
+        <span class="info-stat-value">∞</span>
+        <span class="info-stat-label">Lifetime Access</span>
+      </div>
+      <div class="info-stat">
+        <span class="info-stat-value">7 days</span>
+        <span class="info-stat-label">Money-Back Guarantee</span>
+      </div>
+    </div>
+
+    <div style="margin: 32px 0;">
+      <a href="login.html?mode=signup&intent=data-science-genai" class="enroll-btn">Enroll Now</a>
+      <a href="courses.html" class="enroll-btn secondary">View More Courses</a>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq-section">
+    <div class="faq-inner">
+      <div class="faq-head">
+        <h2>Frequently Asked Questions</h2>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Do I need a programming background?</button>
+        <div class="faq-answer">
+          Basic Python helps but isn't required — the first module brings everyone up to speed before we touch data science or AI tools.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What's the difference between Generative AI and Agentic AI?</button>
+        <div class="faq-answer">
+          Generative AI creates content — text, images, code — from a prompt. Agentic AI goes further: it plans multi-step tasks, calls tools, and acts on your behalf with minimal supervision. This course covers both, building from one to the other.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Will I actually build an AI agent?</button>
+        <div class="faq-answer">
+          Yes — one of your three capstone projects is a working autonomous agent that plans and executes a multi-step task using real tools.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Is there a live doubt session?</button>
+        <div class="faq-answer">
+          Yes. The instructor hosts live build sessions weekly. All students can join and ask questions.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Do I get a certificate?</button>
+        <div class="faq-answer">
+          Absolutely. Once you complete all 96 lessons and your three capstone projects, you get a shareable certificate recognized on LinkedIn and your resume.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">What if I don't like the course?</button>
+        <div class="faq-answer">
+          We offer a full 7-day money-back guarantee. No questions asked. We're confident you'll love it.
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">Can I access after purchase?</button>
+        <div class="faq-answer">
+          Yes — lifetime access to all videos, notebooks, and updates. Once you buy, the course is yours forever, including future AI-tooling updates.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final CTA -->
+  <section class="footer-cta">
+    <h2>Don't Just Use AI — Build With It</h2>
+    <p>Master data science, generative AI, and agentic AI in one career track. Start the free lab, then enroll for the complete journey.</p>
+    <a href="login.html?mode=signup&intent=data-science-genai" class="enroll-btn">Start My Course Today</a>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="nav__logo-mark">LA</span> <span class="nav__logo-text">Learners Academy</span>
+      <p>A path from Grade 6 to your next promotion — video lessons, live classes, real certificates.</p>
+    </div>
+    <div class="footer__col">
+      <h6>School</h6>
+      <a href="courses.html?tag=grade-6">Grade 6–10</a><a href="courses.html?tag=grade-11">Grade 11–12</a><a href="courses.html?tag=board-prep">Board Exam Prep</a><a href="courses.html?tag=competitive">JEE / NEET</a>
+    </div>
+    <div class="footer__col">
+      <h6>Career Tools</h6>
+      <a href="courses.html?subject=python">Python</a><a href="courses.html?subject=sql">SQL</a><a href="courses.html?subject=power-bi">Power BI</a><a href="courses.html?subject=tableau">Tableau</a>
+    </div>
+    <div class="footer__col">
+      <h6>Company</h6>
+      <a href="#">About</a><a href="teach.html">Teach on Learners Academy</a><a href="#">Careers</a><a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Learners Academy Learning. All rights reserved.</span>
+    <span class="footer__legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+/* FAQ Toggling */
+document.querySelectorAll('.faq-question').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    item.classList.toggle('open');
+  });
+});
+
+/* Smooth scroll for anchor links */
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute('href'));
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
+</script>
+
+</body>
+</html>

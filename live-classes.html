@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18369083814"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18369083814');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Live Classes — Learners Academy</title>
+<meta name="description" content="Join live, instructor-led classes for school subjects and professional skills.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="road-progress" aria-hidden="true"><div class="road-progress__fill" id="roadFill"></div></div>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-mark">LA</span>
+      <span class="nav__logo-text">Learners Academy</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="index.html">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="live-classes.html" class="is-active">Live Classes</a>
+      <a href="faculty.html">Faculty</a>
+    </nav>
+    <div class="nav__actions">
+      <a href="login.html" class="btn btn--ghost">Log in</a>
+      <a href="login.html?mode=signup" class="btn btn--solid">Start free</a>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+  <section class="page-hero">
+    <span class="eyebrow eyebrow--marigold">Happening soon</span>
+    <h1>Learn live, not just on-demand</h1>
+    <p>Ask questions, solve problems together, and interact with instructors in real time. Seats are limited on purpose.</p>
+  </section>
+
+  <section class="section">
+    <div class="chip-row" data-filter-group="live">
+      <span class="chip chip--active" data-price="all">All</span>
+      <span class="chip" data-price="free">Free</span>
+      <span class="chip" data-price="paid">Paid</span>
+    </div>
+
+    <div class="live-grid live-grid--wide" id="liveGrid">
+      <article class="live-card" data-price="free">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/6238050/pexels-photo-6238050.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Trigonometry equations on a blackboard" loading="lazy">
+          <span class="live-card__pill">LIVE · FREE</span>
+          <span class="live-card__seats-badge">44 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Trigonometry Problem-Solving Marathon</h4>
+          <p class="live-card__meta">Wed · 4:00 PM IST · 90 min</p>
+          <p class="live-card__host"><span class="course-card__avatar">NS</span> Dr. Neha Sharma</p>
+          <p class="live-card__seats">44 seats left</p>
+        </div>
+      </article>
+
+      <article class="live-card" data-price="paid">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/10653886/pexels-photo-10653886.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Business data chart on a monitor" loading="lazy">
+          <span class="live-card__pill live-card__pill--paid">LIVE · ₹299</span>
+          <span class="live-card__seats-badge">18 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Power BI DAX Formulas Workshop</h4>
+          <p class="live-card__meta">Fri · 7:00 PM IST · 120 min</p>
+          <p class="live-card__host"><span class="course-card__avatar">SR</span> Sneha Reddy</p>
+          <p class="live-card__seats">18 seats left</p>
+        </div>
+      </article>
+
+      <article class="live-card" data-price="free">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/3862126/pexels-photo-3862126.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Writing a physics formula on a whiteboard" loading="lazy">
+          <span class="live-card__pill">LIVE · FREE</span>
+          <span class="live-card__seats-badge">91 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Physics — Newton's Laws Deep Dive</h4>
+          <p class="live-card__meta">Sun · 5:00 PM IST · 90 min</p>
+          <p class="live-card__host"><span class="course-card__avatar">RK</span> Prof. Rajesh Kumar</p>
+          <p class="live-card__seats">91 seats left</p>
+        </div>
+      </article>
+
+      <article class="live-card" data-price="paid">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/17323801/pexels-photo-17323801.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Server room with blue lighting" loading="lazy">
+          <span class="live-card__pill live-card__pill--paid">LIVE · ₹199</span>
+          <span class="live-card__seats-badge">22 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>SQL Joins Masterclass — Live Coding</h4>
+          <p class="live-card__meta">Mon · 6:00 PM IST · 90 min</p>
+          <p class="live-card__host"><span class="course-card__avatar">AK</span> Aditya Kapoor</p>
+          <p class="live-card__seats">22 seats left</p>
+        </div>
+      </article>
+
+      <article class="live-card" data-price="free">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/192928/pexels-photo-192928.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Stack of open books on a wooden table" loading="lazy">
+          <span class="live-card__pill">LIVE · FREE</span>
+          <span class="live-card__seats-badge">63 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>English Grammar Clinic — Boards Special</h4>
+          <p class="live-card__meta">Tue · 5:00 PM IST · 60 min</p>
+          <p class="live-card__host"><span class="course-card__avatar">AR</span> Ms. Ananya Rao</p>
+          <p class="live-card__seats">63 seats left</p>
+        </div>
+      </article>
+
+      <article class="live-card" data-price="paid">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/17483874/pexels-photo-17483874.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Abstract illustration of an AI neural network" loading="lazy">
+          <span class="live-card__pill live-card__pill--paid">LIVE · ₹349</span>
+          <span class="live-card__seats-badge">30 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Python Automation — Build a Bot Live</h4>
+          <p class="live-card__meta">Thu · 8:00 PM IST · 100 min</p>
+          <p class="live-card__host"><span class="course-card__avatar">AK</span> Aditya Kapoor</p>
+          <p class="live-card__seats">30 seats left</p>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="nav__logo-mark">LA</span> <span class="nav__logo-text">Learners Academy</span>
+      <p>A path from Grade 6 to your next promotion — video lessons, live classes, real certificates.</p>
+    </div>
+    <div class="footer__col">
+      <h6>School</h6>
+      <a href="courses.html?tag=grade-6">Grade 6–10</a><a href="courses.html?tag=grade-11">Grade 11–12</a><a href="courses.html?tag=board-prep">Board Exam Prep</a><a href="courses.html?tag=competitive">JEE / NEET</a>
+    </div>
+    <div class="footer__col">
+      <h6>Career Tools</h6>
+      <a href="courses.html?subject=python">Python</a><a href="courses.html?subject=sql">SQL</a><a href="courses.html?subject=power-bi">Power BI</a><a href="courses.html?subject=tableau">Tableau</a>
+    </div>
+    <div class="footer__col">
+      <h6>Company</h6>
+      <a href="#">About</a><a href="#">Teach on Learners Academy</a><a href="#">Careers</a><a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Learners Academy Learning. All rights reserved.</span>
+    <span class="footer__legal"><a href="#">Privacy</a><a href="#">Terms</a></span>
+  </div>
+</footer>
+
+<script>
+  // Image fallback: if a photo fails to load (network hiccup, ad-blocker,
+  // host blocking the CDN, etc.), swap it for a clean placeholder instead
+  // of leaving a broken-image icon on the page.
+  (function () {
+    document.querySelectorAll('img').forEach(function (img) {
+      img.addEventListener('error', function () {
+        if (img.dataset.fallbackApplied) return;
+        img.dataset.fallbackApplied = 'true';
+        var label = (img.alt || 'Image unavailable').trim();
+        var svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">' +
+          '<rect width="100%" height="100%" fill="#eef2f6"/>' +
+          '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" ' +
+          'font-family="Poppins, sans-serif" font-size="22" fill="#7a8aa0">' +
+          label.replace(/&/g, '&amp;').replace(/</g, '&lt;').slice(0, 60) +
+          '</text></svg>';
+        img.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+      });
+    });
+  })();
+</script>
+<script src="script.js"></script>
+</body>
+</html>

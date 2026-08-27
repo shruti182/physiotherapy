@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Data Science, GenAI &amp; Agentic AI Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#12203A;
+    --paper:#F5F3FF;
+    --paper-dim:#EAE5FB;
+    --violet:#7C3AED;
+    --magenta:#D946EF;
+    --teal:#0F766E;
+    --charcoal:#2A2A2A;
+    --line: rgba(18,32,58,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(18,32,58,0.07) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 24px 48px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(124,58,237,0.28), transparent 40%),
+      radial-gradient(circle at 88% 15%, rgba(15,118,110,0.22), transparent 42%),
+      var(--ink);
+    color:var(--paper);
+    overflow:hidden;
+  }
+  header.hero::before, header.hero::after{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; width:1px;
+    background:repeating-linear-gradient(180deg, rgba(245,243,255,0.18) 0 6px, transparent 6px 14px);
+  }
+  header.hero::before{ left:28px; }
+  header.hero::after{ right:28px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--magenta);
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(34px, 6vw, 58px);
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  header.hero .tagline{
+    font-size:16px;
+    max-width:520px;
+    margin:0 auto 12px;
+    color:rgba(245,243,255,0.78);
+  }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    padding:22px 16px;
+    max-width:960px;
+    margin:0 auto;
+  }
+  nav.tabs button{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all 0.18s ease;
+  }
+  nav.tabs button:hover{ border-color:var(--violet); }
+  nav.tabs button.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  nav.tabs button:focus-visible, .reveal-btn:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:3px solid var(--teal);
+    outline-offset:2px;
+  }
+
+  /* ---------- Panels ---------- */
+  main{ max-width:800px; margin:0 auto; padding:8px 20px 80px; }
+  .panel{ display:none; animation:fadeUp 0.35s ease; }
+  .panel.active{ display:block; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  .panel-head h2{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    margin:28px 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .sutra{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:15px;
+    color:var(--teal);
+  }
+  .panel-head p{
+    color:#555;
+    font-size:15px;
+    max-width:62ch;
+  }
+
+  .workspace{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    margin-top:16px;
+    position:relative;
+  }
+  .workspace::before{
+    content:"";
+    position:absolute;
+    top:0; left:22px; right:22px; height:3px;
+    background:linear-gradient(90deg, var(--violet), var(--magenta), var(--teal));
+    border-radius:0 0 3px 3px;
+  }
+  .field-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-bottom:16px;
+  }
+  .field-row label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    flex:1 1 320px;
+  }
+  .field-row input, .field-row select, .field-row textarea{
+    font-family:'JetBrains Mono', monospace;
+    font-size:15px;
+    padding:9px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:var(--paper-dim);
+    color:var(--ink);
+    width:100%;
+  }
+  .field-row textarea{ resize:vertical; min-height:64px; }
+  .field-row input:focus, .field-row select:focus, .field-row textarea:focus{ border-color:var(--violet); outline:none; }
+
+  .reveal-btn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:8px;
+    border:none;
+    background:var(--violet);
+    color:#fff;
+    cursor:pointer;
+    transition:transform 0.12s ease, background 0.18s ease;
+    white-space:nowrap;
+  }
+  .reveal-btn:hover{ background:#6524c9; }
+  .reveal-btn:active{ transform:scale(0.97); }
+
+  .steps{ margin-top:20px; display:flex; flex-direction:column; gap:0; }
+  .step{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+    opacity:0;
+    transform:translateX(-8px);
+  }
+  .step.show{ animation:stepIn 0.4s ease forwards; }
+  @keyframes stepIn{ to{opacity:1; transform:translateX(0);} }
+  .step:last-child{ border-bottom:none; }
+  .step-marker{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:var(--paper-dim);
+    border:1.5px solid var(--violet);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .step-body .label{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+  .step-body .detail{ font-family:'JetBrains Mono', monospace; font-size:14.5px; color:var(--charcoal); }
+  .step-body .detail .muted{ color:#999; }
+
+  .answer{
+    margin-top:18px;
+    padding:16px 18px;
+    border-radius:10px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:15px;
+    font-weight:600;
+    display:none;
+    flex-direction:column;
+    gap:6px;
+    opacity:0;
+    white-space:pre-wrap;
+  }
+  .answer.show{ display:flex; animation:fadeUp 0.4s ease forwards; }
+  .answer .tag{
+    font-family:'Work Sans', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--magenta);
+  }
+  .note{
+    font-size:13px;
+    color:var(--violet);
+    margin-top:12px;
+    display:none;
+  }
+  .note.show{ display:block; }
+
+  footer{
+    text-align:center;
+    padding:28px 20px 40px;
+    font-size:13px;
+    color:#888;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Learners Academy · AI &amp; Data</div>
+  <h1>AI &amp; Data Science Lab</h1>
+  <p class="tagline">Three hands-on mini-tools from the full course: write a real prompt, sketch an AI agent's plan, and map a data science pipeline — all in your browser.</p>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="active" data-tab="prompt">Prompt Engineering</button>
+  <button data-tab="agent">Agentic AI Planner</button>
+  <button data-tab="pipeline">Data Science Pipeline</button>
+</nav>
+
+<main>
+
+  <section class="panel active" data-panel="prompt">
+    <div class="panel-head">
+      <h2>Structure a prompt that actually works <span class="sutra">Role → Context → Task → Format</span></h2>
+      <p>Vague prompts get vague answers. Describe what you want in plain words below, and the lab restructures it into a prompt with the four parts every strong prompt needs.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>What do you want the AI to help with?
+          <textarea id="prompt-input">write a product description for a wireless keyboard</textarea>
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Output should sound like
+          <select id="prompt-tone">
+            <option>a professional marketer</option>
+            <option>a friendly product expert</option>
+            <option>a concise technical writer</option>
+          </select>
+        </label>
+        <button class="reveal-btn" data-target="prompt">Build the prompt</button>
+      </div>
+      <div class="steps" id="prompt-steps"></div>
+      <div class="answer" id="prompt-answer"></div>
+      <div class="note" id="prompt-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="agent">
+    <div class="panel-head">
+      <h2>Watch an AI agent plan a goal <span class="sutra">Perceive → Plan → Act → Reflect</span></h2>
+      <p>Agentic AI doesn't just answer once — it breaks a goal into steps, picks tools, acts, checks its own work, and only then reports back. Type a goal and watch the plan unfold.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Give the agent a goal
+          <input type="text" id="agent-input" value="Research our top 3 competitors' pricing and email me a summary">
+        </label>
+        <button class="reveal-btn" data-target="agent">Run the agent</button>
+      </div>
+      <div class="steps" id="agent-steps"></div>
+      <div class="answer" id="agent-answer"></div>
+      <div class="note" id="agent-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="pipeline">
+    <div class="panel-head">
+      <h2>Map a data science pipeline <span class="sutra">Question → Data → Model → Deploy</span></h2>
+      <p>Every data science project — however fancy the model — follows the same skeleton. Describe a business question and see it mapped onto the pipeline you'll use in every real project.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>What business question are you trying to answer?
+          <input type="text" id="pipeline-input" value="Which customers are most likely to cancel their subscription next month?">
+        </label>
+        <button class="reveal-btn" data-target="pipeline">Map the pipeline</button>
+      </div>
+      <div class="steps" id="pipeline-steps"></div>
+      <div class="answer" id="pipeline-answer"></div>
+      <div class="note" id="pipeline-note"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Built for Learners Academy — a self-contained page, ready to drop into your course library.</footer>
+
+<script>
+/* ---------------- Tab switching ---------------- */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+/* ---------------- Step rendering helper ---------------- */
+function renderSteps(containerId, answerId, noteId, steps, answerText, answerTag){
+  const stepsEl = document.getElementById(containerId);
+  const answerEl = document.getElementById(answerId);
+  const noteEl = document.getElementById(noteId);
+  stepsEl.innerHTML = '';
+  answerEl.classList.remove('show');
+  noteEl.classList.remove('show');
+  noteEl.textContent = '';
+
+  steps.forEach((s, i)=>{
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.innerHTML = `<div class="step-marker">${i+1}</div>
+      <div class="step-body">
+        <div class="label">${s.label}</div>
+        <div class="detail">${s.detail}</div>
+      </div>`;
+    stepsEl.appendChild(div);
+    setTimeout(()=>div.classList.add('show'), i*220);
+  });
+
+  setTimeout(()=>{
+    answerEl.textContent = '';
+    answerEl.innerHTML = `<span class="tag">${answerTag||'Result'}</span><span>${answerText}</span>`;
+    answerEl.classList.add('show');
+  }, steps.length*220 + 150);
+}
+
+function esc(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').trim();
+}
+
+/* ---------------- 1. Prompt Engineering ---------------- */
+document.querySelector('[data-target="prompt"]').addEventListener('click', ()=>{
+  const raw = document.getElementById('prompt-input').value;
+  const task = esc(raw) || 'summarise this article';
+  const tone = document.getElementById('prompt-tone').value;
+
+  const role = `You are ${tone}.`;
+  const context = `Context: this is for Learners Academy's audience — keep it clear and free of jargon unless asked.`;
+  const instruction = `Task: ${task}.`;
+  const format = `Format: 3–5 short sentences, no headers, plain paragraph.`;
+
+  const steps = [
+    { label:'Role — who should the AI act as?', detail:`${role}` },
+    { label:'Context — what background does it need?', detail:`${context}` },
+    { label:'Task — the actual instruction, made specific', detail:`${instruction}` },
+    { label:'Format — how should the output look?', detail:`${format}` }
+  ];
+  const finalPrompt = `${role}\n${context}\n${instruction}\n${format}`;
+  renderSteps('prompt-steps','prompt-answer','prompt-note', steps, finalPrompt, 'Ready-to-use prompt');
+});
+
+/* ---------------- 2. Agentic AI Planner ---------------- */
+document.querySelector('[data-target="agent"]').addEventListener('click', ()=>{
+  const raw = document.getElementById('agent-input').value;
+  const goal = esc(raw) || 'Research our top 3 competitors\u2019 pricing and email me a summary';
+
+  const steps = [
+    { label:'Perceive the goal', detail:`Parses: <strong>"${goal}"</strong> → identifies the deliverable and any deadline or constraints.` },
+    { label:'Plan — break it into subtasks', detail:`Splits the goal into an ordered checklist, e.g. gather info → analyse → produce output → deliver.` },
+    { label:'Choose tools', detail:`Decides which tools it needs (web search, a spreadsheet, an email sender, a calculator) for each subtask.` },
+    { label:'Act', detail:`Executes each subtask in order, using the chosen tool and passing results forward to the next step.` },
+    { label:'Reflect &amp; verify', detail:`Checks its own output against the original goal — re-runs a step if something looks incomplete or wrong.` },
+    { label:'Deliver', detail:`Packages the final result in the requested form and hands it back to you.` }
+  ];
+  renderSteps('agent-steps','agent-answer','agent-note', steps, `Goal achieved: "${goal}" — delivered via the 6-step loop above.`, 'Agent run complete');
+});
+
+/* ---------------- 3. Data Science Pipeline ---------------- */
+document.querySelector('[data-target="pipeline"]').addEventListener('click', ()=>{
+  const raw = document.getElementById('pipeline-input').value;
+  const question = esc(raw) || 'Which customers are most likely to cancel next month?';
+
+  const steps = [
+    { label:'Define the question', detail:`"${question}" — translated into something measurable a model can predict.` },
+    { label:'Collect &amp; clean data', detail:`Pull the relevant historical data, handle missing values, fix inconsistent formats.` },
+    { label:'Explore (EDA)', detail:`Look for patterns, outliers, and correlations that hint at what drives the outcome.` },
+    { label:'Feature engineering', detail:`Turn raw columns into signals a model can actually learn from.` },
+    { label:'Model &amp; evaluate', detail:`Train a few candidate models, compare them on held-out data, pick the best trade-off.` },
+    { label:'Deploy &amp; monitor', detail:`Ship the model, track its predictions over time, and retrain as real-world data shifts.` }
+  ];
+  renderSteps('pipeline-steps','pipeline-answer','pipeline-note', steps, `Pipeline mapped for: "${question}"`, 'Pipeline ready');
+});
+</script>
+
+</body>
+</html>

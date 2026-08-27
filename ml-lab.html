@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine Learning Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213D;
+    --paper:#FBF6E9;
+    --paper-dim:#F1E8CE;
+    --marigold:#E8A33D;
+    --vermillion:#C1432D;
+    --peacock:#1F6F5C;
+    --charcoal:#2A2A2A;
+    --line: rgba(20,33,61,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(20,33,61,0.07) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 24px 48px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(232,163,61,0.18), transparent 40%),
+      radial-gradient(circle at 88% 15%, rgba(31,111,89,0.16), transparent 42%),
+      var(--ink);
+    color:var(--paper);
+    overflow:hidden;
+  }
+  header.hero::before, header.hero::after{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; width:1px;
+    background:repeating-linear-gradient(180deg, rgba(251,246,233,0.18) 0 6px, transparent 6px 14px);
+  }
+  header.hero::before{ left:28px; }
+  header.hero::after{ right:28px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(34px, 6vw, 58px);
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  header.hero .tagline{
+    font-size:16px;
+    max-width:480px;
+    margin:0 auto 36px;
+    color:rgba(251,246,233,0.78);
+  }
+  .hero-demo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(12px, 2.4vw, 17px);
+    font-weight:600;
+    min-height:52px;
+    flex-wrap:wrap;
+    padding:0 12px;
+  }
+  .hero-demo .op{ color:rgba(251,246,233,0.5); }
+  .hero-demo .digit{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(6px);
+    animation:riseIn 0.4s ease forwards;
+  }
+  .hero-demo .result-digit{ color:var(--marigold); }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    padding:22px 16px;
+    max-width:960px;
+    margin:0 auto;
+  }
+  nav.tabs button{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all 0.18s ease;
+  }
+  nav.tabs button:hover{ border-color:var(--marigold); }
+  nav.tabs button.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  nav.tabs button:focus-visible, .reveal-btn:focus-visible, input:focus-visible, select:focus-visible{
+    outline:3px solid var(--peacock);
+    outline-offset:2px;
+  }
+
+  /* ---------- Panels ---------- */
+  main{ max-width:760px; margin:0 auto; padding:8px 20px 80px; }
+  .panel{ display:none; animation:fadeUp 0.35s ease; }
+  .panel.active{ display:block; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  .panel-head h2{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    margin:28px 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .sutra{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:15px;
+    color:var(--peacock);
+  }
+  .panel-head p{
+    color:#555;
+    font-size:15px;
+    max-width:58ch;
+  }
+
+  .workspace{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    margin-top:16px;
+    position:relative;
+  }
+  .workspace::before{
+    content:"";
+    position:absolute;
+    top:0; left:22px; right:22px; height:3px;
+    background:linear-gradient(90deg, var(--marigold), var(--vermillion), var(--peacock));
+    border-radius:0 0 3px 3px;
+  }
+  .field-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-bottom:16px;
+  }
+  .field-row label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field-row input{
+    font-family:'JetBrains Mono', monospace;
+    font-size:15px;
+    padding:9px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    width:150px;
+    background:var(--paper-dim);
+    color:var(--ink);
+  }
+  .field-row input.wide{ width:220px; }
+  .field-row input.narrow{ width:90px; }
+  .field-row input:focus{ border-color:var(--marigold); outline:none; }
+  .field-row select{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    padding:9.5px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:var(--paper-dim);
+    color:var(--ink);
+    min-width:140px;
+  }
+  .field-row select:focus{ border-color:var(--marigold); outline:none; }
+
+  .reveal-btn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:8px;
+    border:none;
+    background:var(--vermillion);
+    color:#fff;
+    cursor:pointer;
+    transition:transform 0.12s ease, background 0.18s ease;
+  }
+  .reveal-btn:hover{ background:#a53523; }
+  .reveal-btn:active{ transform:scale(0.97); }
+
+  .steps{ margin-top:20px; display:flex; flex-direction:column; gap:0; }
+  .step{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+    opacity:0;
+    transform:translateX(-8px);
+  }
+  .step.show{ animation:stepIn 0.4s ease forwards; }
+  @keyframes stepIn{ to{opacity:1; transform:translateX(0);} }
+  .step:last-child{ border-bottom:none; }
+  .step-marker{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:var(--paper-dim);
+    border:1.5px solid var(--marigold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .step-body .label{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+  .step-body .detail{ font-family:'JetBrains Mono', monospace; font-size:14.5px; color:var(--charcoal); }
+  .step-body .detail .muted{ color:#999; }
+
+  .answer{
+    margin-top:18px;
+    padding:16px 18px;
+    border-radius:10px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:19px;
+    font-weight:600;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    opacity:0;
+  }
+  .answer.show{ display:flex; animation:fadeUp 0.4s ease forwards; }
+  .answer.code{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .answer.code pre{
+    margin:0;
+    white-space:pre-wrap;
+    word-break:break-word;
+    font-family:'JetBrains Mono', monospace;
+    font-size:14.5px;
+    font-weight:500;
+    line-height:1.6;
+    color:var(--paper);
+  }
+  .answer .tag{
+    font-family:'Work Sans', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    flex:0 0 auto;
+  }
+  .note{
+    font-size:13px;
+    color:var(--vermillion);
+    margin-top:12px;
+    display:none;
+  }
+  .note.show{ display:block; }
+
+  footer{
+    text-align:center;
+    padding:28px 20px 40px;
+    font-size:13px;
+    color:#888;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Learners Academy · Query Lab</div>
+  <h1>Machine Learning Lab</h1>
+  <p class="tagline">Five patterns every ML workflow leans on, assembled live from your own dataset and column names. Fill in the fields, watch the code — and the reasoning behind it — take shape.</p>
+  <div class="hero-demo" id="heroDemo"></div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="active" data-tab="split">Train/Test Split</button>
+  <button data-tab="model">Fit a Model</button>
+  <button data-tab="metrics">Evaluation Metrics</button>
+  <button data-tab="confusion">Confusion Matrix</button>
+  <button data-tab="scale">Feature Scaling</button>
+</nav>
+
+<main>
+
+  <section class="panel active" data-panel="split">
+    <div class="panel-head">
+      <h2>Train/Test Split <span class="sutra">Hold some data back to check yourself</span></h2>
+      <p>A model that's only ever tested on data it already saw during training tells you nothing about how it'll perform in the real world. Splitting keeps a slice honest.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>DataFrame variable
+          <input type="text" id="s-df" value="df">
+        </label>
+        <label>Feature columns
+          <input type="text" class="wide" id="s-features" value="['Age','Income','Tenure']">
+        </label>
+        <label>Target column
+          <input type="text" id="s-target" value="Churn">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>Test size
+          <input type="text" class="narrow" id="s-testsize" value="0.2">
+        </label>
+        <label>Random state
+          <input type="text" class="narrow" id="s-randstate" value="42">
+        </label>
+        <button class="reveal-btn" data-target="split">Reveal the trick</button>
+      </div>
+      <div class="steps" id="split-steps"></div>
+      <div class="answer" id="split-answer"></div>
+      <div class="note" id="split-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="model">
+    <div class="panel-head">
+      <h2>Fit a Model <span class="sutra">Learn a pattern from the training rows</span></h2>
+      <p>Fitting a model means letting it find the relationship between your features and target on the training data — the same three lines, whichever algorithm you choose.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Model type
+          <select id="m-type">
+            <option value="linear">Linear Regression</option>
+            <option value="logistic">Logistic Regression</option>
+            <option value="tree">Decision Tree</option>
+            <option value="forest">Random Forest</option>
+          </select>
+        </label>
+        <label>Features variable
+          <input type="text" id="m-xtrain" value="X_train">
+        </label>
+        <label>Target variable
+          <input type="text" id="m-ytrain" value="y_train">
+        </label>
+      </div>
+      <div class="field-row">
+        <label>New data to predict
+          <input type="text" class="wide" id="m-xtest" value="X_test">
+        </label>
+        <button class="reveal-btn" data-target="model">Reveal the trick</button>
+      </div>
+      <div class="steps" id="model-steps"></div>
+      <div class="answer" id="model-answer"></div>
+      <div class="note" id="model-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="metrics">
+    <div class="panel-head">
+      <h2>Evaluation Metrics <span class="sutra">Different metrics, different questions</span></h2>
+      <p>Accuracy alone can lie to you, especially on imbalanced data. Each metric below answers a slightly different question about how the model is doing.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Metric
+          <select id="e-metric">
+            <option value="accuracy">Accuracy</option>
+            <option value="precision">Precision</option>
+            <option value="recall">Recall</option>
+            <option value="f1">F1 Score</option>
+            <option value="rmse">RMSE</option>
+          </select>
+        </label>
+        <label>True values variable
+          <input type="text" id="e-ytrue" value="y_test">
+        </label>
+        <label>Predicted values variable
+          <input type="text" id="e-ypred" value="y_pred">
+        </label>
+        <button class="reveal-btn" data-target="metrics">Reveal the trick</button>
+      </div>
+      <div class="steps" id="metrics-steps"></div>
+      <div class="answer" id="metrics-answer"></div>
+      <div class="note" id="metrics-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="confusion">
+    <div class="panel-head">
+      <h2>Confusion Matrix <span class="sutra">Where exactly the model gets it wrong</span></h2>
+      <p>A confusion matrix breaks predictions into four buckets — it shows not just how often the model is wrong, but which kind of mistake it's making.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>True values variable
+          <input type="text" id="cm-ytrue" value="y_test">
+        </label>
+        <label>Predicted values variable
+          <input type="text" id="cm-ypred" value="y_pred">
+        </label>
+        <label>Positive class label
+          <input type="text" class="wide" id="cm-label" value="'Churned'">
+        </label>
+        <button class="reveal-btn" data-target="confusion">Reveal the trick</button>
+      </div>
+      <div class="steps" id="confusion-steps"></div>
+      <div class="answer" id="confusion-answer"></div>
+      <div class="note" id="confusion-note"></div>
+    </div>
+  </section>
+
+  <section class="panel" data-panel="scale">
+    <div class="panel-head">
+      <h2>Feature Scaling <span class="sutra">Put every column on the same footing</span></h2>
+      <p>Many models are sensitive to scale — a column measured in thousands can silently dominate one measured in single digits. Scaling levels the playing field first.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Scaler
+          <select id="sc-type">
+            <option value="standard">StandardScaler</option>
+            <option value="minmax">MinMaxScaler</option>
+          </select>
+        </label>
+        <label>DataFrame / array variable
+          <input type="text" id="sc-df" value="X_train">
+        </label>
+        <label>Columns to scale
+          <input type="text" class="wide" id="sc-cols" value="['Age','Income','Tenure']">
+        </label>
+        <button class="reveal-btn" data-target="scale">Reveal the trick</button>
+      </div>
+      <div class="steps" id="scale-steps"></div>
+      <div class="answer" id="scale-answer"></div>
+      <div class="note" id="scale-note"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Built for Learners Academy — a self-contained page, ready to drop into your course library.</footer>
+
+<script>
+/* ---------------- Tab switching ---------------- */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+/* ---------------- Helpers ---------------- */
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;');
+}
+
+/* ---------------- Step + answer rendering ---------------- */
+function renderSteps(containerId, answerId, noteId, steps, answerText, answerTag, isCode){
+  const stepsEl = document.getElementById(containerId);
+  const answerEl = document.getElementById(answerId);
+  const noteEl = document.getElementById(noteId);
+  stepsEl.innerHTML = '';
+  answerEl.classList.remove('show');
+  answerEl.classList.toggle('code', !!isCode);
+  noteEl.classList.remove('show');
+  noteEl.textContent = '';
+
+  steps.forEach((s, i)=>{
+    const div = document.createElement('div');
+    div.className = 'step';
+    div.innerHTML = `<div class="step-marker">${i+1}</div>
+      <div class="step-body">
+        <div class="label">${s.label}</div>
+        <div class="detail">${s.detail}</div>
+      </div>`;
+    stepsEl.appendChild(div);
+    setTimeout(()=>div.classList.add('show'), i*260);
+  });
+
+  setTimeout(()=>{
+    if(isCode){
+      answerEl.innerHTML = `<span class="tag">${answerTag||'Python'}</span><pre>${escapeHtml(answerText)}</pre>`;
+    } else {
+      answerEl.innerHTML = `<span class="tag">${answerTag||'Answer'}</span><span>${answerText}</span>`;
+    }
+    answerEl.classList.add('show');
+  }, steps.length*260 + 150);
+}
+
+function showNote(noteId, msg){
+  const noteEl = document.getElementById(noteId);
+  noteEl.textContent = msg;
+  noteEl.classList.add('show');
+  document.getElementById(noteId.replace('-note','-steps')).innerHTML = '';
+  document.getElementById(noteId.replace('-note','-answer')).classList.remove('show');
+}
+
+/* ---------------- 1. Train/Test Split ---------------- */
+document.querySelector('[data-target="split"]').addEventListener('click', ()=>{
+  const df = document.getElementById('s-df').value.trim() || 'df';
+  const features = document.getElementById('s-features').value.trim() || "['feature1']";
+  const target = document.getElementById('s-target').value.trim() || 'target';
+  const testSize = document.getElementById('s-testsize').value.trim() || '0.2';
+  const randState = document.getElementById('s-randstate').value.trim() || '42';
+
+  const sql = `from sklearn.model_selection import train_test_split\n\nX = ${df}[${features}]\ny = ${df}['${target}']\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=${testSize}, random_state=${randState}\n)`;
+
+  const steps = [
+    { label:'Separate features from the target', detail:`X = ${df}[${features}]  |  y = ${df}['${target}']` },
+    { label:'Hold back a slice for testing only', detail:`test_size=${testSize} — the model never trains on this portion` },
+    { label:'Fix the random state for a reproducible split', detail:`random_state=${randState} — same split every time you rerun it` }
+  ];
+  renderSteps('split-steps','split-answer','split-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 2. Fit a Model ---------------- */
+const MODEL_IMPORTS = {
+  linear:{ cls:'LinearRegression', from:'sklearn.linear_model', explain:'Fits a straight line (or hyperplane) that minimizes squared error — best for continuous targets like price or score.' },
+  logistic:{ cls:'LogisticRegression', from:'sklearn.linear_model', explain:'Despite the name, this is for classification — it outputs a probability, then a class label.' },
+  tree:{ cls:'DecisionTreeClassifier', from:'sklearn.tree', explain:'Splits the data on the feature that best separates classes, recursively — easy to read as a set of rules.' },
+  forest:{ cls:'RandomForestClassifier', from:'sklearn.ensemble', explain:'Trains many decision trees on random subsets of data and features, then averages their votes.' }
+};
+document.querySelector('[data-target="model"]').addEventListener('click', ()=>{
+  const type = document.getElementById('m-type').value;
+  const xtrain = document.getElementById('m-xtrain').value.trim() || 'X_train';
+  const ytrain = document.getElementById('m-ytrain').value.trim() || 'y_train';
+  const xtest = document.getElementById('m-xtest').value.trim() || 'X_test';
+  const info = MODEL_IMPORTS[type];
+
+  const sql = `from ${info.from} import ${info.cls}\n\nmodel = ${info.cls}()\nmodel.fit(${xtrain}, ${ytrain})\n\ny_pred = model.predict(${xtest})`;
+
+  const steps = [
+    { label:'Create an untrained model instance', detail:`model = ${info.cls}()` },
+    { label:'fit() is where the learning happens', detail: info.explain },
+    { label:'predict() applies the learned pattern to new data', detail:`model.predict(${xtest})` }
+  ];
+  renderSteps('model-steps','model-answer','model-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 3. Evaluation Metrics ---------------- */
+const METRIC_INFO = {
+  accuracy:{ fn:'accuracy_score', from:'sklearn.metrics', explain:'Of all predictions, what fraction were correct? Misleading on imbalanced classes.' },
+  precision:{ fn:'precision_score', from:'sklearn.metrics', explain:'Of everything the model called positive, what fraction actually was? High precision means fewer false alarms.' },
+  recall:{ fn:'recall_score', from:'sklearn.metrics', explain:'Of everything that was actually positive, what fraction did the model catch? High recall means fewer missed cases.' },
+  f1:{ fn:'f1_score', from:'sklearn.metrics', explain:'The harmonic mean of precision and recall — a single number when you need to balance both.' },
+  rmse:{ fn:'mean_squared_error', from:'sklearn.metrics', explain:'For regression: the average prediction error, in the same units as the target, penalizing big misses more.' }
+};
+document.querySelector('[data-target="metrics"]').addEventListener('click', ()=>{
+  const metric = document.getElementById('e-metric').value;
+  const ytrue = document.getElementById('e-ytrue').value.trim() || 'y_test';
+  const ypred = document.getElementById('e-ypred').value.trim() || 'y_pred';
+  const info = METRIC_INFO[metric];
+
+  let sql, thirdStep;
+  if(metric === 'rmse'){
+    sql = `from ${info.from} import ${info.fn}\nimport numpy as np\n\nrmse = np.sqrt(${info.fn}(${ytrue}, ${ypred}))\nprint(rmse)`;
+    thirdStep = 'sklearn gives you MSE — take the square root to get RMSE, back in the target\'s original units.';
+  } else {
+    sql = `from ${info.from} import ${info.fn}\n\nscore = ${info.fn}(${ytrue}, ${ypred})\nprint(score)`;
+    thirdStep = 'Returns a single number between 0 and 1 — closer to 1 is better.';
+  }
+
+  const steps = [
+    { label:'Import the right function for the question you\'re asking', detail:`from ${info.from} import ${info.fn}` },
+    { label:'What this metric actually measures', detail: info.explain },
+    { label:'Compare true labels against predictions', detail: thirdStep }
+  ];
+  renderSteps('metrics-steps','metrics-answer','metrics-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 4. Confusion Matrix ---------------- */
+document.querySelector('[data-target="confusion"]').addEventListener('click', ()=>{
+  const ytrue = document.getElementById('cm-ytrue').value.trim() || 'y_test';
+  const ypred = document.getElementById('cm-ypred').value.trim() || 'y_pred';
+  const label = document.getElementById('cm-label').value.trim() || "'Positive'";
+
+  const sql = `from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay\nimport matplotlib.pyplot as plt\n\ncm = confusion_matrix(${ytrue}, ${ypred})\nConfusionMatrixDisplay(cm).plot()\nplt.show()`;
+
+  const steps = [
+    { label:'Build the 2×2 (or larger) grid of outcomes', detail:`confusion_matrix(${ytrue}, ${ypred})` },
+    { label:'Read the four cells', detail:`True Positive & True Negative on the diagonal are correct calls; False Positive & False Negative off the diagonal are the two ways to be wrong about ${label}` },
+    { label:'Plot it to spot the pattern at a glance', detail:'ConfusionMatrixDisplay(cm).plot()' }
+  ];
+  renderSteps('confusion-steps','confusion-answer','confusion-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- 5. Feature Scaling ---------------- */
+const SCALER_INFO = {
+  standard:{ cls:'StandardScaler', explain:'Centers each column to mean 0 and standard deviation 1 — the default choice for most models.' },
+  minmax:{ cls:'MinMaxScaler', explain:'Squeezes each column into a fixed 0–1 range — useful when you need bounded values, e.g. for neural networks.' }
+};
+document.querySelector('[data-target="scale"]').addEventListener('click', ()=>{
+  const type = document.getElementById('sc-type').value;
+  const df = document.getElementById('sc-df').value.trim() || 'X_train';
+  const cols = document.getElementById('sc-cols').value.trim() || "['feature1']";
+  const info = SCALER_INFO[type];
+
+  const sql = `from sklearn.preprocessing import ${info.cls}\n\nscaler = ${info.cls}()\n${df}[${cols}] = scaler.fit_transform(${df}[${cols}])`;
+
+  const steps = [
+    { label:'Create the scaler', detail:`scaler = ${info.cls}()` },
+    { label:'What it does to each column', detail: info.explain },
+    { label:'fit_transform learns the scale from this data, then applies it', detail:`${df}[${cols}] = scaler.fit_transform(${df}[${cols}]) — reuse the same fitted scaler on test data, don\'t refit` }
+  ];
+  renderSteps('scale-steps','scale-answer','scale-note', steps, sql, 'Python', true);
+});
+
+/* ---------------- Hero auto-demo ---------------- */
+const heroExamples = [
+  ['X_train,','X_test,','y_train,','y_test','=','train_test_split(X,y)'],
+  ['model.fit(','X_train,','y_train',')'],
+  ['accuracy_score(','y_test,','y_pred',')'],
+  ['scaler.fit_transform(','X_train',')']
+];
+let heroIdx = 0;
+function playHeroDemo(){
+  const parts = heroExamples[heroIdx % heroExamples.length];
+  heroIdx++;
+  const el = document.getElementById('heroDemo');
+  el.innerHTML = '';
+  parts.forEach((word,i)=>{
+    const span = document.createElement('span');
+    span.textContent = word;
+    let cls = 'digit';
+    if(word === '(' || word === ')' || word === ',') cls += ' op';
+    else if(i===0) cls += ' result-digit';
+    span.className = cls;
+    span.style.animationDelay = (i*90) + 'ms';
+    el.appendChild(span);
+  });
+}
+playHeroDemo();
+setInterval(playHeroDemo, 3800);
+</script>
+
+</body>
+</html>

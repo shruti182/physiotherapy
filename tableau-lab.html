@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tableau · Calculation Lab</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213D;
+    --paper:#FBF6E9;
+    --paper-dim:#F1E8CE;
+    --marigold:#E8A33D;
+    --vermillion:#C1432D;
+    --peacock:#1F6F5C;
+    --charcoal:#2A2A2A;
+    --line: rgba(20,33,61,0.14);
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-tap-highlight-color:transparent;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--charcoal);
+    font-family:'Work Sans', sans-serif;
+    line-height:1.5;
+    background-image:
+      radial-gradient(circle at 1px 1px, rgba(20,33,61,0.07) 1px, transparent 0);
+    background-size: 22px 22px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative;
+    padding:64px 24px 48px;
+    text-align:center;
+    background:
+      radial-gradient(circle at 12% 20%, rgba(232,163,61,0.18), transparent 40%),
+      radial-gradient(circle at 88% 15%, rgba(31,111,89,0.16), transparent 42%),
+      var(--ink);
+    color:var(--paper);
+    overflow:hidden;
+  }
+  header.hero::before, header.hero::after{
+    content:"";
+    position:absolute;
+    top:0; bottom:0; width:1px;
+    background:repeating-linear-gradient(180deg, rgba(251,246,233,0.18) 0 6px, transparent 6px 14px);
+  }
+  header.hero::before{ left:28px; }
+  header.hero::after{ right:28px; }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    margin-bottom:14px;
+  }
+  header.hero h1{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:clamp(34px, 6vw, 58px);
+    margin:0 0 12px;
+    letter-spacing:-0.01em;
+  }
+  header.hero .tagline{
+    font-size:16px;
+    max-width:510px;
+    margin:0 auto 36px;
+    color:rgba(251,246,233,0.78);
+  }
+  .hero-demo{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:8px;
+    font-family:'JetBrains Mono', monospace;
+    font-size:clamp(13px, 2.6vw, 18px);
+    font-weight:600;
+    min-height:52px;
+    flex-wrap:wrap;
+    padding:0 12px;
+  }
+  .hero-demo .op{ color:rgba(251,246,233,0.5); }
+  .hero-demo .digit{
+    display:inline-block;
+    opacity:0;
+    transform:translateY(6px);
+    animation:riseIn 0.4s ease forwards;
+  }
+  .hero-demo .result-digit{ color:var(--marigold); }
+  @keyframes riseIn{ to{ opacity:1; transform:translateY(0); } }
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    justify-content:center;
+    padding:22px 16px;
+    max-width:960px;
+    margin:0 auto;
+  }
+  nav.tabs button{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:600;
+    padding:9px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:#fff;
+    color:var(--ink);
+    cursor:pointer;
+    transition: all 0.18s ease;
+  }
+  nav.tabs button:hover{ border-color:var(--marigold); }
+  nav.tabs button.active{
+    background:var(--ink);
+    color:var(--paper);
+    border-color:var(--ink);
+  }
+  nav.tabs button:focus-visible, .reveal-btn:focus-visible, input:focus-visible, select:focus-visible{
+    outline:3px solid var(--peacock);
+    outline-offset:2px;
+  }
+
+  /* ---------- Panels ---------- */
+  main{ max-width:760px; margin:0 auto; padding:8px 20px 80px; }
+  .panel{ display:none; animation:fadeUp 0.35s ease; }
+  .panel.active{ display:block; }
+  @keyframes fadeUp{ from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
+
+  .panel-head h2{
+    font-family:'Fraunces', serif;
+    font-size:26px;
+    font-weight:600;
+    margin:28px 0 4px;
+    display:flex;
+    align-items:baseline;
+    gap:10px;
+    flex-wrap:wrap;
+  }
+  .sutra{
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-weight:500;
+    font-size:15px;
+    color:var(--peacock);
+  }
+  .panel-head p{
+    color:#555;
+    font-size:15px;
+    max-width:58ch;
+  }
+
+  .workspace{
+    background:#fff;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px;
+    margin-top:16px;
+    position:relative;
+  }
+  .workspace::before{
+    content:"";
+    position:absolute;
+    top:0; left:22px; right:22px; height:3px;
+    background:linear-gradient(90deg, var(--marigold), var(--vermillion), var(--peacock));
+    border-radius:0 0 3px 3px;
+  }
+  .field-row{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    margin-bottom:16px;
+  }
+  .field-row label{
+    font-size:13px;
+    font-weight:600;
+    color:var(--ink);
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+  }
+  .field-row input{
+    font-family:'JetBrains Mono', monospace;
+    font-size:15px;
+    padding:9px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    width:170px;
+    background:var(--paper-dim);
+    color:var(--ink);
+  }
+  .field-row input.wide{ width:230px; }
+  .field-row input:focus{ border-color:var(--marigold); outline:none; }
+  .field-row select{
+    font-family:'Work Sans', sans-serif;
+    font-size:14px;
+    font-weight:500;
+    padding:9.5px 12px;
+    border:1.5px solid var(--line);
+    border-radius:8px;
+    background:var(--paper-dim);
+    color:var(--ink);
+    min-width:150px;
+  }
+  .field-row select:focus{ border-color:var(--marigold); outline:none; }
+
+  .reveal-btn{
+    font-family:'Work Sans', sans-serif;
+    font-weight:600;
+    font-size:14px;
+    padding:10px 18px;
+    border-radius:8px;
+    border:none;
+    background:var(--vermillion);
+    color:#fff;
+    cursor:pointer;
+    transition:transform 0.12s ease, background 0.18s ease;
+  }
+  .reveal-btn:hover{ background:#a53523; }
+  .reveal-btn:active{ transform:scale(0.97); }
+
+  .steps{ margin-top:20px; display:flex; flex-direction:column; gap:0; }
+  .step{
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+    opacity:0;
+    transform:translateX(-8px);
+  }
+  .step.show{ animation:stepIn 0.4s ease forwards; }
+  @keyframes stepIn{ to{opacity:1; transform:translateX(0);} }
+  .step:last-child{ border-bottom:none; }
+  .step-marker{
+    flex:0 0 auto;
+    width:26px; height:26px;
+    border-radius:50%;
+    background:var(--paper-dim);
+    border:1.5px solid var(--marigold);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono', monospace;
+    font-size:12px;
+    font-weight:600;
+    color:var(--ink);
+  }
+  .step-body .label{ font-size:13px; font-weight:600; color:var(--ink); margin-bottom:2px; }
+  .step-body .detail{ font-family:'JetBrains Mono', monospace; font-size:14.5px; color:var(--charcoal); }
+
+  .answer{
+    margin-top:18px;
+    padding:16px 18px;
+    border-radius:10px;
+    background:var(--ink);
+    color:var(--paper);
+    font-family:'JetBrains Mono', monospace;
+    font-size:19px;
+    font-weight:600;
+    display:none;
+    align-items:center;
+    justify-content:space-between;
+    gap:14px;
+    opacity:0;
+  }
+  .answer.show{ display:flex; animation:fadeUp 0.4s ease forwards; }
+  .answer.code{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:10px;
+  }
+  .answer.code pre{
+    margin:0;
+    white-space:pre-wrap;
+    word-break:break-word;
+    font-family:'JetBrains Mono', monospace;
+    font-size:14.5px;
+    font-weight:500;
+    line-height:1.6;
+    color:var(--paper);
+  }
+  .answer .tag{
+    font-family:'Work Sans', sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--marigold);
+    flex:0 0 auto;
+  }
+  .note{
+    font-size:13px;
+    color:var(--vermillion);
+    margin-top:12px;
+    display:none;
+  }
+  .note.show{ display:block; }
+
+  footer{
+    text-align:center;
+    padding:28px 20px 40px;
+    font-size:13px;
+    color:#888;
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">Learners Academy · Analytics Lab</div>
+  <h1>Tableau · Calculation Lab</h1>
+  <p class="tagline">Five Tableau patterns — calculated fields, table calcs, LODs, chart types, and common tricks — built live from your field names. Fill in your data, watch the formula and the logic assemble.</p>
+  <div class="hero-demo" id="heroDemo"></div>
+</header>
+
+<nav class="tabs" role="tablist">
+  <button class="active" data-tab="calc">Calculated Fields</button>
+  <button data-tab="tablecalc">Table Calculations</button>
+  <button data-tab="lod">LOD Expressions</button>
+  <button data-tab="chart">Chart Builder</button>
+  <button data-tab="pattern">Common Patterns</button>
+</nav>
+
+<main>
+
+  <!-- ===== 1. CALCULATED FIELDS ===== -->
+  <section class="panel active" data-panel="calc">
+    <div class="panel-head">
+      <h2>Calculated Fields <span class="sutra">Row-level formula, then aggregate</span></h2>
+      <p>A calculated field runs once per row of raw data before any aggregation happens. Drag it to a shelf and Tableau aggregates it using the function you choose.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Field name
+          <input type="text" class="wide" id="cf-name" value="Profit Ratio">
+        </label>
+        <label>Formula type
+          <select id="cf-type">
+            <option value="ratio">Ratio (A / B)</option>
+            <option value="diff">Difference (A − B)</option>
+            <option value="if">IF condition</option>
+            <option value="date">Date part</option>
+            <option value="string">String concat</option>
+          </select>
+        </label>
+      </div>
+      <div class="field-row" id="cf-fields-row">
+        <label>Field A (numerator / minuend)
+          <input type="text" class="wide" id="cf-a" value="[Profit]">
+        </label>
+        <label>Field B (denominator / subtrahend)
+          <input type="text" class="wide" id="cf-b" value="[Sales]">
+        </label>
+      </div>
+      <div class="field-row" id="cf-if-row" style="display:none">
+        <label>Condition field
+          <input type="text" id="cf-cond-field" value="[Region]">
+        </label>
+        <label>Operator
+          <select id="cf-cond-op">
+            <option value="=">=</option>
+            <option value="<>">&lt;&gt;</option>
+            <option value=">">&gt;</option>
+            <option value="<">&lt;</option>
+          </select>
+        </label>
+        <label>Value
+          <input type="text" id="cf-cond-val" value="'East'">
+        </label>
+        <label>Then return
+          <input type="text" id="cf-then" value="'East Region'">
+        </label>
+        <label>Else return
+          <input type="text" id="cf-else" value="'Other'">
+        </label>
+      </div>
+      <div class="field-row" id="cf-date-row" style="display:none">
+        <label>Date field
+          <input type="text" id="cf-date-field" value="[Order Date]">
+        </label>
+        <label>Date part
+          <select id="cf-date-part">
+            <option value="year">YEAR</option>
+            <option value="month">MONTH</option>
+            <option value="quarter">QUARTER</option>
+            <option value="day">DAY</option>
+            <option value="weekday">WEEKDAY</option>
+          </select>
+        </label>
+      </div>
+      <div class="field-row" id="cf-str-row" style="display:none">
+        <label>Field A (text)
+          <input type="text" id="cf-str-a" value="[First Name]">
+        </label>
+        <label>Field B (text)
+          <input type="text" id="cf-str-b" value="[Last Name]">
+        </label>
+        <label>Separator
+          <input type="text" id="cf-sep" value=" ">
+        </label>
+      </div>
+      <div class="field-row">
+        <button class="reveal-btn" data-target="calc">Reveal the trick</button>
+      </div>
+      <div class="steps" id="calc-steps"></div>
+      <div class="answer" id="calc-answer"></div>
+      <div class="note" id="calc-note"></div>
+    </div>
+  </section>
+
+  <!-- ===== 2. TABLE CALCULATIONS ===== -->
+  <section class="panel" data-panel="tablecalc">
+    <div class="panel-head">
+      <h2>Table Calculations <span class="sutra">Compute across the visible table</span></h2>
+      <p>Table calculations run <em>after</em> Tableau aggregates the data. They compare or move values across rows or columns that are already in your view — they can't see data that isn't on the sheet.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Measure name
+          <input type="text" id="tc-measure" value="SUM([Sales])">
+        </label>
+        <label>Calculation type
+          <select id="tc-type">
+            <option value="pct_total">% of Total</option>
+            <option value="running_sum">Running Sum</option>
+            <option value="running_avg">Running Average</option>
+            <option value="diff_from">Difference From</option>
+            <option value="pct_diff">% Difference From</option>
+            <option value="rank">Rank</option>
+            <option value="moving_avg">Moving Average</option>
+          </select>
+        </label>
+        <label>Computed along
+          <select id="tc-along">
+            <option value="Table (across)">Table (across)</option>
+            <option value="Table (down)">Table (down)</option>
+            <option value="Pane (across)">Pane (across)</option>
+            <option value="Pane (down)">Pane (down)</option>
+            <option value="Cell">Cell</option>
+          </select>
+        </label>
+        <button class="reveal-btn" data-target="tablecalc">Reveal the trick</button>
+      </div>
+      <div class="steps" id="tablecalc-steps"></div>
+      <div class="answer" id="tablecalc-answer"></div>
+      <div class="note" id="tablecalc-note"></div>
+    </div>
+  </section>
+
+  <!-- ===== 3. LOD EXPRESSIONS ===== -->
+  <section class="panel" data-panel="lod">
+    <div class="panel-head">
+      <h2>LOD Expressions <span class="sutra">Fix the level of detail independently</span></h2>
+      <p>Level of Detail expressions let you lock a calculation to a specific grain — no matter what dimensions are on the view. FIXED ignores the view, INCLUDE adds a dimension, EXCLUDE removes one.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>LOD type
+          <select id="lod-type">
+            <option value="fixed">FIXED</option>
+            <option value="include">INCLUDE</option>
+            <option value="exclude">EXCLUDE</option>
+          </select>
+        </label>
+        <label>Dimension(s) to lock
+          <input type="text" class="wide" id="lod-dim" value="[Customer ID]">
+        </label>
+        <label>Aggregation
+          <select id="lod-agg">
+            <option value="SUM">SUM</option>
+            <option value="AVG">AVG</option>
+            <option value="MAX">MAX</option>
+            <option value="MIN">MIN</option>
+            <option value="COUNT">COUNT</option>
+            <option value="COUNTD">COUNTD</option>
+          </select>
+        </label>
+        <label>Measure
+          <input type="text" id="lod-measure" value="[Sales]">
+        </label>
+        <button class="reveal-btn" data-target="lod">Reveal the trick</button>
+      </div>
+      <div class="steps" id="lod-steps"></div>
+      <div class="answer" id="lod-answer"></div>
+      <div class="note" id="lod-note"></div>
+    </div>
+  </section>
+
+  <!-- ===== 4. CHART BUILDER ===== -->
+  <section class="panel" data-panel="chart">
+    <div class="panel-head">
+      <h2>Chart Builder <span class="sutra">Shelves → marks → insight</span></h2>
+      <p>Every Tableau chart is just the right fields on the right shelves. Pick a chart type, enter your field names, and get the exact shelf recipe — plus the one-sentence reason it works.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Chart type
+          <select id="ch-type">
+            <option value="bar">Bar Chart</option>
+            <option value="line">Line Chart</option>
+            <option value="scatter">Scatter Plot</option>
+            <option value="map">Map (filled)</option>
+            <option value="treemap">Treemap</option>
+            <option value="bullet">Bullet Chart</option>
+            <option value="gantt">Gantt / Timeline</option>
+          </select>
+        </label>
+        <label>Dimension field
+          <input type="text" id="ch-dim" value="[Category]">
+        </label>
+        <label>Measure field
+          <input type="text" id="ch-meas" value="[Sales]">
+        </label>
+        <label>Second field (optional)
+          <input type="text" id="ch-sec" value="[Profit]">
+        </label>
+        <button class="reveal-btn" data-target="chart">Build the recipe</button>
+      </div>
+      <div class="steps" id="chart-steps"></div>
+      <div class="answer" id="chart-answer"></div>
+      <div class="note" id="chart-note"></div>
+    </div>
+  </section>
+
+  <!-- ===== 5. COMMON PATTERNS ===== -->
+  <section class="panel" data-panel="pattern">
+    <div class="panel-head">
+      <h2>Common Patterns <span class="sutra">% of total · YoY · top-N · cohort</span></h2>
+      <p>Four patterns you'll rebuild in almost every Tableau workbook. Each combines a calculated field or LOD with the right table calc or filter.</p>
+    </div>
+    <div class="workspace">
+      <div class="field-row">
+        <label>Pattern
+          <select id="cp-pattern">
+            <option value="pct_total">% of Total (LOD)</option>
+            <option value="yoy">Year-over-Year Growth</option>
+            <option value="topn">Top-N Filter</option>
+            <option value="cohort">Customer Cohort</option>
+          </select>
+        </label>
+        <label>Measure
+          <input type="text" class="wide" id="cp-measure" value="[Sales]">
+        </label>
+        <label>Dimension
+          <input type="text" id="cp-dim" value="[Category]">
+        </label>
+        <label>Date field
+          <input type="text" id="cp-date" value="[Order Date]">
+        </label>
+        <button class="reveal-btn" data-target="pattern">Reveal the trick</button>
+      </div>
+      <div class="steps" id="pattern-steps"></div>
+      <div class="answer" id="pattern-answer"></div>
+      <div class="note" id="pattern-note"></div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Built for Learners Academy — a self-contained page, ready to drop into your course library.</footer>
+
+<script>
+/* ---- Tab switching ---- */
+document.querySelectorAll('nav.tabs button').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelector(`.panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
+  });
+});
+
+/* ---- Toggle calc field sub-rows ---- */
+document.getElementById('cf-type').addEventListener('change', function(){
+  const v = this.value;
+  document.getElementById('cf-fields-row').style.display = (v==='ratio'||v==='diff') ? '' : 'none';
+  document.getElementById('cf-if-row').style.display   = v==='if'     ? '' : 'none';
+  document.getElementById('cf-date-row').style.display = v==='date'   ? '' : 'none';
+  document.getElementById('cf-str-row').style.display  = v==='string' ? '' : 'none';
+});
+
+/* ---- Helpers ---- */
+function escapeHtml(str){
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function renderSteps(containerId, answerId, noteId, steps, answerText, answerTag, isCode){
+  const stepsEl  = document.getElementById(containerId);
+  const answerEl = document.getElementById(answerId);
+  const noteEl   = document.getElementById(noteId);
+  stepsEl.innerHTML='';
+  answerEl.classList.remove('show');
+  answerEl.classList.toggle('code', !!isCode);
+  noteEl.classList.remove('show');
+  noteEl.textContent='';
+
+  steps.forEach((s,i)=>{
+    const div = document.createElement('div');
+    div.className='step';
+    div.innerHTML=`<div class="step-marker">${i+1}</div>
+      <div class="step-body">
+        <div class="label">${s.label}</div>
+        <div class="detail">${s.detail}</div>
+      </div>`;
+    stepsEl.appendChild(div);
+    setTimeout(()=>div.classList.add('show'), i*260);
+  });
+
+  setTimeout(()=>{
+    if(isCode){
+      answerEl.innerHTML=`<span class="tag">${answerTag||'Tableau'}</span><pre>${escapeHtml(answerText)}</pre>`;
+    } else {
+      answerEl.innerHTML=`<span class="tag">${answerTag||'Answer'}</span><span>${answerText}</span>`;
+    }
+    answerEl.classList.add('show');
+  }, steps.length*260+150);
+}
+
+function showNote(noteId, msg){
+  const noteEl=document.getElementById(noteId);
+  noteEl.textContent=msg;
+  noteEl.classList.add('show');
+  document.getElementById(noteId.replace('-note','-steps')).innerHTML='';
+  document.getElementById(noteId.replace('-note','-answer')).classList.remove('show');
+}
+
+/* ======================================================
+   1. CALCULATED FIELDS
+====================================================== */
+document.querySelector('[data-target="calc"]').addEventListener('click',()=>{
+  const name = document.getElementById('cf-name').value.trim() || 'Calc Field';
+  const type = document.getElementById('cf-type').value;
+
+  let formula='', steps=[];
+
+  if(type==='ratio'){
+    const a = document.getElementById('cf-a').value.trim() || '[Profit]';
+    const b = document.getElementById('cf-b').value.trim() || '[Sales]';
+    formula = `${name}\n= ${a} / ${b}`;
+    steps=[
+      { label:'This is a row-level calculation', detail:`For every row of raw data, Tableau divides ${a} by ${b} before any aggregation happens`},
+      { label:'Protect against divide-by-zero', detail:`Wrap with ZN() or use: IF ${b} != 0 THEN ${a} / ${b} END`},
+      { label:'Aggregate on the shelf', detail:`Drag to Text/Color/Size — Tableau will use AVG() by default. Change to SUM or MEDIAN as needed`}
+    ];
+  } else if(type==='diff'){
+    const a = document.getElementById('cf-a').value.trim() || '[Sales]';
+    const b = document.getElementById('cf-b').value.trim() || '[Cost]';
+    formula = `${name}\n= ${a} - ${b}`;
+    steps=[
+      { label:'Row-level arithmetic', detail:`Subtracts ${b} from ${a} for each row — result is a new continuous measure`},
+      { label:'Aggregation follows', detail:`SUM(${a} - ${b}) = SUM(${a}) - SUM(${b}), so aggregating on the shelf is safe`},
+      { label:'Place it like any other measure', detail:`Drag to Rows, Columns, or Marks — it behaves exactly like a native field`}
+    ];
+  } else if(type==='if'){
+    const cf  = document.getElementById('cf-cond-field').value.trim() || '[Region]';
+    const op  = document.getElementById('cf-cond-op').value;
+    const val = document.getElementById('cf-cond-val').value.trim() || "'East'";
+    const th  = document.getElementById('cf-then').value.trim() || "'East Region'";
+    const el  = document.getElementById('cf-else').value.trim() || "'Other'";
+    formula = `${name}\n= IF ${cf} ${op} ${val}\n  THEN ${th}\n  ELSE ${el}\nEND`;
+    steps=[
+      { label:'IF runs row by row', detail:`Each row tests whether ${cf} ${op} ${val}`},
+      { label:'THEN / ELSE set the output', detail:`Matching rows get ${th}; all others get ${el}`},
+      { label:'Result type matters', detail:`If THEN returns a string, ELSE must also return a string. Mixing types causes a red error in the calc editor`}
+    ];
+  } else if(type==='date'){
+    const df  = document.getElementById('cf-date-field').value.trim() || '[Order Date]';
+    const dp  = document.getElementById('cf-date-part').value.toUpperCase();
+    formula = `${name}\n= ${dp}(${df})`;
+    steps=[
+      { label:'Date part functions extract a number', detail:`${dp}(${df}) returns an integer — e.g. YEAR returns 2024, MONTH returns 3 for March`},
+      { label:'The result is discrete by default', detail:`Use it as a dimension on Columns/Rows to create date-level groupings without a date hierarchy`},
+      { label:'Difference from date truncation', detail:`DATETRUNC('month', ${df}) keeps the full date structure; ${dp}() strips it down to a plain number — choose based on what you need to filter or sort`}
+    ];
+  } else { // string
+    const sa  = document.getElementById('cf-str-a').value.trim() || '[First Name]';
+    const sb  = document.getElementById('cf-str-b').value.trim() || '[Last Name]';
+    const sep = document.getElementById('cf-sep').value;
+    formula = `${name}\n= ${sa} + "${sep}" + ${sb}`;
+    steps=[
+      { label:'String concatenation with +', detail:`Joins ${sa}, the separator "${sep}", and ${sb} into one string per row`},
+      { label:'Watch for NULLs', detail:`If either field is NULL, the whole expression returns NULL. Guard with: ZN(${sa}) + "${sep}" + ZN(${sb})`},
+      { label:'Alternative: STR() for mixed types', detail:`If one field is a number, wrap it: STR([Number Field]) + "${sep}" + ${sb}`}
+    ];
+  }
+
+  renderSteps('calc-steps','calc-answer','calc-note', steps, formula, 'Calculation', true);
+});
+
+/* ======================================================
+   2. TABLE CALCULATIONS
+====================================================== */
+document.querySelector('[data-target="tablecalc"]').addEventListener('click',()=>{
+  const meas  = document.getElementById('tc-measure').value.trim() || 'SUM([Sales])';
+  const type  = document.getElementById('tc-type').value;
+  const along = document.getElementById('tc-along').value;
+
+  const typeLabels = {
+    pct_total:'% of Total', running_sum:'Running Sum', running_avg:'Running Average',
+    diff_from:'Difference From', pct_diff:'% Difference From', rank:'Rank', moving_avg:'Moving Average (3-period)'
+  };
+
+  let formula='', steps=[];
+
+  if(type==='pct_total'){
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Percent of Total\n// Compute Using: ${along}\n\n// Equivalent quick calc formula:\n${meas} / TOTAL(${meas})`;
+    steps=[
+      { label:'TOTAL() sees the whole partition', detail:`TOTAL(${meas}) sums every cell in the scope defined by "${along}" — it ignores the current row's own filter`},
+      { label:'Dividing gives the share', detail:`Each cell ÷ partition total = the fraction; format as % on the axis`},
+      { label:'Scope controls "total of what"', detail:`"Table (across)" = share of the entire table. "Pane (down)" = share within each column pane. Adjust to match your visual structure`}
+    ];
+  } else if(type==='running_sum'){
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Running Total → Sum\n// Compute Using: ${along}\n\n// Equivalent:\nRUNNING_SUM(${meas})`;
+    steps=[
+      { label:'RUNNING_SUM accumulates left-to-right or top-to-bottom', detail:`Adds the current cell's value to every preceding cell in the direction set by "${along}"`},
+      { label:'Restarts at each partition boundary', detail:`If "Pane" is chosen, the running total resets to zero at the start of each pane`},
+      { label:'Sort order matters', detail:`Drag the pill to the correct shelf position or use Tableau's sort icon — RUNNING_SUM follows the table's physical row/column order`}
+    ];
+  } else if(type==='running_avg'){
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Running Total → Average\n// Compute Using: ${along}\n\n// Equivalent:\nRUNNING_AVG(${meas})`;
+    steps=[
+      { label:'RUNNING_AVG is the cumulative mean', detail:`At each step it averages all values from the start of the partition up to the current cell`},
+      { label:'Useful for smoothing noisy time series', detail:`Pair it with a line chart sorted by date for a simple trend smoother`},
+      { label:'Not the same as WINDOW_AVG', detail:`WINDOW_AVG looks left and right by a set offset; RUNNING_AVG only looks backward from the current cell`}
+    ];
+  } else if(type==='diff_from'){
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Difference From → Previous\n// Compute Using: ${along}\n\n// Equivalent:\n${meas} - LOOKUP(${meas}, -1)`;
+    steps=[
+      { label:'LOOKUP shifts the cursor', detail:`LOOKUP(${meas}, -1) reaches one cell back in the "${along}" direction and returns its value`},
+      { label:'Subtraction gives the absolute change', detail:`Current cell minus the prior cell — positive means growth, negative means decline`},
+      { label:'First value is always NULL', detail:`There is no cell before the first one, so Tableau shows NULL there. Use ZN() if you need zero instead`}
+    ];
+  } else if(type==='pct_diff'){
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Percent Difference From → Previous\n// Compute Using: ${along}\n\n// Equivalent:\n(${meas} - LOOKUP(${meas}, -1)) / ABS(LOOKUP(${meas}, -1))`;
+    steps=[
+      { label:'Numerator: absolute change', detail:`${meas} − LOOKUP(${meas}, -1) gives the raw delta from the previous period`},
+      { label:'Denominator: prior period value (absolute)', detail:`ABS() handles negative base values — a drop from −100 to −50 is a 50% improvement, not −50%`},
+      { label:'Format as percentage', detail:`Right-click the axis or pill → Format → Number → Percentage. Tableau does the × 100 display automatically`}
+    ];
+  } else if(type==='rank'){
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Rank\n// Compute Using: ${along}\n\n// Equivalent:\nRANK(${meas})`;
+    steps=[
+      { label:'RANK assigns 1 to the largest value', detail:`Ties get the same rank; the next rank after a tie group skips numbers (dense rank available as RANK_DENSE)`},
+      { label:'Direction is controlled by sort', detail:`Sort your dimension descending by ${meas} before applying rank, or Tableau may rank in the wrong order`},
+      { label:'Scope = "who is in the competition"', detail:`"Table (down)" ranks everyone in the whole sheet. Switching to "Pane (down)" re-ranks within each column panel independently`}
+    ];
+  } else { // moving_avg
+    formula = `// Right-click ${meas} → Add Table Calculation\n// Type: Moving Average → 3 values\n// Compute Using: ${along}\n\n// Equivalent:\nWINDOW_AVG(${meas}, -2, 0)`;
+    steps=[
+      { label:'WINDOW_AVG defines a sliding window', detail:`WINDOW_AVG(${meas}, -2, 0) averages the current cell plus the 2 preceding cells — a 3-period trailing average`},
+      { label:'First two cells get partial averages', detail:`When fewer than 3 prior values exist, Tableau averages what is available. Set "Clamp window to table size" to control this`},
+      { label:'Widen or narrow the window', detail:`Change -2 to -6 for a 7-period average, or to 0,2 for a 3-period forward-looking average — useful for forecasting overlays`}
+    ];
+  }
+
+  renderSteps('tablecalc-steps','tablecalc-answer','tablecalc-note', steps, formula, 'Table Calc', true);
+});
+
+/* ======================================================
+   3. LOD EXPRESSIONS
+====================================================== */
+document.querySelector('[data-target="lod"]').addEventListener('click',()=>{
+  const type    = document.getElementById('lod-type').value;
+  const dim     = document.getElementById('lod-dim').value.trim();
+  const agg     = document.getElementById('lod-agg').value;
+  const measure = document.getElementById('lod-measure').value.trim();
+
+  if(!dim || !measure){ showNote('lod-note','Fill in both the dimension and measure fields.'); return; }
+
+  const formula = `{ ${type.toUpperCase()} ${dim} : ${agg}(${measure}) }`;
+
+  let steps=[];
+  if(type==='fixed'){
+    steps=[
+      { label:'FIXED ignores the view completely', detail:`It calculates ${agg}(${measure}) at the ${dim} grain regardless of what dimensions are on Rows, Columns, or Filters`},
+      { label:'Classic use: customer-level totals', detail:`{FIXED [Customer ID] : SUM([Sales])} gives one total per customer — even in a view broken down by product`},
+      { label:'Dimension filters do NOT affect FIXED', detail:`Context filters (set via "Add to Context") do affect FIXED. Regular dimension filters run after the LOD, so they hide rows but don't change the LOD value`}
+    ];
+  } else if(type==='include'){
+    steps=[
+      { label:'INCLUDE adds a dimension to the view\'s grain', detail:`If your view is at Category level, {INCLUDE ${dim} : ${agg}(${measure})} computes at Category + ${dim}, then Tableau re-aggregates the result to the view level`},
+      { label:'Result: a more granular intermediate value', detail:`Average of the ${dim}-level ${agg}(${measure}) — finer than the view alone but without needing to show ${dim} as a visible dimension`},
+      { label:'Typical use: averages of sub-totals', detail:`"Average order value per customer by category" — compute order totals with INCLUDE, then average them in the view`}
+    ];
+  } else { // exclude
+    steps=[
+      { label:'EXCLUDE removes a dimension from the view\'s grain', detail:`If the view is at [Region] + ${dim}, {EXCLUDE ${dim} : ${agg}(${measure})} computes at Region level only — one value shared across all ${dim} rows within a Region`},
+      { label:'Classic use: % of parent total', detail:`Divide the row measure by the EXCLUDE LOD to get "each sub-category as a % of its region" without a separate fixed total field`},
+      { label:'Only removes dimensions in the view', detail:`You cannot EXCLUDE a dimension that isn't already on the current sheet — Tableau will flag it as a red error`}
+    ];
+  }
+
+  renderSteps('lod-steps','lod-answer','lod-note', steps, formula, 'LOD', true);
+});
+
+/* ======================================================
+   4. CHART BUILDER
+====================================================== */
+document.querySelector('[data-target="chart"]').addEventListener('click',()=>{
+  const type = document.getElementById('ch-type').value;
+  const dim  = document.getElementById('ch-dim').value.trim() || '[Category]';
+  const meas = document.getElementById('ch-meas').value.trim() || '[Sales]';
+  const sec  = document.getElementById('ch-sec').value.trim()  || '[Profit]';
+
+  let recipe='', steps=[], why='';
+
+  if(type==='bar'){
+    recipe =
+`Columns: SUM(${meas})
+Rows:    ${dim}
+Color:   optional — ${sec}
+Sort:    ${dim} by SUM(${meas}) descending`;
+    why = 'Bar chart — comparing a measure across discrete categories';
+    steps=[
+      { label:'Dimension on Rows, measure on Columns', detail:`${dim} on Rows creates one row per member. SUM(${meas}) on Columns sets the bar length`},
+      { label:'Sort for instant insight', detail:`Right-click ${dim} pill → Sort → By Field → SUM(${meas}) Descending. Sorted bars communicate rank without extra labels`},
+      { label:'Optional second measure on Color', detail:`Dragging ${sec} to Color encodes a second KPI with a diverging palette — great for profit margin on a sales bar chart`}
+    ];
+  } else if(type==='line'){
+    recipe =
+`Columns: ${dim}  (set to Continuous date if date field)
+Rows:    SUM(${meas})
+Color:   optional — ${sec}
+Mark:    Line`;
+    why = 'Line chart — trends and changes over an ordered dimension';
+    steps=[
+      { label:'Ordered dimension on Columns', detail:`${dim} drives the X axis. If it is a date, right-click the pill → select the continuous (green) date level you want`},
+      { label:'Measure on Rows', detail:`SUM(${meas}) on Rows draws the line. Tableau connects points left-to-right in the order of ${dim}`},
+      { label:'Add reference lines for context', detail:`Right-click the Y axis → Add Reference Line → choose Average or Constant. This tells a richer story than the line alone`}
+    ];
+  } else if(type==='scatter'){
+    recipe =
+`Columns: SUM(${meas})
+Rows:    SUM(${sec})
+Detail:  ${dim}   ← one dot per member
+Color:   ${dim}`;
+    why = 'Scatter plot — correlation between two measures';
+    steps=[
+      { label:'Two measures, one per axis', detail:`SUM(${meas}) on Columns, SUM(${sec}) on Rows — each axis controls one dimension of the dot\'s position`},
+      { label:'${dim} on Detail to disaggregate', detail:`Without a dimension on Detail, Tableau draws one dot (the grand total). ${dim} on Detail gives one dot per category member`},
+      { label:'Add a trend line', detail:`Analytics pane → drag Trend Line onto the view. Right-click it to show the R² and p-value — useful when presenting to stakeholders`}
+    ];
+  } else if(type==='map'){
+    recipe =
+`Double-click the geographic field to auto-place it
+Color:   SUM(${meas})
+Tooltip: ${sec}
+Mark:    Filled Map`;
+    why = 'Filled map — spatial distribution of a measure';
+    steps=[
+      { label:'Tableau needs a geographic role', detail:`Right-click ${dim} → Geographic Role → pick Country / State / City. Tableau then geocodes it automatically`},
+      { label:'Measure on Color', detail:`SUM(${meas}) on Color shades each polygon — use a sequential palette for quantities, diverging for positive/negative (e.g. profit)`},
+      { label:'Handle unknown locations', detail:`Map → Map Layers → uncheck Country/Region borders to clean up, or fix unknowns via Map → Edit Locations`}
+    ];
+  } else if(type==='treemap'){
+    recipe =
+`Size:  SUM(${meas})
+Color: SUM(${sec})
+Label: ${dim}
+Mark:  Square`;
+    why = 'Treemap — part-to-whole with a second encoded measure';
+    steps=[
+      { label:'Size encodes the primary measure', detail:`SUM(${meas}) on Size makes larger members occupy more area — proportional to their share of the total`},
+      { label:'Color encodes a secondary measure', detail:`SUM(${sec}) on Color adds a second dimension of information — e.g. sales (size) + profit margin (color) in one mark`},
+      { label:'Label for readability', detail:`${dim} on Label names each rectangle. Enable Mark Labels or reduce small rectangles with a filter to avoid clutter`}
+    ];
+  } else if(type==='bullet'){
+    recipe =
+`Rows:    ${dim}
+Columns: SUM(${meas})       ← actual
+Reference line: SUM(${sec}) ← target
+Mark:    Bar`;
+    why = 'Bullet chart — actual vs. target with qualitative bands';
+    steps=[
+      { label:'Bar for the actual value', detail:`${dim} on Rows, SUM(${meas}) on Columns. This gives you the baseline bar chart`},
+      { label:'Add a reference line for the target', detail:`Right-click the axis → Add Reference Line → choose a field (SUM(${sec})). Set to Line, mark it with a different color`},
+      { label:'Optional: qualitative bands', detail:`Add shaded distribution bands (right-click axis → Add Reference Line → Distribution) to show "good / acceptable / poor" zones behind the bar`}
+    ];
+  } else { // gantt
+    recipe =
+`Columns: ${dim}  (start date — continuous)
+Rows:    ${sec}  (task / resource dimension)
+Size:    DATEDIFF('day', [Start], [End])
+Mark:    Gantt Bar`;
+    why = 'Gantt chart — duration and overlap across tasks or resources';
+    steps=[
+      { label:'Start date on Columns (continuous)', detail:`${dim} as a continuous date on Columns sets the horizontal timeline. Right-click → Exact Date`},
+      { label:'Task dimension on Rows', detail:`${sec} on Rows creates one horizontal lane per task or resource`},
+      { label:'Duration on Size', detail:`Create a calc: DATEDIFF('day', [Start Date], [End Date]) and drag it to Size. The mark type must be Gantt Bar for this to draw correctly`}
+    ];
+  }
+
+  const fullRecipe = `Chart: ${why}\n\n${recipe}`;
+  renderSteps('chart-steps','chart-answer','chart-note', steps, fullRecipe, 'Recipe', true);
+});
+
+/* ======================================================
+   5. COMMON PATTERNS
+====================================================== */
+document.querySelector('[data-target="pattern"]').addEventListener('click',()=>{
+  const pattern = document.getElementById('cp-pattern').value;
+  const measure = document.getElementById('cp-measure').value.trim() || '[Sales]';
+  const dim     = document.getElementById('cp-dim').value.trim()     || '[Category]';
+  const date    = document.getElementById('cp-date').value.trim()    || '[Order Date]';
+
+  let formula='', steps=[];
+
+  if(pattern==='pct_total'){
+    formula =
+`// Step 1 — LOD field: total at the top level
+Total Sales = { FIXED : SUM(${measure}) }
+
+// Step 2 — ratio field
+% of Total = SUM(${measure}) / [Total Sales]
+
+// Place ${dim} on Rows, SUM(${measure}) on Columns
+// Add [% of Total] to Label or Tooltip`;
+    steps=[
+      { label:'FIXED with no dimension = grand total', detail:`{ FIXED : SUM(${measure}) } computes one number for the entire dataset — no matter what ${dim} is in the view`},
+      { label:'Divide row value by that total', detail:`SUM(${measure}) / [Total Sales] gives the fraction for each ${dim} member`},
+      { label:'Format and place', detail:`Drag [% of Total] to Label. Format the field as Percentage. The bar encodes absolute value; the label shows the share`}
+    ];
+  } else if(pattern==='yoy'){
+    formula =
+`// Step 1 — current year sales
+Current Year = 
+  IF YEAR(${date}) = YEAR(TODAY())
+  THEN ${measure}
+  END
+
+// Step 2 — prior year (LOD)
+Prior Year = 
+  { FIXED YEAR(${date}) : SUM(${measure}) }
+  // use LOOKUP(SUM(${measure}), -1) in a table calc instead
+  //   for a simpler approach when data is in a view sorted by year
+
+// Step 3 — YoY growth %
+YoY Growth % = 
+  (SUM(${measure}) - LOOKUP(SUM(${measure}), -1))
+  / ABS(LOOKUP(SUM(${measure}), -1))`;
+    steps=[
+      { label:'Bring YEAR(${date}) onto Columns', detail:`Drag ${date} to Columns, right-click → Year (discrete). This gives one column per year`},
+      { label:'Use LOOKUP to reach the prior column', detail:`LOOKUP(SUM(${measure}), -1) reaches one column to the left — the prior year. Set Compute Using: Year(${date})`},
+      { label:'Divide and format', detail:`(Current − Prior) / |Prior| gives the growth rate. Format as % and add to a dual-axis or tooltip for clean comparison`}
+    ];
+  } else if(pattern==='topn'){
+    formula =
+`// Step 1 — rank each member
+Rank = RANK(SUM(${measure}))
+// Compute Using: ${dim}
+
+// Step 2 — N parameter
+// Create a parameter [Top N] (Integer, default 5)
+
+// Step 3 — filter calculated field
+Show Top N = [Rank] <= [Top N]
+
+// Filter: drag [Show Top N] to Filters shelf → True`;
+    steps=[
+      { label:'Create a RANK table calc', detail:`RANK(SUM(${measure})) ranks all ${dim} members. Set Compute Using to ${dim} so every member is in the same competition`},
+      { label:'Create an integer parameter [Top N]', detail:`Right-click in the Data pane → Create Parameter. Type: Integer, Current value: 5. Show the parameter control on the sheet`},
+      { label:'Filter on rank ≤ [Top N]', detail:`Drag [Show Top N] to Filters → True. Now moving the parameter slider dynamically updates which members appear`}
+    ];
+  } else { // cohort
+    formula =
+`// Step 1 — first purchase date per customer
+First Order Date = 
+  { FIXED [Customer ID] : MIN(${date}) }
+
+// Step 2 — cohort label (year-month of first purchase)
+Cohort = 
+  STR(YEAR([First Order Date])) 
+  + "-" 
+  + STR(DATEPART('month', [First Order Date]))
+
+// Step 3 — periods since first purchase
+Months Since First = 
+  DATEDIFF('month', [First Order Date], ${date})`;
+    steps=[
+      { label:'Anchor each customer to their cohort', detail:`{ FIXED [Customer ID] : MIN(${date}) } finds the very first order date per customer — this never changes regardless of what filters are in the view`},
+      { label:'Group customers into cohort buckets', detail:`Format the first-order date as Year-Month to create a cohort label. Each unique label becomes one row in the cohort matrix`},
+      { label:'Compute periods since acquisition', detail:`DATEDIFF('month', [First Order Date], ${date}) counts how many months have passed — becomes the X axis of the retention heatmap`}
+    ];
+  }
+
+  renderSteps('pattern-steps','pattern-answer','pattern-note', steps, formula, 'Pattern', true);
+});
+
+/* ---- Hero auto-demo ---- */
+const heroExamples = [
+  ['{ FIXED','[Customer ID]',':','SUM([Sales])','}'  ],
+  ['RUNNING_SUM','(','SUM([Profit])',')'],
+  ['IF','[Region] = "East"','THEN','"East"','ELSE','"Other"','END'],
+  ['DATEDIFF','(','\'month\'',',',' [First Order]',',',' [Order Date]',')'],
+  ['WINDOW_AVG','(','SUM([Sales])',',',' -2',',',' 0',')']
+];
+let heroIdx=0;
+function playHeroDemo(){
+  const parts=heroExamples[heroIdx%heroExamples.length];
+  heroIdx++;
+  const el=document.getElementById('heroDemo');
+  el.innerHTML='';
+  parts.forEach((word,i)=>{
+    const span=document.createElement('span');
+    span.textContent=word;
+    let cls='digit';
+    if(['(',')',':', ','].includes(word.trim())) cls+=' op';
+    else if(i===0) cls+=' result-digit';
+    span.className=cls;
+    span.style.animationDelay=(i*110)+'ms';
+    el.appendChild(span);
+  });
+}
+playHeroDemo();
+setInterval(playHeroDemo, 3600);
+</script>
+
+</body>
+</html>
