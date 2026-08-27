@@ -310,17 +310,21 @@
     <div class="pricing-selector">
       <p class="pricing-selector__title">💰 Check your price</p>
       <div class="pricing-selector__row">
+
+        <!-- Step 1: always visible -->
         <div class="pricing-selector__group">
-          <label for="ps-plan">Plan</label>
+          <label for="ps-plan">Step 1 — Plan</label>
           <select id="ps-plan">
             <option value="">Select plan...</option>
             <option value="persubject">Per subject / month</option>
             <option value="bundle">Bundle (2+ subjects)</option>
           </select>
         </div>
-        <div class="pricing-selector__group">
-          <label for="ps-class">Class</label>
-          <select id="ps-class" disabled>
+
+        <!-- Step 2: revealed after plan -->
+        <div class="pricing-selector__group" id="ps-class-group" style="display:none;">
+          <label for="ps-class">Step 2 — Class</label>
+          <select id="ps-class">
             <option value="">Select class...</option>
             <option value="6">Class 6</option>
             <option value="7">Class 7</option>
@@ -331,9 +335,11 @@
             <option value="12">Class 12</option>
           </select>
         </div>
-        <div class="pricing-selector__group" id="ps-subject-group">
-          <label for="ps-subject">Subject</label>
-          <select id="ps-subject" disabled>
+
+        <!-- Step 3a: per subject -->
+        <div class="pricing-selector__group" id="ps-subject-group" style="display:none;">
+          <label for="ps-subject">Step 3 — Subject</label>
+          <select id="ps-subject">
             <option value="">Select subject...</option>
             <option value="Mathematics|999">Mathematics</option>
             <option value="Science|799">Science</option>
@@ -342,19 +348,22 @@
             <option value="Computers|1199">Computers</option>
           </select>
         </div>
+
+        <!-- Step 3b: bundle -->
         <div class="pricing-selector__group" id="ps-count-group" style="display:none;">
-          <label for="ps-count">No. of subjects</label>
-          <select id="ps-count" disabled>
+          <label for="ps-count">Step 3 — No. of subjects</label>
+          <select id="ps-count">
             <option value="">Select...</option>
             <option value="2">2 subjects</option>
             <option value="3">3 subjects</option>
             <option value="4">4 subjects (full grade)</option>
           </select>
         </div>
+
       </div>
       <div class="pricing-result is-hidden" id="ps-result">
         <div class="pricing-result__info">
-          <div class="pricing-result__label">Your plan</div>
+          <div class="pricing-result__label">Your price</div>
           <div class="pricing-result__subject" id="ps-result-subject"></div>
           <div class="pricing-result__note" id="ps-result-note"></div>
         </div>
@@ -1239,22 +1248,26 @@
     classFilterSection.classList.toggle("is-collapsed");
   });
 
-  // ---------- PRICING SELECTOR ----------
+  // ---------- PRICING SELECTOR (step-by-step reveal) ----------
   (function() {
-    const psPlan      = document.getElementById("ps-plan");
-    const psClass     = document.getElementById("ps-class");
-    const psSubject   = document.getElementById("ps-subject");
-    const psCount     = document.getElementById("ps-count");
-    const psSubjectGrp= document.getElementById("ps-subject-group");
-    const psCountGrp  = document.getElementById("ps-count-group");
-    const psResult    = document.getElementById("ps-result");
-    const psResSub    = document.getElementById("ps-result-subject");
-    const psResPrice  = document.getElementById("ps-result-price");
-    const psResNote   = document.getElementById("ps-result-note");
+    const psPlan       = document.getElementById("ps-plan");
+    const psClassGrp   = document.getElementById("ps-class-group");
+    const psClass      = document.getElementById("ps-class");
+    const psSubjectGrp = document.getElementById("ps-subject-group");
+    const psSubject    = document.getElementById("ps-subject");
+    const psCountGrp   = document.getElementById("ps-count-group");
+    const psCount      = document.getElementById("ps-count");
+    const psResult     = document.getElementById("ps-result");
+    const psResSub     = document.getElementById("ps-result-subject");
+    const psResPrice   = document.getElementById("ps-result-price");
+    const psResNote    = document.getElementById("ps-result-note");
 
     const BUNDLE_DISCOUNTS = { 2: 10, 3: 18, 4: 25 };
-    const BASE_BUNDLE_PRICE = 999; // average base per subject for bundle calc
+    const BASE_BUNDLE_PRICE = 999;
     const fmt = n => "₹" + Math.round(n).toLocaleString("en-IN");
+
+    function hide(el) { el.style.display = "none"; }
+    function show(el) { el.style.display = ""; }
 
     function resetResult() {
       psResult.classList.add("is-hidden");
@@ -1270,72 +1283,56 @@
       psResult.classList.remove("is-hidden");
     }
 
-    function tryRender() {
-      const plan  = psPlan.value;
-      const cls   = psClass.value;
-      if (!plan || !cls) { resetResult(); return; }
-
-      if (plan === "persubject") {
-        const subVal = psSubject.value;
-        if (!subVal) { resetResult(); return; }
-        const [name, price] = subVal.split("|");
-        showResult(
-          `${name} — Class ${cls}`,
-          fmt(Number(price)),
-          "Per subject, billed monthly. Cancel anytime.",
-          null
-        );
-      } else {
-        const count = parseInt(psCount.value);
-        if (!count) { resetResult(); return; }
-        const disc = BUNDLE_DISCOUNTS[count] || 0;
-        const base = BASE_BUNDLE_PRICE * count;
-        const final = Math.round(base * (1 - disc / 100));
-        const saved = base - final;
-        showResult(
-          `${count} subjects — Class ${cls}`,
-          fmt(final),
-          `You save ${fmt(saved)}/month vs. individual pricing.`,
-          `Save ${disc}%`
-        );
-      }
-    }
-
+    // Step 1: Plan selected → reveal Class
     psPlan.addEventListener("change", () => {
       const plan = psPlan.value;
-      psClass.disabled = !plan;
-      psClass.value = "";
-      psSubject.disabled = true; psSubject.value = "";
-      psCount.disabled = true;  psCount.value = "";
-
-      if (plan === "persubject") {
-        psSubjectGrp.style.display = "";
-        psCountGrp.style.display = "none";
-      } else if (plan === "bundle") {
-        psSubjectGrp.style.display = "none";
-        psCountGrp.style.display = "";
-      } else {
-        psSubjectGrp.style.display = "";
-        psCountGrp.style.display = "none";
-      }
+      // hide everything downstream and reset
+      hide(psClassGrp);  psClass.value = "";
+      hide(psSubjectGrp); psSubject.value = "";
+      hide(psCountGrp);   psCount.value = "";
       resetResult();
+      if (plan) show(psClassGrp);
     });
 
+    // Step 2: Class selected → reveal Step 3 (subject or count)
     psClass.addEventListener("change", () => {
-      if (!psClass.value) {
-        psSubject.disabled = true; psCount.disabled = true;
-        resetResult(); return;
-      }
-      if (psPlan.value === "persubject") {
-        psSubject.disabled = false; psSubject.value = "";
-      } else {
-        psCount.disabled = false; psCount.value = "";
-      }
+      hide(psSubjectGrp); psSubject.value = "";
+      hide(psCountGrp);   psCount.value = "";
       resetResult();
+      if (!psClass.value) return;
+      if (psPlan.value === "persubject") show(psSubjectGrp);
+      else show(psCountGrp);
     });
 
-    psSubject.addEventListener("change", tryRender);
-    psCount.addEventListener("change", tryRender);
+    // Step 3a: Subject selected → show result
+    psSubject.addEventListener("change", () => {
+      resetResult();
+      if (!psSubject.value) return;
+      const [name, price] = psSubject.value.split("|");
+      showResult(
+        `${name} — Class ${psClass.value}`,
+        fmt(Number(price)),
+        "Per subject, billed monthly. Cancel anytime.",
+        null
+      );
+    });
+
+    // Step 3b: Count selected → show result
+    psCount.addEventListener("change", () => {
+      resetResult();
+      const count = parseInt(psCount.value);
+      if (!count) return;
+      const disc = BUNDLE_DISCOUNTS[count] || 0;
+      const base = BASE_BUNDLE_PRICE * count;
+      const final = Math.round(base * (1 - disc / 100));
+      const saved = base - final;
+      showResult(
+        `${count} subjects — Class ${psClass.value}`,
+        fmt(final),
+        `You save ${fmt(saved)}/month vs. individual pricing.`,
+        `Save ${disc}%`
+      );
+    });
   })();
 
   // Branch chip event listeners
