@@ -238,7 +238,8 @@
             <span class="course-info-value" id="coursePrice">—</span>
           </div>
         </div>
-        <button class="cta-button" onclick="addToCart()">Add to Cart</button>
+        <button class="cta-button" id="addToCartBtn" onclick="addToCart()">Add to Cart</button>
+        <p id="bundleHint" class="course-info-item" style="border:none;padding-top:10px;font-size:0.82rem;color:var(--text-soft);display:none;"></p>
       </aside>
 
     </div><!-- /course-grid -->
@@ -259,6 +260,7 @@
 
 <script type="module">
 import { supabase } from "./supabase-client.js";
+import { parseCourseId, GRADE_BANDS, MULTI_SUBJECT_DISCOUNT } from "./pricing-data.js";
 
 const params   = new URLSearchParams(window.location.search);
 const courseId = params.get("course");
@@ -285,40 +287,36 @@ async function loadCourseDetails() {
         name:"Mathematics", label:"Mathematics · CBSE & ICSE",
         desc: g=>`Numbers, algebra, geometry, and problem-solving — complete syllabus-aligned mathematics for Class ${g}, with board exam prep built in.`,
         instructor:"Dr. Priya Sharma", rating:"4.8", reviews:"1,920",
-        hours:"80 hours", lessons:"200 lessons", students:"14K"
+        hours:"80 hours", lessons:"200 lessons", students:"14K", price:"₹999"
       },
       "science": {
         name:"Science", label:"Science · CBSE & ICSE",
         desc: g=>`Physics, Chemistry, and Biology through animated experiments and interactive quizzes for Class ${g}.`,
         instructor:"Prof. Rajesh Kumar", rating:"4.7", reviews:"1,610",
-        hours:"72 hours", lessons:"180 lessons", students:"11K"
+        hours:"72 hours", lessons:"180 lessons", students:"11K", price:"₹799"
       },
       "english": {
         name:"English", label:"English · CBSE & ICSE",
         desc: g=>`Grammar, literature, writing, and comprehension — interactive drills and board-exam essay frameworks for Class ${g}.`,
         instructor:"Ms. Ananya Rao", rating:"4.8", reviews:"1,152",
-        hours:"54 hours", lessons:"105 lessons", students:"6.1K"
+        hours:"54 hours", lessons:"105 lessons", students:"6.1K", price:"₹1,199"
       },
       "social-studies": {
         name:"Social Science", label:"Social Science · CBSE & ICSE",
         desc: g=>`History, Geography, Civics, and Economics for Class ${g} — board-aligned with map work and source-based questions.`,
         instructor:"Mr. Arun Mehta", rating:"4.6", reviews:"980",
-        hours:"60 hours", lessons:"150 lessons", students:"8K"
+        hours:"60 hours", lessons:"150 lessons", students:"8K", price:"₹699"
       },
       "computers": {
         name:"Computers", label:"Computers · CBSE",
         desc: g=>`Programming basics, MS Office, and digital literacy for Class ${g} students.`,
         instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"540",
-        hours:"40 hours", lessons:"80 lessons", students:"3K"
+        hours:"40 hours", lessons:"80 lessons", students:"3K", price:"₹499"
       }
     };
 
     const data = subjectData[subject];
     if (!data) { showError("Subject not found"); return; }
-
-    // Monthly subscription pricing (matches pricing.html): Grade 6–9 vs 10–12, per subject
-    const gradeNum = parseInt(grade, 10);
-    data.price = (gradeNum >= 10 ? "₹10,000" : "₹6,000") + "/month";
 
     document.getElementById("courseLabel").textContent      = data.label;
     document.getElementById("courseTitle").textContent      = `${data.name} — Class ${grade}`;
@@ -329,6 +327,15 @@ async function loadCourseDetails() {
     document.getElementById("courseInstructor").textContent = data.instructor;
     document.getElementById("courseRating").textContent     = `${data.rating} (${data.reviews})`;
     document.getElementById("coursePrice").textContent      = data.price;
+
+    const parsed = parseCourseId(courseId);
+    const hint = document.getElementById("bundleHint");
+    if (parsed) {
+      const pct2 = Math.round(MULTI_SUBJECT_DISCOUNT[2] * 100);
+      const pct3 = Math.round(MULTI_SUBJECT_DISCOUNT[3] * 100);
+      hint.textContent = `💡 Add a 2nd ${GRADE_BANDS[parsed.band].label} subject to your cart and get ${pct2}% off both — 3rd subject unlocks ${pct3}% off.`;
+      hint.style.display = "block";
+    }
 
     // Load all three sections in parallel
     await Promise.all([
@@ -573,10 +580,46 @@ function playVideo(videoId, videoUrl) {
   else alert("Video player coming soon: " + videoId);
 }
 
-function addToCart() {
+async function addToCart() {
   if (!courseId) return;
-  alert("Add to cart: " + courseId);
-  // TODO: Razorpay integration
+  const btn = document.getElementById("addToCartBtn");
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) {
+    window.location.href = `login.html?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = "Adding…";
+
+  const { data: existing } = await supabase
+    .from("cart_items")
+    .select("id, quantity")
+    .eq("user_id", user.id)
+    .eq("course_id", courseId)
+    .maybeSingle();
+
+  let error;
+  if (existing) {
+    ({ error } = await supabase
+      .from("cart_items")
+      .update({ quantity: (existing.quantity || 1) + 1 })
+      .eq("id", existing.id));
+  } else {
+    ({ error } = await supabase
+      .from("cart_items")
+      .insert({ user_id: user.id, course_id: courseId, quantity: 1 }));
+  }
+
+  btn.disabled = false;
+  if (error) {
+    btn.textContent = "Try again";
+    console.error("Add to cart failed:", error.message);
+  } else {
+    btn.textContent = "Added ✓ — View cart";
+    btn.onclick = () => { window.location.href = "dashboard.html"; };
+  }
 }
 
 function showError(msg) {

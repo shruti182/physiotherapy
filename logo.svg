@@ -1,0 +1,9 @@
+<svg viewBox="0 0 340 330" xmlns="http://www.w3.org/2000/svg">
+  <!-- Bold "L" -->
+  <text x="0" y="270" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="240" fill="#14213D">L</text>
+  <!-- Bold "A" -->
+  <text x="148" y="270" font-family="Arial, Helvetica, sans-serif" font-weight="900" font-size="240" fill="#1F6F5C">A</text>
+  <!-- Bold arrow -->
+  <path d="M28,140 C60,30 200,10 290,42" fill="none" stroke="#F5A623" stroke-width="20" stroke-linecap="round"/>
+  <polygon points="270,10 322,45 268,66" fill="#F5A623"/>
+</svg>

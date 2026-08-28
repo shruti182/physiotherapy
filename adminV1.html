@@ -1608,37 +1608,27 @@ async function viewTestResults(testId, testTitle) {
   document.getElementById("testResultsSummary").innerHTML = "";
   openModal("testResultsModal");
 
-  // Step 1: Fetch attempts (no join — profiles has no FK to test_attempts)
+  // Fetch attempts with student profile
   const { data: attempts, error } = await supabase
     .from("test_attempts")
-    .select("id, score, total_marks, percentage, answers, created_at, student_id")
+    .select("id, score, total_marks, percentage, answers, submitted_at, student_id, profiles(full_name, email)")
     .eq("test_id", testId)
-    .order("created_at", { ascending: false });
+    .order("submitted_at", { ascending: false });
 
   if (error) {
     document.getElementById("testResultsTbody").innerHTML = `<tr><td colspan="7" class="empty" style="color:var(--danger)">Error: ${esc(error.message)}</td></tr>`;
     return;
   }
+
   if (!attempts || !attempts.length) {
     document.getElementById("testResultsTbody").innerHTML = `<tr><td colspan="7" class="empty">No attempts yet for this test.</td></tr>`;
     return;
   }
 
-  // Step 2: Fetch profiles for those student_ids
-  const studentIds = [...new Set(attempts.map(a => a.student_id).filter(Boolean))];
-  let profileMap = {};
-  if (studentIds.length) {
-    const { data: profiles } = await supabase
-      .from("profiles")
-      .select("id, full_name, email")
-      .in("id", studentIds);
-    (profiles || []).forEach(p => { profileMap[p.id] = p; });
-  }
-
   // Summary stats
-  const avg     = (attempts.reduce((s, a) => s + (parseFloat(a.percentage) || 0), 0) / attempts.length).toFixed(1);
+  const avg = (attempts.reduce((s, a) => s + (parseFloat(a.percentage) || 0), 0) / attempts.length).toFixed(1);
   const highest = Math.max(...attempts.map(a => parseFloat(a.percentage) || 0)).toFixed(1);
-  const passed  = attempts.filter(a => (parseFloat(a.percentage) || 0) >= 40).length;
+  const passed = attempts.filter(a => (parseFloat(a.percentage) || 0) >= 40).length;
   document.getElementById("testResultsSummary").innerHTML = `
     <div class="result-stat"><div class="rs-label">Total Attempts</div><div class="rs-value">${attempts.length}</div></div>
     <div class="result-stat"><div class="rs-label">Avg Score</div><div class="rs-value">${avg}%</div></div>
@@ -1648,17 +1638,14 @@ async function viewTestResults(testId, testTitle) {
 
   // Table rows
   document.getElementById("testResultsTbody").innerHTML = attempts.map((a, i) => {
-    const profile = profileMap[a.student_id] || {};
-    const name    = profile.full_name || "Unknown Student";
-    const email   = profile.email || (a.student_id ? a.student_id.slice(0,8) + "…" : "—");
-    const pct     = parseFloat(a.percentage) || 0;
+    const name  = a.profiles?.full_name || "—";
+    const email = a.profiles?.email || a.student_id?.slice(0,8) + "…" || "—";
+    const pct   = parseFloat(a.percentage) || 0;
     const pctBadge = pct >= 40
       ? `<span style="color:#065f46;font-weight:700">${pct.toFixed(1)}%</span>`
       : `<span style="color:#991b1b;font-weight:700">${pct.toFixed(1)}%</span>`;
-    const submitted = a.created_at
-      ? new Date(a.created_at).toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})
-      : "—";
-    const hasAnswers = Array.isArray(a.answers) && a.answers.length > 0;
+    const submitted = a.submitted_at ? new Date(a.submitted_at).toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"}) : "—";
+    const hasAnswers = a.answers && Array.isArray(a.answers) && a.answers.length > 0;
     return `<tr>
       <td>${i + 1}</td>
       <td><strong>${esc(name)}</strong><br><small style="color:var(--text2)">${esc(email)}</small></td>
@@ -1681,7 +1668,7 @@ async function viewAnswerSheet(attemptId, studentName) {
 
   const { data: attempt, error } = await supabase
     .from("test_attempts")
-    .select("score, total_marks, percentage, answers, created_at")
+    .select("score, total_marks, percentage, answers, submitted_at")
     .eq("id", attemptId)
     .single();
 

@@ -85,6 +85,7 @@
 
 <script type="module">
   import { supabase } from "./supabase-client.js";
+  import { priceCart, GRADE_BANDS } from "./pricing-data.js";
 
   const cartList = document.getElementById("cartList");
   const cartTotalRow = document.getElementById("cartTotalRow");
@@ -127,29 +128,51 @@
       return;
     }
 
-    let total = 0;
-    cartList.innerHTML = items.map(item => {
-      const course = item.courses;
-      const unitPrice = course?.is_free ? 0 : Number(course?.price_now || 0);
+    // Flatten for pricing: priceCart needs course_id/price_now/is_free
+    // alongside quantity, plus the row id so Remove buttons still work.
+    const flat = items.map(item => ({
+      rowId: item.id,
+      course_id: item.course_id,
+      quantity: item.quantity,
+      price_now: item.courses?.price_now,
+      is_free: item.courses?.is_free,
+      name: item.courses?.name || item.course_id,
+    }));
+
+    const { items: priced, total, bandDiscount, bandCount } = priceCart(flat);
+
+    // Bundle-discount banners — one per band that has 2+ subjects in cart
+    const banners = Object.entries(bandCount)
+      .filter(([, count]) => count >= 2)
+      .map(([band, count]) => {
+        const pct = Math.round(bandDiscount[band] * 100);
+        return `<div class="dash-empty" style="background:#F3ECFB;border-radius:8px;padding:10px 14px;margin-bottom:12px;color:var(--purple);font-weight:600;">
+          🎉 ${GRADE_BANDS[band].label}: ${count} subjects in cart — ${pct}% multi-subject discount applied
+        </div>`;
+      }).join("");
+
+    cartList.innerHTML = banners + priced.map(item => {
       const qty = item.quantity || 1;
-      const lineTotal = unitPrice * qty;
-      total += lineTotal;
       const qtyBadge = qty > 1
         ? `<span style="display:inline-block;background:var(--purple);color:#fff;font-size:0.7rem;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:8px;">×${qty}</span>`
         : "";
-      const priceDisplay = course?.is_free
+      const discountBadge = item.discount > 0
+        ? `<span style="display:inline-block;background:#E8F9F3;color:var(--green);font-size:0.7rem;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:8px;">${Math.round(item.discount * 100)}% off</span>`
+        : "";
+      const priceDisplay = item.is_free
         ? "Free"
         : qty > 1
-          ? `${fmt(lineTotal)} <span style="font-size:0.75rem;color:var(--text-soft);font-weight:400;">(${fmt(unitPrice)} × ${qty})</span>`
-          : fmt(unitPrice);
+          ? `${fmt(item.lineTotal)} <span style="font-size:0.75rem;color:var(--text-soft);font-weight:400;">(${fmt(item.unitPrice)} × ${qty})</span>`
+          : fmt(item.unitPrice);
       return `
         <div class="dash-row">
           <div>
-            <div class="dash-row__name">${course?.name || item.course_id}${qtyBadge}</div>
+            <div class="dash-row__name">${item.name}${qtyBadge}${discountBadge}</div>
+            ${item.bandLabel ? `<div class="dash-row__meta">${item.bandLabel}</div>` : ""}
           </div>
           <div style="display:flex;align-items:center;gap:14px;">
             <span class="dash-row__price">${priceDisplay}</span>
-            <button class="dash-remove" data-remove="${item.id}">Remove</button>
+            <button class="dash-remove" data-remove="${item.rowId}">Remove</button>
           </div>
         </div>`;
     }).join("");
@@ -183,10 +206,13 @@
       return;
     }
 
-    const total = items.reduce((sum, i) => {
-      const qty = i.quantity || 1;
-      return sum + (i.courses?.is_free ? 0 : Number(i.courses?.price_now || 0) * qty);
-    }, 0);
+    const flat = items.map(i => ({
+      course_id: i.course_id,
+      quantity: i.quantity,
+      price_now: i.courses?.price_now,
+      is_free: i.courses?.is_free,
+    }));
+    const { items: priced, total } = priceCart(flat);
 
     const { data: order, error: orderErr } = await supabase
       .from("orders")
@@ -203,11 +229,11 @@
       return;
     }
 
-    const orderItems = items.map(i => ({
+    const orderItems = items.map((i, idx) => ({
       order_id: order.id,
       course_id: i.course_id,
       quantity: i.quantity || 1,
-      price: i.courses?.is_free ? 0 : Number(i.courses?.price_now || 0) * (i.quantity || 1)
+      price: priced[idx].lineTotal // reflects the multi-subject discount actually applied
     }));
     await supabase.from("order_items").insert(orderItems);
     await supabase.from("cart_items").delete().eq("user_id", user.id);
