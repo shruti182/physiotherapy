@@ -18,6 +18,32 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <style>
+  /* ===== Bundle nudge (school section) ===== */
+  .bundle-nudge{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+    margin:20px 0 28px;
+    padding:18px 22px;
+    background:var(--panel, #F7F5FF);
+    border:1.5px solid var(--line, #E4E0F5);
+    border-radius:var(--radius-sm, 12px);
+  }
+  .bundle-nudge p{
+    margin:0;
+    font-family:var(--body, inherit);
+    font-size:0.95rem;
+    color:var(--ink, #12203A);
+    max-width:620px;
+  }
+  .bundle-nudge strong{ color:var(--purple, #7C3AED); }
+  .bundle-nudge .btn{ flex-shrink:0; white-space:nowrap; }
+  @media (max-width:640px){
+    .bundle-nudge{ flex-direction:column; align-items:flex-start; }
+  }
+
   /* ===== Hero vision split (right-hand illustration) ===== */
   .hero .hero__inner.vision-split{
     display:grid;
@@ -222,9 +248,6 @@
     .subject-chip--english{ right:0; top:50%; }
     .subject-chip--computers{ right:0; bottom:0; }
   }
-  @media (max-width:420px){
-    .nav__logo-img{ height:32px !important; }
-  }
 </style>
 </head>
 <body>
@@ -234,7 +257,8 @@
 <header class="nav" id="nav">
   <div class="nav__inner">
     <a href="index.html" class="nav__logo">
-      <img src="learners_academy_logo_v3.png" alt="Learners Academy India" class="nav__logo-img" style="height:40px;width:auto;display:block;flex-shrink:0;">
+      <span class="nav__logo-mark">LA</span>
+      <span class="nav__logo-text">Learners Academy India</span>
     </a>
     <nav class="nav__links" id="navLinks">
       <a href="index.html" class="is-active">Home</a>
@@ -459,6 +483,11 @@
       <a href="courses.html?track=school" class="btn btn--ghost">See all →</a>
     </div>
 
+    <div class="bundle-nudge">
+      <p><strong>Enrolling in more than one subject?</strong> Ask about a class bundle price when you book your free demo — most families save by covering the whole grade together.</p>
+      <button type="button" class="btn btn--outline js-open-demo">Ask about a bundle →</button>
+    </div>
+
     <div class="course-grid">
       <article class="course-card" data-course-id="mathematics-school">
         <div class="course-card__media">
@@ -472,7 +501,7 @@
           <p class="course-card__instructor"><span class="course-card__avatar">DP</span> Dr. Priya Sharma</p>
           <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,920)</span></p>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹999</span><span class="price-old">₹2,999</span><span class="price-off">-67%</span></p>
+            <p class="course-card__price"><span class="price-now">₹999</span><span class="price-old">₹1,499</span><span class="price-off">-33%</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
         </div>
@@ -489,7 +518,7 @@
           <p class="course-card__instructor"><span class="course-card__avatar">PR</span> Prof. Rajesh Kumar</p>
           <p class="course-card__rating"><span class="star">★</span> 4.7 <span>(1,610)</span></p>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹799</span><span class="price-old">₹2,499</span><span class="price-off">-68%</span></p>
+            <p class="course-card__price"><span class="price-now">₹799</span><span class="price-old">₹1,199</span><span class="price-off">-33%</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
         </div>
@@ -506,7 +535,7 @@
           <p class="course-card__instructor"><span class="course-card__avatar">AR</span> Ms. Ananya Rao</p>
           <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,152)</span></p>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹2,999</span><span class="price-off">-60%</span></p>
+            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹1,799</span><span class="price-off">-33%</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
         </div>
@@ -540,7 +569,7 @@
           <p class="course-card__instructor"><span class="course-card__avatar">NG</span> Ms. Neha Gupta</p>
           <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,140)</span></p>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹3,499</span><span class="price-off">-66%</span></p>
+            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹1,799</span><span class="price-off">-33%</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
         </div>
@@ -778,7 +807,7 @@
 <footer class="footer">
   <div class="footer__top">
     <div class="footer__brand">
-      <img src="learners_academy_logo_v3.png" alt="Learners Academy India" class="nav__logo-img footer__logo-img" style="height:44px;width:auto;display:block;margin-bottom:10px;">
+      <span class="nav__logo-mark">LA</span> <span class="nav__logo-text">Learners Academy India</span>
       <p>A path from Grade 6 to your next promotion — video lessons, live classes, real certificates.</p>
       <p class="footer__contact">
         <a href="mailto:khandelwalshrutika@gmail.com">khandelwalshrutika@gmail.com</a><br>
@@ -1028,6 +1057,9 @@
     }
 
     if (openBtn) openBtn.addEventListener('click', openModal);
+    document.querySelectorAll('.js-open-demo').forEach(function (btn) {
+      btn.addEventListener('click', openModal);
+    });
     if (closeBtn) closeBtn.addEventListener('click', closeModal);
     if (backdrop) backdrop.addEventListener('click', closeModal);
     document.addEventListener('keydown', function (e) {
