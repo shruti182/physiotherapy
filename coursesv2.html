@@ -141,30 +141,117 @@
     .school-layout{ flex-direction:column; }
     .filters-panel{ position:static; width:100%; }
   }
-  /* ---- Bundle nudge (school section) ---- */
-  .bundle-nudge{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
-    margin:8px 0 24px;
-    padding:18px 22px;
+  /* ---- Pricing Selector ---- */
+  .pricing-selector{
+    margin:8px 0 28px;
+    padding:22px 26px;
     background:var(--panel, #F7F5FF);
     border:1.5px solid var(--line, #E4E0F5);
     border-radius:var(--radius-sm, 12px);
   }
-  .bundle-nudge p{
-    margin:0;
-    font-family:var(--body, inherit);
-    font-size:0.95rem;
-    color:var(--ink, #12203A);
-    max-width:620px;
+  .pricing-selector__title{
+    font-family:var(--display);
+    font-size:1rem;
+    font-weight:700;
+    color:var(--ink);
+    margin:0 0 16px;
   }
-  .bundle-nudge strong{ color:var(--purple, #7C3AED); }
-  .bundle-nudge .btn{ flex-shrink:0; white-space:nowrap; }
-  @media (max-width:640px){
-    .bundle-nudge{ flex-direction:column; align-items:flex-start; }
+  .pricing-selector__row{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:flex-end;
+    gap:12px;
+  }
+  .pricing-selector__group{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+    flex:1;
+    min-width:140px;
+  }
+  .pricing-selector__group label{
+    font-size:0.75rem;
+    font-weight:600;
+    color:var(--text-soft, #64748b);
+    text-transform:uppercase;
+    letter-spacing:0.04em;
+  }
+  .pricing-selector__group select{
+    padding:9px 32px 9px 12px;
+    border-radius:8px;
+    border:1.5px solid var(--line, #E4E0F5);
+    background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat right 10px center;
+    appearance:none;
+    font-family:var(--body);
+    font-size:0.92rem;
+    color:var(--ink);
+    cursor:pointer;
+    transition:border-color .15s;
+    width:100%;
+  }
+  .pricing-selector__group select:focus{
+    outline:none;
+    border-color:var(--purple, #7C3AED);
+  }
+  .pricing-selector__group select:disabled{
+    opacity:0.45;
+    cursor:not-allowed;
+    background-color:#f8f8f8;
+  }
+  .pricing-result{
+    display:none;
+    margin-top:16px;
+    padding:14px 18px;
+    background:#fff;
+    border:1.5px solid var(--line, #E4E0F5);
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:10px;
+  }
+  .pricing-result.is-hidden{ display:none !important; }
+  .pricing-result__info{}
+  .pricing-result__label{
+    font-size:0.78rem;
+    color:var(--text-soft);
+    margin-bottom:2px;
+  }
+  .pricing-result__subject{
+    font-size:1rem;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .pricing-result__price{
+    font-size:1.5rem;
+    font-weight:800;
+    color:var(--purple, #7C3AED);
+  }
+  .pricing-result__price span{
+    font-size:0.85rem;
+    font-weight:500;
+    color:var(--text-soft);
+  }
+  .pricing-result__note{
+    font-size:0.8rem;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .pricing-result__badge{
+    display:inline-block;
+    font-size:0.72rem;
+    font-weight:700;
+    padding:3px 10px;
+    border-radius:20px;
+    background:#e8faf2;
+    color:#0f6e56;
+    margin-left:8px;
+    vertical-align:middle;
+  }
+  @media(max-width:600px){
+    .pricing-selector__row{ flex-direction:column; }
+    .pricing-selector__group{ min-width:100%; }
   }
 </style>
 </head>
@@ -219,9 +306,71 @@
       <p>Syllabus-aligned lessons with quizzes and live classes.</p>
     </div>
 
-    <div class="bundle-nudge">
-      <p><strong>Enrolling in more than one subject?</strong> Ask about a class bundle price on a free demo call — most families save by covering the whole grade together.</p>
-      <a href="index.html" class="btn btn--outline">Book a free demo →</a>
+    <!-- PRICING SELECTOR -->
+    <div class="pricing-selector">
+      <p class="pricing-selector__title">💰 Check your price</p>
+      <div class="pricing-selector__row">
+
+        <!-- Step 1: always visible -->
+        <div class="pricing-selector__group">
+          <label for="ps-plan">Step 1 — Plan</label>
+          <select id="ps-plan">
+            <option value="">Select plan...</option>
+            <option value="persubject">Per subject / month</option>
+            <option value="bundle">Bundle (2+ subjects)</option>
+          </select>
+        </div>
+
+        <!-- Step 2: revealed after plan -->
+        <div class="pricing-selector__group" id="ps-class-group" style="display:none;">
+          <label for="ps-class">Step 2 — Class</label>
+          <select id="ps-class">
+            <option value="">Select class...</option>
+            <option value="6">Class 6</option>
+            <option value="7">Class 7</option>
+            <option value="8">Class 8</option>
+            <option value="9">Class 9</option>
+            <option value="10">Class 10</option>
+            <option value="11">Class 11</option>
+            <option value="12">Class 12</option>
+          </select>
+        </div>
+
+        <!-- Step 3a: per subject -->
+        <div class="pricing-selector__group" id="ps-subject-group" style="display:none;">
+          <label for="ps-subject">Step 3 — Subject</label>
+          <select id="ps-subject">
+            <option value="">Select subject...</option>
+            <option value="Mathematics|999">Mathematics</option>
+            <option value="Science|799">Science</option>
+            <option value="English|1199">English</option>
+            <option value="Social Studies|799">Social Studies</option>
+            <option value="Computers|1199">Computers</option>
+          </select>
+        </div>
+
+        <!-- Step 3b: bundle -->
+        <div class="pricing-selector__group" id="ps-count-group" style="display:none;">
+          <label for="ps-count">Step 3 — No. of subjects</label>
+          <select id="ps-count">
+            <option value="">Select...</option>
+            <option value="2">2 subjects</option>
+            <option value="3">3 subjects</option>
+            <option value="4">4 subjects (full grade)</option>
+          </select>
+        </div>
+
+      </div>
+      <div class="pricing-result is-hidden" id="ps-result">
+        <div class="pricing-result__info">
+          <div class="pricing-result__label">Your price</div>
+          <div class="pricing-result__subject" id="ps-result-subject"></div>
+          <div class="pricing-result__note" id="ps-result-note"></div>
+        </div>
+        <div>
+          <div class="pricing-result__price" id="ps-result-price"></div>
+        </div>
+      </div>
     </div>
 
     <div class="chip-row" data-filter-group="school">
@@ -1098,6 +1247,93 @@
   classFilterHead.addEventListener("click", () => {
     classFilterSection.classList.toggle("is-collapsed");
   });
+
+  // ---------- PRICING SELECTOR (step-by-step reveal) ----------
+  (function() {
+    const psPlan       = document.getElementById("ps-plan");
+    const psClassGrp   = document.getElementById("ps-class-group");
+    const psClass      = document.getElementById("ps-class");
+    const psSubjectGrp = document.getElementById("ps-subject-group");
+    const psSubject    = document.getElementById("ps-subject");
+    const psCountGrp   = document.getElementById("ps-count-group");
+    const psCount      = document.getElementById("ps-count");
+    const psResult     = document.getElementById("ps-result");
+    const psResSub     = document.getElementById("ps-result-subject");
+    const psResPrice   = document.getElementById("ps-result-price");
+    const psResNote    = document.getElementById("ps-result-note");
+
+    const BUNDLE_DISCOUNTS = { 2: 10, 3: 18, 4: 25 };
+    const BASE_BUNDLE_PRICE = 999;
+    const fmt = n => "₹" + Math.round(n).toLocaleString("en-IN");
+
+    function hide(el) { el.style.display = "none"; }
+    function show(el) { el.style.display = ""; }
+
+    function resetResult() {
+      psResult.classList.add("is-hidden");
+      psResSub.textContent = "";
+      psResPrice.innerHTML = "";
+      psResNote.textContent = "";
+    }
+
+    function showResult(subject, price, note, badgeText) {
+      psResSub.innerHTML = subject + (badgeText ? `<span class="pricing-result__badge">${badgeText}</span>` : "");
+      psResPrice.innerHTML = price + ' <span>/ month</span>';
+      psResNote.textContent = note;
+      psResult.classList.remove("is-hidden");
+    }
+
+    // Step 1: Plan selected → reveal Class
+    psPlan.addEventListener("change", () => {
+      const plan = psPlan.value;
+      // hide everything downstream and reset
+      hide(psClassGrp);  psClass.value = "";
+      hide(psSubjectGrp); psSubject.value = "";
+      hide(psCountGrp);   psCount.value = "";
+      resetResult();
+      if (plan) show(psClassGrp);
+    });
+
+    // Step 2: Class selected → reveal Step 3 (subject or count)
+    psClass.addEventListener("change", () => {
+      hide(psSubjectGrp); psSubject.value = "";
+      hide(psCountGrp);   psCount.value = "";
+      resetResult();
+      if (!psClass.value) return;
+      if (psPlan.value === "persubject") show(psSubjectGrp);
+      else show(psCountGrp);
+    });
+
+    // Step 3a: Subject selected → show result
+    psSubject.addEventListener("change", () => {
+      resetResult();
+      if (!psSubject.value) return;
+      const [name, price] = psSubject.value.split("|");
+      showResult(
+        `${name} — Class ${psClass.value}`,
+        fmt(Number(price)),
+        "Per subject, billed monthly. Cancel anytime.",
+        null
+      );
+    });
+
+    // Step 3b: Count selected → show result
+    psCount.addEventListener("change", () => {
+      resetResult();
+      const count = parseInt(psCount.value);
+      if (!count) return;
+      const disc = BUNDLE_DISCOUNTS[count] || 0;
+      const base = BASE_BUNDLE_PRICE * count;
+      const final = Math.round(base * (1 - disc / 100));
+      const saved = base - final;
+      showResult(
+        `${count} subjects — Class ${psClass.value}`,
+        fmt(final),
+        `You save ${fmt(saved)}/month vs. individual pricing.`,
+        `Save ${disc}%`
+      );
+    });
+  })();
 
   // Branch chip event listeners
   if (branchRow) {
