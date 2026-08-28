@@ -285,36 +285,40 @@ async function loadCourseDetails() {
         name:"Mathematics", label:"Mathematics · CBSE & ICSE",
         desc: g=>`Numbers, algebra, geometry, and problem-solving — complete syllabus-aligned mathematics for Class ${g}, with board exam prep built in.`,
         instructor:"Dr. Priya Sharma", rating:"4.8", reviews:"1,920",
-        hours:"80 hours", lessons:"200 lessons", students:"14K", price:"₹999"
+        hours:"80 hours", lessons:"200 lessons", students:"14K"
       },
       "science": {
         name:"Science", label:"Science · CBSE & ICSE",
         desc: g=>`Physics, Chemistry, and Biology through animated experiments and interactive quizzes for Class ${g}.`,
         instructor:"Prof. Rajesh Kumar", rating:"4.7", reviews:"1,610",
-        hours:"72 hours", lessons:"180 lessons", students:"11K", price:"₹799"
+        hours:"72 hours", lessons:"180 lessons", students:"11K"
       },
       "english": {
         name:"English", label:"English · CBSE & ICSE",
         desc: g=>`Grammar, literature, writing, and comprehension — interactive drills and board-exam essay frameworks for Class ${g}.`,
         instructor:"Ms. Ananya Rao", rating:"4.8", reviews:"1,152",
-        hours:"54 hours", lessons:"105 lessons", students:"6.1K", price:"₹1,199"
+        hours:"54 hours", lessons:"105 lessons", students:"6.1K"
       },
       "social-studies": {
         name:"Social Science", label:"Social Science · CBSE & ICSE",
         desc: g=>`History, Geography, Civics, and Economics for Class ${g} — board-aligned with map work and source-based questions.`,
         instructor:"Mr. Arun Mehta", rating:"4.6", reviews:"980",
-        hours:"60 hours", lessons:"150 lessons", students:"8K", price:"₹699"
+        hours:"60 hours", lessons:"150 lessons", students:"8K"
       },
       "computers": {
         name:"Computers", label:"Computers · CBSE",
         desc: g=>`Programming basics, MS Office, and digital literacy for Class ${g} students.`,
         instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"540",
-        hours:"40 hours", lessons:"80 lessons", students:"3K", price:"₹499"
+        hours:"40 hours", lessons:"80 lessons", students:"3K"
       }
     };
 
     const data = subjectData[subject];
     if (!data) { showError("Subject not found"); return; }
+
+    // Monthly subscription pricing (matches pricing.html): Grade 6–9 vs 10–12, per subject
+    const gradeNum = parseInt(grade, 10);
+    data.price = (gradeNum >= 10 ? "₹10,000" : "₹6,000") + "/month";
 
     document.getElementById("courseLabel").textContent      = data.label;
     document.getElementById("courseTitle").textContent      = `${data.name} — Class ${grade}`;

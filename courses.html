@@ -141,31 +141,23 @@
     .school-layout{ flex-direction:column; }
     .filters-panel{ position:static; width:100%; }
   }
-  /* ---- Bundle nudge (school section) ---- */
-  .bundle-nudge{
-    display:flex;
-    flex-wrap:wrap;
-    align-items:center;
-    justify-content:space-between;
-    gap:16px;
-    margin:8px 0 24px;
-    padding:18px 22px;
-    background:var(--panel, #F7F5FF);
-    border:1.5px solid var(--line, #E4E0F5);
-    border-radius:var(--radius-sm, 12px);
+  /* Monthly subscription price suffix (replaces old strike-through discount price) */
+  .course-card__price .price-period{
+    font-size:0.78rem;
+    color:var(--text-soft);
+    font-weight:500;
+    margin-left:2px;
   }
-  .bundle-nudge p{
-    margin:0;
-    font-family:var(--body, inherit);
-    font-size:0.95rem;
-    color:var(--ink, #12203A);
-    max-width:620px;
+  .price-yearly-hint{
+    display:block;
+    font-family:var(--body);
+    font-size:0.78rem;
+    font-weight:600;
+    color:var(--purple);
+    text-decoration:none;
+    margin:-6px 0 10px;
   }
-  .bundle-nudge strong{ color:var(--purple, #7C3AED); }
-  .bundle-nudge .btn{ flex-shrink:0; white-space:nowrap; }
-  @media (max-width:640px){
-    .bundle-nudge{ flex-direction:column; align-items:flex-start; }
-  }
+  .price-yearly-hint:hover{ text-decoration:underline; }
 </style>
 </head>
 <body>
@@ -217,11 +209,6 @@
       <span class="eyebrow eyebrow--coral">School Path, Grade 6–12</span>
       <h2>CBSE &amp; ICSE Courses</h2>
       <p>Syllabus-aligned lessons with quizzes and live classes.</p>
-    </div>
-
-    <div class="bundle-nudge">
-      <p><strong>Enrolling in more than one subject?</strong> Ask about a class bundle price on a free demo call — most families save by covering the whole grade together.</p>
-      <a href="index.html" class="btn btn--outline">Book a free demo →</a>
     </div>
 
     <div class="chip-row" data-filter-group="school">
@@ -286,9 +273,10 @@
           <div class="course-card__stats"><span>⏱ 80 hours</span><span>▤ 200 lessons</span><span>👥 14K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Board Exam</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹999</span><span class="price-old">₹1,499</span><span class="price-off">-33%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹6,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="mathematics-school">Choose Your Class</button>
           <a href="course-detail.html?course=mathematics-school" class="course-card__lessons">▶ View Lessons</a>
         </div>
@@ -310,9 +298,10 @@
           <div class="course-card__stats"><span>⏱ 72 hours</span><span>▤ 180 lessons</span><span>👥 11K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Experiment</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹799</span><span class="price-old">₹1,199</span><span class="price-off">-33%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹6,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="science-school">Choose Your Class</button>
           <a href="course-detail.html?course=science-school" class="course-card__lessons">▶ View Lessons</a>
         </div>
@@ -358,9 +347,10 @@
           <div class="course-card__stats"><span>⏱ 54 hours</span><span>▤ 105 lessons</span><span>👥 6.1K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Grammar</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹1,799</span><span class="price-off">-33%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹6,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="english-school">Choose Your Class</button>
           <a href="english-grammar-lab-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -382,9 +372,10 @@
           <div class="course-card__stats"><span>⏱ 60 hours</span><span>▤ 110 lessons</span><span>👥 7.2K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Coding</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹1,799</span><span class="price-off">-33%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹6,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="computers-school">Choose Your Class</button>
           <a href="course-detail.html?course=computers-school" class="course-card__lessons">▶ View Lessons</a>
         </div>
@@ -406,9 +397,10 @@
           <div class="course-card__stats"><span>⏱ 24 hours</span><span>▤ 35 lessons</span><span>👥 3.2K</span></div>
           <div class="course-card__tags"><span class="tag">Mental Math</span><span class="tag">Vedic Sutras</span><span class="tag">Speed Tricks</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,499</span><span class="price-old">₹3,999</span><span class="price-off">-62%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹6,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="vedic-maths-advanced">Add to Cart</button>
           <a href="vedic-maths-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -471,9 +463,10 @@
           <div class="course-card__stats"><span>⏱ 60 hours</span><span>▤ 96 lessons</span><span>👥 11K</span></div>
           <div class="course-card__tags"><span class="tag">Data Science</span><span class="tag">Generative AI</span><span class="tag">Agentic AI</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹4,499</span><span class="price-old">₹11,999</span><span class="price-off">-62%</span></p>
+            <p class="course-card__price"><span class="price-now">₹4,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="data-science-genai-agentic-ai">Add to Cart</button>
           <a href="data-science-genai-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -494,9 +487,10 @@
           <div class="course-card__stats"><span>⏱ 48 hours</span><span>▤ 75 lessons</span><span>👥 12K</span></div>
           <div class="course-card__tags"><span class="tag">Database</span><span class="tag">Career Path</span><span class="tag">Certification</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,499</span><span class="price-old">₹4,499</span><span class="price-off">-67%</span></p>
+            <p class="course-card__price"><span class="price-now">₹3,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="sql-mastery">Add to Cart</button>
           <a href="sql-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -517,9 +511,10 @@
           <div class="course-card__stats"><span>⏱ 52 hours</span><span>▤ 88 lessons</span><span>👥 9K</span></div>
           <div class="course-card__tags"><span class="tag">BI</span><span class="tag">Dashboard</span><span class="tag">Career Path</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹2,499</span><span class="price-old">₹6,999</span><span class="price-off">-64%</span></p>
+            <p class="course-card__price"><span class="price-now">₹3,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="powerbi-bootcamp">Add to Cart</button>
           <a href="power-bi-dax-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -540,9 +535,10 @@
           <div class="course-card__stats"><span>⏱ 40 hours</span><span>▤ 72 lessons</span><span>👥 6.5K</span></div>
           <div class="course-card__tags"><span class="tag">LOD</span><span class="tag">Dashboard</span><span class="tag">Career Path</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹2,199</span><span class="price-old">₹5,999</span><span class="price-off">-63%</span></p>
+            <p class="course-card__price"><span class="price-now">₹3,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="tableau-dashboard-pro">Add to Cart</button>
           <a href="tableau-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -563,9 +559,10 @@
           <div class="course-card__stats"><span>⏱ 56 hours</span><span>▤ 92 lessons</span><span>👥 10.5K</span></div>
           <div class="course-card__tags"><span class="tag">Python</span><span class="tag">Data Science</span><span class="tag">Career Path</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,799</span><span class="price-old">₹4,999</span><span class="price-off">-64%</span></p>
+            <p class="course-card__price"><span class="price-now">₹3,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="python-data-science">Add to Cart</button>
           <a href="python-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -586,9 +583,10 @@
           <div class="course-card__stats"><span>⏱ 65 hours</span><span>▤ 60 lessons</span><span>👥 21K</span></div>
           <div class="course-card__tags"><span class="tag">Data Analytics</span><span class="tag">Career Path</span><span class="tag">Certification</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹3,999</span><span class="price-old">₹9,999</span><span class="price-off">-60%</span></p>
+            <p class="course-card__price"><span class="price-now">₹4,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="data-analytics-career">Add to Cart</button>
           <a href="course-detail.html?course=data-analytics-career" class="course-card__lessons">▶ View Lessons</a>
         </div>
@@ -624,9 +622,10 @@
           <div class="course-card__stats"><span>⏱ 48 hours</span><span>▤ 42 lessons</span><span>👥 9K</span></div>
           <div class="course-card__tags"><span class="tag">Machine Learning</span><span class="tag">AI</span><span class="tag">Certification</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹2,999</span><span class="price-old">₹7,999</span><span class="price-off">-63%</span></p>
+            <p class="course-card__price"><span class="price-now">₹4,000</span><span class="price-period">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
+          <a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="ml-ai-fundamentals">Add to Cart</button>
           <a href="ml-landing.html" class="course-card__lessons">▶ Try Lab Free</a>
         </div>
@@ -689,22 +688,20 @@
 
       const priceEl = card.querySelector(".course-card__price");
       if (!priceEl) return;
+      const hintEl = card.querySelector(".price-yearly-hint");
 
       if (row.is_free) {
         priceEl.innerHTML = `<span class="price-now">Free</span>`;
+        if (hintEl) hintEl.style.display = "none";
         return;
       }
+      if (hintEl) hintEl.style.display = "";
 
+      // price_now is treated as the monthly subscription amount (₹/month).
       const now = Number(row.price_now);
-      const old = row.price_old ? Number(row.price_old) : null;
       const fmt = n => "₹" + n.toLocaleString("en-IN");
 
-      let html = `<span class="price-now">${fmt(now)}</span>`;
-      if (old && old > now) {
-        const off = Math.round(((old - now) / old) * 100);
-        html += `<span class="price-old">${fmt(old)}</span><span class="price-off">-${off}%</span>`;
-      }
-      priceEl.innerHTML = html;
+      priceEl.innerHTML = `<span class="price-now">${fmt(now)}</span><span class="price-period">/month</span>`;
     });
   }
 
@@ -827,9 +824,10 @@
   // Computers) reveals a Class sidebar (6–12). Picking a class renders course
   // cards with id "{subject-slug}-grade-{class}" — matching the ids used in
   // the Supabase `courses` table, e.g. "math-grade-6", "science-grade-9".
-  // Add a row for any subject+grade in Supabase and its real price/strike
-  // price will show up automatically; until then the template's fallback
-  // price is shown, same as any other card.
+  // Add a row for any subject+grade in Supabase (price_now = monthly amount
+  // in ₹) and it will show up automatically; until then the template's
+  // grade-tier fallback price (₹6,000/mo for Class 6–9, ₹10,000/mo for
+  // Class 10–12) is shown, same as any other card.
 
   const GRADES = [6, 7, 8, 9, 10, 11, 12];
 
@@ -856,7 +854,7 @@
       rating: "4.8", reviews: "1,920",
       hours: "80 hours", lessons: "200 lessons", students: "14K",
       tags: ["CBSE", "ICSE", "Board Exam"],
-      priceNow: 999, priceOld: 1499, isFree: false,
+      isFree: false,
       hasBranches: false
     },
     "Science": {
@@ -873,7 +871,7 @@
       rating: "4.7", reviews: "1,610",
       hours: "72 hours", lessons: "180 lessons", students: "11K",
       tags: ["CBSE", "ICSE", "Experiment"],
-      priceNow: 799, priceOld: 1199, isFree: false,
+      isFree: false,
       hasBranches: true
     },
     "Social Studies": {
@@ -887,7 +885,7 @@
       rating: "4.5", reviews: "980",
       hours: "60 hours", lessons: "130 lessons", students: "7K",
       tags: ["CBSE", "ICSE", "Geography"],
-      priceNow: null, priceOld: null, isFree: true,
+      isFree: true,
       hasBranches: false
     },
     "English": {
@@ -904,7 +902,7 @@
       rating: "4.8", reviews: "1,152",
       hours: "54 hours", lessons: "105 lessons", students: "6.1K",
       tags: ["CBSE", "ICSE", "Grammar"],
-      priceNow: 1199, priceOld: 1799, isFree: false,
+      isFree: false,
       hasBranches: true
     },
     "Computers": {
@@ -918,20 +916,20 @@
       rating: "4.8", reviews: "1,140",
       hours: "60 hours", lessons: "110 lessons", students: "7.2K",
       tags: ["CBSE", "ICSE", "Coding"],
-      priceNow: 1199, priceOld: 1799, isFree: false,
+      isFree: false,
       hasBranches: false
     }
   };
 
-  function priceFallbackHTML(t) {
+  // School subscription pricing (matches pricing.html): Class 6–9 vs 10–12, per subject, per month.
+  function monthlyPriceForGrade(grade) {
+    return Number(grade) >= 10 ? 10000 : 6000;
+  }
+
+  function priceFallbackHTML(t, grade) {
     if (t.isFree) return `<span class="price-now">Free</span>`;
     const fmt = n => "₹" + Number(n).toLocaleString("en-IN");
-    let html = `<span class="price-now">${fmt(t.priceNow)}</span>`;
-    if (t.priceOld && t.priceOld > t.priceNow) {
-      const off = Math.round(((t.priceOld - t.priceNow) / t.priceOld) * 100);
-      html += `<span class="price-old">${fmt(t.priceOld)}</span><span class="price-off">-${off}%</span>`;
-    }
-    return html;
+    return `<span class="price-now">${fmt(monthlyPriceForGrade(grade))}</span><span class="price-period">/month</span>`;
   }
 
   function buildGradeCard(subjectName, grade, branch = "all") {
@@ -962,9 +960,10 @@
         <div class="course-card__stats"><span>⏱ ${t.hours}</span><span>▤ ${t.lessons}</span><span>👥 ${t.students}</span></div>
         <div class="course-card__tags">${tagsHtml}</div>
         <div class="course-card__footer">
-          <p class="course-card__price">${priceFallbackHTML(t)}</p>
+          <p class="course-card__price">${priceFallbackHTML(t, grade)}</p>
           <span class="course-card__cert">🎓 Certificate</span>
         </div>
+        ${t.isFree ? "" : '<a href="pricing.html" class="price-yearly-hint">Save with yearly billing →</a>'}
         <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="${courseId}">Add to Cart</button>
         <a href="course-detail.html?course=${courseId}" class="course-card__lessons">▶ View Lessons</a>
       </div>
