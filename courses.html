@@ -256,7 +256,7 @@
           <div class="course-card__stats"><span>⏱ 80 hours</span><span>▤ 200 lessons</span><span>👥 14K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Board Exam</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹999</span><span class="price-old">₹2,999</span><span class="price-off">-67%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹4,500</span><span class="price-off">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="mathematics-school">Choose Your Class</button>
@@ -280,7 +280,7 @@
           <div class="course-card__stats"><span>⏱ 72 hours</span><span>▤ 180 lessons</span><span>👥 11K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Experiment</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹799</span><span class="price-old">₹2,499</span><span class="price-off">-68%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹4,500</span><span class="price-off">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="science-school">Choose Your Class</button>
@@ -328,7 +328,7 @@
           <div class="course-card__stats"><span>⏱ 54 hours</span><span>▤ 105 lessons</span><span>👥 6.1K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Grammar</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹2,999</span><span class="price-off">-60%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹4,500</span><span class="price-off">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="english-school">Choose Your Class</button>
@@ -352,7 +352,7 @@
           <div class="course-card__stats"><span>⏱ 60 hours</span><span>▤ 110 lessons</span><span>👥 7.2K</span></div>
           <div class="course-card__tags"><span class="tag">CBSE</span><span class="tag">ICSE</span><span class="tag">Coding</span></div>
           <div class="course-card__footer">
-            <p class="course-card__price"><span class="price-now">₹1,199</span><span class="price-old">₹3,499</span><span class="price-off">-66%</span></p>
+            <p class="course-card__price"><span class="price-now">From ₹4,500</span><span class="price-off">/month</span></p>
             <span class="course-card__cert">🎓 Certificate</span>
           </div>
           <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="computers-school">Choose Your Class</button>
@@ -636,6 +636,7 @@
 <script src="script.js"></script>
 <script type="module">
   import { supabase } from "./supabase-client.js";
+  import { parseCourseId, GRADE_BANDS } from "./pricing-data.js";
 
   // ---------- LIVE PRICES (Supabase → course cards) ----------
   // Pull live prices from the "courses" table and drop them into each
@@ -893,9 +894,18 @@
     }
   };
 
-  function priceFallbackHTML(t) {
+  function priceFallbackHTML(t, grade) {
     if (t.isFree) return `<span class="price-now">Free</span>`;
     const fmt = n => "₹" + Number(n).toLocaleString("en-IN");
+    // School subject cards: fall back to the grade-band single-subject
+    // price (₹4,500 for Grade 6–10, ₹7,000 for Grade 11–12) rather than
+    // the old flat per-subject placeholder — this only shows if Supabase
+    // has no matching row yet for this course id.
+    if (grade) {
+      const parsed = parseCourseId(`x-grade-${grade}`);
+      const bandPrice = GRADE_BANDS[parsed.band].single;
+      return `<span class="price-now">${fmt(bandPrice)}</span><span class="price-off">/month</span>`;
+    }
     let html = `<span class="price-now">${fmt(t.priceNow)}</span>`;
     if (t.priceOld && t.priceOld > t.priceNow) {
       const off = Math.round(((t.priceOld - t.priceNow) / t.priceOld) * 100);
@@ -932,7 +942,7 @@
         <div class="course-card__stats"><span>⏱ ${t.hours}</span><span>▤ ${t.lessons}</span><span>👥 ${t.students}</span></div>
         <div class="course-card__tags">${tagsHtml}</div>
         <div class="course-card__footer">
-          <p class="course-card__price">${priceFallbackHTML(t)}</p>
+          <p class="course-card__price">${priceFallbackHTML(t, grade)}</p>
           <span class="course-card__cert">🎓 Certificate</span>
         </div>
         <button type="button" class="btn btn--purple btn--cart" data-add-to-cart="${courseId}">Add to Cart</button>
