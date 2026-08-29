@@ -238,8 +238,7 @@
             <span class="course-info-value" id="coursePrice">—</span>
           </div>
         </div>
-        <button class="cta-button" id="addToCartBtn" onclick="addToCart()">Add to Cart</button>
-        <p id="bundleHint" class="course-info-item" style="border:none;padding-top:10px;font-size:0.82rem;color:var(--text-soft);display:none;"></p>
+        <button class="cta-button" onclick="addToCart()">Add to Cart</button>
       </aside>
 
     </div><!-- /course-grid -->
@@ -260,18 +259,9 @@
 
 <script type="module">
 import { supabase } from "./supabase-client.js";
-import {
-  parseCourseId,
-  GRADE_BANDS,
-  MULTI_SUBJECT_DISCOUNT,
-  fmtINR,
-} from "./pricing-data.js";
 
 const params   = new URLSearchParams(window.location.search);
 const courseId = params.get("course");
-
-// Keep the parsed result in module scope so addToCart can read the price
-let _parsed = null;
 
 if (!courseId) {
   document.querySelector(".course-hero__content").innerHTML = `
@@ -286,141 +276,55 @@ if (!courseId) {
 /* ══════════════ COURSE DETAILS ══════════════ */
 async function loadCourseDetails() {
   try {
-    // ── Parse courseId to determine subject + grade ──────────────────────────
-    // Supports school format "math-grade-8"  AND pro slugs "power-bi"
-    _parsed = parseCourseId(courseId);
+    const parts = courseId.split("-grade-");
+    if (parts.length !== 2) { showError("Invalid course format"); return; }
+    const [subject, grade] = parts;
 
-    // For school courses we still need the raw subject/grade split for
-    // Supabase queries (syllabus, tests, videos are keyed on subject & grade)
-    let subject = courseId;
-    let grade   = null;
-    if (_parsed?.type === "school") {
-      subject = _parsed.subject;
-      grade   = _parsed.grade;
-    }
-
-    // ── Static display metadata per subject ──────────────────────────────────
     const subjectData = {
-      // School subjects
       "math": {
         name:"Mathematics", label:"Mathematics · CBSE & ICSE",
         desc: g=>`Numbers, algebra, geometry, and problem-solving — complete syllabus-aligned mathematics for Class ${g}, with board exam prep built in.`,
         instructor:"Dr. Priya Sharma", rating:"4.8", reviews:"1,920",
-        hours:"80 hours", lessons:"200 lessons", students:"14K"
+        hours:"80 hours", lessons:"200 lessons", students:"14K", price:"₹999"
       },
       "science": {
         name:"Science", label:"Science · CBSE & ICSE",
         desc: g=>`Physics, Chemistry, and Biology through animated experiments and interactive quizzes for Class ${g}.`,
         instructor:"Prof. Rajesh Kumar", rating:"4.7", reviews:"1,610",
-        hours:"72 hours", lessons:"180 lessons", students:"11K"
+        hours:"72 hours", lessons:"180 lessons", students:"11K", price:"₹799"
       },
       "english": {
         name:"English", label:"English · CBSE & ICSE",
         desc: g=>`Grammar, literature, writing, and comprehension — interactive drills and board-exam essay frameworks for Class ${g}.`,
         instructor:"Ms. Ananya Rao", rating:"4.8", reviews:"1,152",
-        hours:"54 hours", lessons:"105 lessons", students:"6.1K"
+        hours:"54 hours", lessons:"105 lessons", students:"6.1K", price:"₹1,199"
       },
       "social-studies": {
         name:"Social Science", label:"Social Science · CBSE & ICSE",
         desc: g=>`History, Geography, Civics, and Economics for Class ${g} — board-aligned with map work and source-based questions.`,
         instructor:"Mr. Arun Mehta", rating:"4.6", reviews:"980",
-        hours:"60 hours", lessons:"150 lessons", students:"8K"
+        hours:"60 hours", lessons:"150 lessons", students:"8K", price:"₹699"
       },
       "computers": {
         name:"Computers", label:"Computers · CBSE",
         desc: g=>`Programming basics, MS Office, and digital literacy for Class ${g} students.`,
         instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"540",
-        hours:"40 hours", lessons:"80 lessons", students:"3K"
-      },
-      "vedic-maths": {
-        name:"Vedic Maths", label:"Vedic Maths · Speed & Mental Arithmetic",
-        desc: g=>`Ancient Vedic techniques for lightning-fast mental calculation — ideal for competitive exams, Class ${g} and beyond.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"312",
-        hours:"30 hours", lessons:"60 lessons", students:"2K"
-      },
-      // Professional courses
-      "power-bi": {
-        name:"Power BI", label:"Power BI · Microsoft BI Tool",
-        desc: _=>`DAX formulas, data modelling, and interactive dashboards — the most in-demand corporate BI skill.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"408",
-        hours:"40 hours", lessons:"60 lessons", students:"1.8K"
-      },
-      "tableau": {
-        name:"Tableau", label:"Tableau · Data Visualisation",
-        desc: _=>`Build compelling visual stories with real datasets — from charts to Tableau Public portfolios.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.8", reviews:"290",
-        hours:"36 hours", lessons:"54 lessons", students:"1.4K"
-      },
-      "python": {
-        name:"Python", label:"Python · Data & Automation",
-        desc: _=>`From basics to pandas, NumPy, and automation scripts — hands-on weekend batch.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.8", reviews:"520",
-        hours:"48 hours", lessons:"72 lessons", students:"2.2K"
-      },
-      "sql": {
-        name:"SQL", label:"SQL · Database Querying",
-        desc: _=>`Joins, window functions, and real-world query design for analysts and developers.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.7", reviews:"380",
-        hours:"32 hours", lessons:"48 lessons", students:"1.5K"
-      },
-      "data-analytics": {
-        name:"Data Analytics", label:"Data Analytics · End-to-End",
-        desc: _=>`SQL + Python + visualisation + storytelling — the complete analyst toolkit.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"615",
-        hours:"64 hours", lessons:"96 lessons", students:"2.8K"
-      },
-      "machine-learning": {
-        name:"Machine Learning", label:"Machine Learning · scikit-learn",
-        desc: _=>`Supervised and unsupervised ML with real datasets, model evaluation, and deployment basics.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.8", reviews:"490",
-        hours:"56 hours", lessons:"84 lessons", students:"2.1K"
-      },
-      "generative-ai": {
-        name:"Generative AI", label:"Generative AI · LLMs & Prompting",
-        desc: _=>`Prompt engineering, RAG, fine-tuning, and AI tools for the modern workplace.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.9", reviews:"320",
-        hours:"40 hours", lessons:"60 lessons", students:"1.6K"
-      },
-      "data-science": {
-        name:"Data Science", label:"Data Science · Full Programme",
-        desc: _=>`Statistics, ML, deep learning, and end-to-end project delivery.`,
-        instructor:"Ms. Shrutika Khandelwal", rating:"4.8", reviews:"275",
-        hours:"80 hours", lessons:"120 lessons", students:"1.2K"
-      },
+        hours:"40 hours", lessons:"80 lessons", students:"3K", price:"₹499"
+      }
     };
 
     const data = subjectData[subject];
     if (!data) { showError("Subject not found"); return; }
 
     document.getElementById("courseLabel").textContent      = data.label;
-    document.getElementById("courseTitle").textContent      = grade
-      ? `${data.name} — Class ${grade}`
-      : data.name;
+    document.getElementById("courseTitle").textContent      = `${data.name} — Class ${grade}`;
     document.getElementById("courseSubtitle").textContent   = data.desc(grade);
     document.getElementById("courseMeta1").textContent      = data.hours;
     document.getElementById("courseMeta2").textContent      = data.lessons;
     document.getElementById("courseMeta3").textContent      = data.students;
     document.getElementById("courseInstructor").textContent = data.instructor;
     document.getElementById("courseRating").textContent     = `${data.rating} (${data.reviews})`;
-
-    // ── PRICE — pulled from pricing-data.js, same source as pricing.html ────
-    const hint = document.getElementById("bundleHint");
-    if (_parsed) {
-      document.getElementById("coursePrice").textContent =
-        `${fmtINR(_parsed.monthlyPrice)}/month`;
-
-      if (_parsed.type === "school") {
-        const pct2 = Math.round(MULTI_SUBJECT_DISCOUNT[2] * 100);
-        const pct3 = Math.round(MULTI_SUBJECT_DISCOUNT[3] * 100);
-        hint.textContent = `💡 Add a 2nd ${GRADE_BANDS[_parsed.band].label} subject to save ${pct2}% — a 3rd unlocks ${pct3}% off all subjects.`;
-        hint.style.display = "block";
-      } else if (_parsed.type === "pro") {
-        hint.textContent = `💡 Group batch (4–8 students). Want 1-on-1? Contact us — only 50% extra.`;
-        hint.style.display = "block";
-      }
-    } else {
-      document.getElementById("coursePrice").textContent = "Contact for pricing";
-    }
+    document.getElementById("coursePrice").textContent      = data.price;
 
     // Load all three sections in parallel
     await Promise.all([
@@ -665,60 +569,10 @@ function playVideo(videoId, videoUrl) {
   else alert("Video player coming soon: " + videoId);
 }
 
-async function addToCart() {
+function addToCart() {
   if (!courseId) return;
-  const btn = document.getElementById("addToCartBtn");
-
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    window.location.href = `login.html?next=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-    return;
-  }
-
-  btn.disabled = true;
-  btn.textContent = "Adding…";
-
-  // Use the price already resolved from pricing-data.js — this is the
-  // same figure shown in the sidebar, which comes from the same source
-  // as pricing.html, so they can never drift apart.
-  const priceAtAdd = _parsed ? _parsed.monthlyPrice : null;
-
-  const { data: existing } = await supabase
-    .from("cart_items")
-    .select("id, quantity")
-    .eq("user_id", user.id)
-    .eq("course_id", courseId)
-    .maybeSingle();
-
-  let error;
-  if (existing) {
-    // Item already in cart — bump quantity and refresh the locked-in price
-    ({ error } = await supabase
-      .from("cart_items")
-      .update({
-        quantity:     (existing.quantity || 1) + 1,
-        price_at_add: priceAtAdd,          // keep price current
-      })
-      .eq("id", existing.id));
-  } else {
-    ({ error } = await supabase
-      .from("cart_items")
-      .insert({
-        user_id:      user.id,
-        course_id:    courseId,
-        quantity:     1,
-        price_at_add: priceAtAdd,          // locked price from pricing-data.js
-      }));
-  }
-
-  btn.disabled = false;
-  if (error) {
-    btn.textContent = "Try again";
-    console.error("Add to cart failed:", error.message);
-  } else {
-    btn.textContent = "Added ✓ — View cart";
-    btn.onclick = () => { window.location.href = "dashboard.html"; };
-  }
+  alert("Add to cart: " + courseId);
+  // TODO: Razorpay integration
 }
 
 function showError(msg) {
