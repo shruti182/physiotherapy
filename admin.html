@@ -1,811 +1,1864 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18369083814"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-18369083814');
-</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin — Learners Academy</title>
-<meta name="robots" content="noindex, nofollow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<title>Admin Panel — Learners Academy</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 <style>
-  /* ===== Lock screen ===== */
-  .lock-screen{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:#f6f9fc;
-  }
-  .lock-box{
-    background:#fff;
-    border:1px solid #e2e9ef;
-    border-radius:20px;
-    padding:40px;
-    width:100%;
-    max-width:380px;
-    text-align:center;
-    box-shadow:0 8px 28px rgba(15,42,74,0.10);
-  }
-  .lock-logo{
-    width:52px;height:48px;font-size:1.2rem;border-radius:14px;
-    display:inline-flex;align-items:center;justify-content:center;
-    background:#4f46e5;color:#fbbf24;font-weight:800;font-family:'Baloo 2',sans-serif;
-    box-shadow:0 4px 0 #3730a3;margin-bottom:16px;
-  }
-  .lock-box h2{font-family:'Baloo 2',sans-serif;font-size:22px;color:#0f2a4a;margin:0 0 6px;}
-  .lock-box p{font-family:'Poppins',sans-serif;font-size:13px;color:#5b6b81;margin:0 0 22px;}
-  .lock-error{color:#e53e3e;font-family:'Poppins',sans-serif;font-size:13px;margin-top:10px;display:none;}
-  .lock-box input{
-    width:100%;box-sizing:border-box;
-    font-family:'Poppins',sans-serif;font-size:14px;color:#0f2a4a;
-    border:1px solid #d1dae5;border-radius:10px;padding:11px 14px;
-    margin-bottom:14px;outline:none;
-  }
-  .lock-box input:focus{border-color:#4f46e5;}
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --primary:#0f2a4a;--accent:#f59e0b;--teal:#14b8a6;
+  --success:#10b981;--warning:#f59e0b;--danger:#ef4444;
+  --light:#f4f6f9;--border:#e2e8f0;--text:#1e293b;
+  --text2:#64748b;--white:#fff;--sidebar-w:260px;
+}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--light);color:var(--text);line-height:1.6}
 
-  /* ===== Tabs ===== */
-  .admin-tabs{
-    display:flex;
-    gap:4px;
-    border-bottom:2px solid #e2e9ef;
-    padding:0 24px;
-    max-width:960px;
-    margin:0 auto;
-  }
-  .admin-tab{
-    font-family:'Poppins',sans-serif;
-    font-size:14px;
-    font-weight:600;
-    color:#5b6b81;
-    border:none;
-    background:none;
-    padding:14px 20px;
-    cursor:pointer;
-    border-bottom:2px solid transparent;
-    margin-bottom:-2px;
-    transition:all .15s;
-  }
-  .admin-tab:hover{color:#0f2a4a;}
-  .admin-tab.is-active{color:#4f46e5;border-bottom-color:#4f46e5;}
+/* ── AUTH SCREEN ── */
+.auth-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#0f2a4a 0%,#14304f 60%,#0f766e 100%)}
+.auth-card{background:var(--white);padding:2.5rem;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,0.3);width:100%;max-width:420px}
+.auth-card .logo{font-size:28px;font-weight:800;color:var(--primary);margin-bottom:0.25rem}
+.auth-card .logo span{color:var(--accent)}
+.auth-card p{color:var(--text2);margin-bottom:2rem;font-size:14px}
+.auth-card h2{font-size:20px;margin-bottom:0.25rem}
+.form-group{margin-bottom:1.2rem}
+.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;font-family:inherit;transition:.2s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(20,184,166,.12)}
+.form-group textarea{resize:vertical;min-height:100px}
+.btn-auth{width:100%;padding:12px;background:var(--primary);color:#fff;border:none;border-radius:8px;font-size:15px;font-weight:700;cursor:pointer;transition:.2s}
+.btn-auth:hover{background:#14304f}
+.error-msg{background:#fee2e2;color:#dc2626;padding:10px 14px;border-radius:8px;margin-bottom:1rem;font-size:13px;display:none}
+.error-msg.show{display:block}
 
-  .tab-panel{display:none;}
-  .tab-panel.is-active{display:block;}
+/* ── LAYOUT ── */
+.app{display:none;height:100vh}
+.app.active{display:flex}
 
-  /* ===== Shared admin wrap ===== */
-  .admin-wrap{
-    max-width:960px;
-    margin:0 auto;
-    padding:36px 24px 80px;
-  }
-  .admin-section-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    margin-bottom:28px;
-    flex-wrap:wrap;
-    gap:12px;
-  }
-  .admin-section-head h2{
-    font-family:'Baloo 2',sans-serif;
-    font-size:24px;
-    font-weight:800;
-    color:#0f2a4a;
-    margin:0;
-  }
+/* ── SIDEBAR ── */
+.sidebar{width:var(--sidebar-w);background:var(--primary);color:#fff;display:flex;flex-direction:column;overflow-y:auto;flex-shrink:0}
+.sidebar-logo{padding:1.5rem 1.25rem;font-size:20px;font-weight:800;border-bottom:1px solid rgba(255,255,255,.1)}
+.sidebar-logo span{color:var(--accent)}
+.nav-group{padding:.75rem 0}
+.nav-group-title{padding:6px 1.25rem;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.4)}
+.nav-item{display:flex;align-items:center;gap:10px;padding:10px 1.25rem;color:rgba(255,255,255,.75);cursor:pointer;border:none;background:none;width:100%;text-align:left;font-size:13.5px;font-weight:500;border-radius:0;transition:.15s}
+.nav-item:hover{background:rgba(255,255,255,.08);color:#fff}
+.nav-item.active{background:var(--accent);color:var(--primary);font-weight:700}
+.nav-item .icon{font-size:16px;width:20px;text-align:center}
+.sidebar-footer{margin-top:auto;padding:1rem;border-top:1px solid rgba(255,255,255,.1)}
+.btn-logout{width:100%;padding:9px;background:rgba(239,68,68,.15);color:#fca5a5;border:1px solid rgba(239,68,68,.3);border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;transition:.2s}
+.btn-logout:hover{background:rgba(239,68,68,.3);color:#fff}
 
-  /* ===== Form fields ===== */
-  .field{margin-bottom:18px;}
-  .field label{
-    display:block;
-    font-family:'Poppins',sans-serif;
-    font-size:13px;
-    font-weight:600;
-    color:#0f2a4a;
-    margin-bottom:6px;
-  }
-  .field input,
-  .field select,
-  .field textarea{
-    width:100%;box-sizing:border-box;
-    font-family:'Poppins',sans-serif;font-size:14px;color:#0f2a4a;
-    border:1px solid #d1dae5;border-radius:10px;padding:10px 14px;
-    background:#fff;transition:border-color .15s;outline:none;
-  }
-  .field input:focus,.field select:focus,.field textarea:focus{border-color:#4f46e5;}
-  .field textarea{resize:vertical;min-height:80px;}
-  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
-  @media(max-width:600px){.field-row{grid-template-columns:1fr;}}
-  .slug-preview{font-family:'Space Mono',monospace;font-size:11px;color:#4f46e5;margin-top:4px;}
+/* ── MAIN ── */
+.main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.topbar{background:#fff;padding:1rem 2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+.topbar h1{font-size:20px;font-weight:700;color:var(--primary)}
+.user-pill{display:flex;align-items:center;gap:10px}
+.user-avatar{width:36px;height:36px;border-radius:50%;background:var(--accent);color:var(--primary);font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center}
+.user-email{font-size:13px;color:var(--text2)}
+.content{flex:1;overflow-y:auto;padding:2rem}
 
-  /* ===== Rich editor ===== */
-  .editor-toolbar{
-    display:flex;flex-wrap:wrap;gap:4px;
-    border:1px solid #d1dae5;border-bottom:none;
-    border-radius:10px 10px 0 0;padding:8px 10px;background:#f6f9fc;
-  }
-  .editor-toolbar button{
-    font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;
-    border:1px solid #d1dae5;background:#fff;border-radius:6px;
-    padding:4px 9px;cursor:pointer;color:#0f2a4a;transition:all .15s;
-  }
-  .editor-toolbar button:hover{background:#4f46e5;color:#fff;border-color:#4f46e5;}
-  .editor-toolbar .sep{width:1px;background:#d1dae5;margin:0 4px;align-self:stretch;}
-  #contentEditor{
-    border:1px solid #d1dae5;border-top:none;border-radius:0 0 10px 10px;
-    min-height:300px;padding:16px;font-family:'Poppins',sans-serif;
-    font-size:14px;line-height:1.7;color:#2e3a4d;outline:none;background:#fff;
-  }
-  #contentEditor:focus{border-color:#4f46e5;}
-  #contentEditor h2{font-family:'Baloo 2',sans-serif;font-size:22px;color:#0f2a4a;margin:24px 0 10px;}
-  #contentEditor h3{font-family:'Baloo 2',sans-serif;font-size:18px;color:#0f2a4a;margin:18px 0 8px;}
-  #contentEditor blockquote{border-left:3px solid #0ea86c;padding:4px 0 4px 16px;color:#5b6b81;font-style:italic;margin:16px 0;}
+/* ── SECTIONS ── */
+.section{display:none}
+.section.active{display:block}
+.page-title{font-size:24px;font-weight:700;margin-bottom:1.5rem;color:var(--primary)}
 
-  /* ===== Preview ===== */
-  .preview-box{border:1px solid #e2e9ef;border-radius:12px;padding:24px;background:#f6f9fc;margin-top:8px;display:none;}
-  .preview-box.is-visible{display:block;}
-  .preview-box__label{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8a97a8;margin:0 0 14px;}
-  .preview-box__inner{font-family:'Poppins',sans-serif;font-size:15px;line-height:1.75;color:#2e3a4d;}
-  .preview-box__inner h2{font-family:'Baloo 2',sans-serif;font-size:22px;color:#0f2a4a;margin:20px 0 10px;}
-  .preview-box__inner h3{font-family:'Baloo 2',sans-serif;font-size:18px;color:#0f2a4a;}
-  .preview-box__inner blockquote{border-left:3px solid #0ea86c;padding:4px 0 4px 16px;color:#5b6b81;font-style:italic;}
-  .preview-box__inner img{width:100%;border-radius:10px;margin:12px 0;}
+/* ── STAT CARDS ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.25rem;margin-bottom:2rem}
+.stat-card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.stat-card .label{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.stat-card .value{font-size:32px;font-weight:800;color:var(--primary);margin:.25rem 0}
+.stat-card .sub{font-size:12px;color:var(--success)}
 
-  /* ===== Action bar ===== */
-  .action-bar{
-    display:flex;align-items:center;gap:12px;flex-wrap:wrap;
-    margin-top:24px;padding-top:22px;border-top:1px solid #e2e9ef;
-  }
-  .action-bar .spacer{flex:1;}
+/* ── CARD ── */
+.card{background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.75rem;margin-bottom:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.05)}
+.card-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;padding-bottom:1rem;border-bottom:1px solid var(--border)}
+.card-header h2{font-size:16px;font-weight:700;margin:0}
+.chart-wrap{position:relative;height:320px}
 
-  /* ===== Blog post list ===== */
-  .posts-section{margin-top:48px;}
-  .posts-section h3{font-family:'Baloo 2',sans-serif;font-size:18px;color:#0f2a4a;margin-bottom:14px;}
-  .post-row{
-    display:flex;align-items:center;gap:12px;
-    background:#fff;border:1px solid #e2e9ef;border-radius:12px;
-    padding:13px 18px;margin-bottom:10px;flex-wrap:wrap;
-  }
-  .post-row__title{font-family:'Poppins',sans-serif;font-size:14px;font-weight:600;color:#0f2a4a;flex:1;min-width:0;}
-  .post-row__cat{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#0ea86c;background:#eafaf3;padding:3px 10px;border-radius:999px;}
-  .post-row__status{font-family:'Poppins',sans-serif;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 10px;border-radius:999px;}
-  .post-row__status--published{color:#0ea86c;background:#eafaf3;}
-  .post-row__status--draft{color:#8a97a8;background:#f1f5f9;}
-  .post-row__actions{display:flex;gap:6px;}
-  .post-row__actions button{
-    font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;
-    border:1px solid #d1dae5;background:#fff;border-radius:8px;
-    padding:5px 11px;cursor:pointer;color:#0f2a4a;transition:all .15s;
-  }
-  .post-row__actions button:hover{background:#0f2a4a;color:#fff;border-color:#0f2a4a;}
-  .post-row__actions button.btn-delete:hover{background:#e53e3e;border-color:#e53e3e;color:#fff;}
-  .posts-empty{font-family:'Poppins',sans-serif;font-size:14px;color:#8a97a8;text-align:center;padding:32px;}
+/* ── TABLE ── */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13.5px}
+th{background:#f8fafc;padding:10px 14px;text-align:left;font-weight:600;color:var(--text2);font-size:12px;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafbfc}
+.empty{text-align:center;padding:3rem;color:var(--text2);font-size:14px}
 
-  /* ===== Video upload tab ===== */
-  .upload-list{max-width:640px;margin:32px auto 0;}
-  .upload-group{max-width:640px;margin:0 auto 28px;}
-  .upload-group__title{font-family:var(--display);font-size:1.05rem;margin-bottom:10px;color:var(--ink);}
-  .upload-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 18px;border:1px solid var(--line);border-radius:14px;margin-bottom:10px;font-size:0.9rem;}
-  .upload-row__meta{opacity:0.65;font-size:0.8rem;}
-  .upload-row a{color:var(--purple);font-weight:600;}
-  .auth-form select,.auth-form input[type="text"]{
-    width:100%;box-sizing:border-box;padding:12px 14px;border:2px solid var(--line);
-    border-radius:12px;font-size:0.95rem;font-family:var(--body);background:#fff;margin-top:6px;
-  }
-  .auth-form label{display:block;font-family:var(--body);font-size:0.9rem;font-weight:600;color:var(--ink);margin-bottom:16px;}
-  .storage-note{max-width:520px;margin:0 auto 24px;padding:14px 18px;border-radius:14px;background:rgba(76,140,255,0.08);border:1px solid rgba(76,140,255,0.25);font-size:0.85rem;line-height:1.55;color:var(--ink);}
-  .config-banner{max-width:520px;margin:0 auto 20px;padding:14px 18px;border-radius:14px;background:rgba(255,122,69,0.10);border:1px solid rgba(255,122,69,0.3);font-size:0.85rem;line-height:1.55;color:var(--ink);}
-  .config-banner strong{color:var(--orange-d);}
-  .video-form-wrap{max-width:520px;margin:0 auto;}
+/* ── BUTTONS ── */
+.btn{padding:9px 18px;border:none;border-radius:8px;cursor:pointer;font-size:13px;font-weight:600;transition:.2s;display:inline-flex;align-items:center;gap:6px}
+.btn-primary{background:var(--primary);color:#fff}.btn-primary:hover{background:#14304f}
+.btn-teal{background:var(--teal);color:#fff}.btn-teal:hover{background:#0f766e}
+.btn-ghost{background:var(--light);color:var(--text);border:1px solid var(--border)}.btn-ghost:hover{background:#e2e8f0}
+.btn-danger{background:var(--danger);color:#fff}.btn-danger:hover{background:#dc2626}
+.btn-sm{padding:5px 10px;font-size:12px}
+.btn:disabled{opacity:.5;cursor:not-allowed}
 
-  /* ===== Toast ===== */
-  .toast{
-    position:fixed;bottom:28px;right:28px;
-    background:#0f2a4a;color:#fff;
-    font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;
-    padding:14px 22px;border-radius:12px;
-    box-shadow:0 8px 24px rgba(15,42,74,0.25);
-    z-index:9999;transform:translateY(80px);opacity:0;
-    transition:all .3s ease;pointer-events:none;
-  }
-  .toast.toast--success{background:#0ea86c;}
-  .toast.toast--error{background:#e53e3e;}
-  .toast.is-visible{transform:translateY(0);opacity:1;}
+/* ── BADGES ── */
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:700}
+.badge-green{background:#d1fae5;color:#065f46}
+.badge-yellow{background:#fef3c7;color:#92400e}
+.badge-red{background:#fee2e2;color:#991b1b}
+.badge-blue{background:#dbeafe;color:#1e40af}
+.badge-gray{background:#f1f5f9;color:#475569}
 
-  hr.section-divider{border:none;border-top:2px solid #e2e9ef;margin:40px 0 32px;}
+/* ── MODAL ── */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:500;align-items:center;justify-content:center}
+.modal-backdrop.open{display:flex}
+.modal-box{background:#fff;border-radius:14px;padding:2rem;max-width:600px;width:92%;max-height:88vh;overflow-y:auto}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem}
+.modal-head h3{font-size:18px;font-weight:700}
+.close-btn{background:none;border:none;font-size:26px;cursor:pointer;color:var(--text2);line-height:1}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-actions{display:flex;gap:10px;justify-content:flex-end;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;padding:14px 20px;border-radius:10px;color:#fff;font-size:14px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,.18);z-index:9999;animation:toastIn .3s ease}
+.toast.success{background:var(--success)}
+.toast.error{background:var(--danger)}
+@keyframes toastIn{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* ── SEARCH ── */
+.search-bar{display:flex;gap:10px;margin-bottom:1.25rem;align-items:center}
+.search-bar input{flex:1;padding:9px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:13px;outline:none;transition:.2s}
+.search-bar input:focus{border-color:var(--teal)}
+
+/* ── SPINNER ── */
+.spinner{display:inline-block;width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── RESULT SUMMARY CARDS ── */
+.result-stat{background:#f8fafc;border:1px solid var(--border);border-radius:10px;padding:1rem;text-align:center}
+.result-stat .rs-label{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.05em}
+.result-stat .rs-value{font-size:26px;font-weight:800;color:var(--primary);margin:.2rem 0}
+.result-stat .rs-sub{font-size:12px;color:var(--text2)}
+
+/* ── ANSWER SHEET ── */
+.ans-q{margin-bottom:1.25rem;padding:1rem;border-radius:10px;border:1.5px solid var(--border);background:#fff}
+.ans-q.correct{border-color:#10b981;background:#f0fdf4}
+.ans-q.wrong{border-color:#ef4444;background:#fef2f2}
+.ans-q.unattempted{border-color:#d1d5db;background:#f9fafb}
+.ans-q .q-num{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:.4rem;color:var(--text2)}
+.ans-q .q-text{font-weight:600;margin-bottom:.75rem;color:var(--text)}
+.ans-q .ans-row{font-size:13px;display:flex;gap:.5rem;align-items:center;margin-bottom:.3rem}
+.ans-q .ans-row .label{min-width:80px;font-weight:600;color:var(--text2)}
+.tag-correct{background:#d1fae5;color:#065f46;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700}
+.tag-wrong{background:#fee2e2;color:#991b1b;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700}
+.tag-skip{background:#e5e7eb;color:#6b7280;padding:2px 8px;border-radius:20px;font-size:12px;font-weight:700}
+
+/* ── RESPONSIVE ── */
+@media(max-width:768px){
+  .sidebar{width:64px}
+  .nav-item span:not(.icon){display:none}
+  .sidebar-logo .text{display:none}
+  .sidebar-footer .btn-logout span{display:none}
+  .form-row{grid-template-columns:1fr}
+  .content{padding:1rem}
+}
 </style>
 </head>
 <body>
 
-<!-- ===== LOCK SCREEN ===== -->
-<div id="lockScreen" class="lock-screen">
-  <div class="lock-box">
-    <div class="lock-logo">LA</div>
-    <h2>Admin Panel</h2>
-    <p>Enter the admin passcode to continue.</p>
-    <input type="password" id="passcodeInput" placeholder="Enter passcode" autocomplete="current-password">
-    <button class="btn btn--solid" style="width:100%" onclick="checkPasscode()">Unlock →</button>
-    <p class="lock-error" id="lockError">Incorrect passcode. Try again.</p>
+<!-- ═══════════════════════════════════════ AUTH ═══════════════════ -->
+<div class="auth-screen" id="authScreen">
+  <div class="auth-card">
+    <div class="logo">LA<span>.</span></div>
+    <h2>Admin Portal</h2>
+    <p>Sign in with your Supabase admin account to continue.</p>
+    <div class="error-msg" id="authError"></div>
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" id="authEmail" placeholder="admin@learners-academy.co.in" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label>Password</label>
+      <input type="password" id="authPassword" placeholder="••••••••" autocomplete="current-password">
+    </div>
+    <div class="cf-turnstile" data-sitekey="0x4AAAAAAEQVnVOG252f_MHa" data-theme="light" style="margin-bottom:1rem;"></div>
+<button class="btn-auth" id="authBtn" onclick="doLogin()">Sign in</button>
   </div>
 </div>
 
-<!-- ===== MAIN ADMIN ===== -->
-<div id="adminMain" hidden>
+<!-- ═══════════════════════════════════════ APP ════════════════════ -->
+<div class="app" id="app">
 
-  <header class="nav" id="nav">
-    <div class="nav__inner">
-      <a href="index.html" class="nav__logo">
-        <span class="nav__logo-mark">LA</span>
-        <span class="nav__logo-text">Learners Academy</span>
-      </a>
-      <nav class="nav__links">
-        <a href="index.html">Home</a>
-        <a href="blog.html">Blog</a>
-        <a href="courses.html">Courses</a>
-      </nav>
-      <div class="nav__actions">
-        <button class="btn btn--ghost" onclick="adminLogout()">Log out</button>
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-logo">📚 <span class="text">LA <span>Admin</span></span></div>
+
+    <div class="nav-group">
+      <div class="nav-group-title">Core</div>
+      <button class="nav-item active" data-section="dashboard"><span class="icon">📊</span><span>Dashboard</span></button>
+      <button class="nav-item" data-section="students"><span class="icon">👥</span><span>Students</span></button>
+      <button class="nav-item" data-section="courses"><span class="icon">📚</span><span>Courses</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Content</div>
+      <button class="nav-item" data-section="blog"><span class="icon">✍️</span><span>Blog Posts</span></button>
+      <button class="nav-item" data-section="videos"><span class="icon">🎬</span><span>Videos</span></button>
+      <button class="nav-item" data-section="syllabus"><span class="icon">📄</span><span>Syllabus</span></button>
+      <button class="nav-item" data-section="tests"><span class="icon">📝</span><span>Tests</span></button>
+      <button class="nav-item" data-section="live"><span class="icon">🔴</span><span>Live Classes</span></button>
+    </div>
+    <div class="nav-group">
+      <div class="nav-group-title">Commerce</div>
+      <button class="nav-item" data-section="leads"><span class="icon">📋</span><span>Demo Leads</span></button>
+      <button class="nav-item" data-section="testimonials"><span class="icon">⭐</span><span>Testimonials</span></button>
+    </div>
+
+    <div class="sidebar-footer">
+      <button class="btn-logout" onclick="doLogout()"><span>🚪</span> <span>Sign Out</span></button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main">
+    <div class="topbar">
+      <h1 id="pageTitle">Dashboard</h1>
+      <div class="user-pill">
+        <div class="user-avatar" id="userAvatar">AD</div>
+        <span class="user-email" id="userEmail"></span>
       </div>
     </div>
-  </header>
 
-  <!-- Tab bar -->
-  <div class="admin-tabs">
-    <button class="admin-tab is-active" onclick="switchTab('blog', this)">✍️ Blog Posts</button>
-    <button class="admin-tab" onclick="switchTab('video', this)">🎬 Video Upload</button>
-  </div>
+    <div class="content">
 
-  <!-- ===== TAB: BLOG ===== -->
-  <div class="tab-panel is-active" id="tab-blog">
-    <div class="admin-wrap">
+      <!-- ── DASHBOARD ── -->
+      <section class="section active" id="sec-dashboard">
+        <div class="page-title">Overview</div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="label">Total Students</div><div class="value" id="statStudents">—</div><div class="sub">from Supabase profiles</div></div>
+          <div class="stat-card"><div class="label">Active Courses</div><div class="value" id="statCourses">—</div><div class="sub">in courses table</div></div>
+          <div class="stat-card"><div class="label">Blog Posts</div><div class="value" id="statBlogs">—</div><div class="sub">published</div></div>
+          <div class="stat-card"><div class="label">Demo Leads</div><div class="value" id="statLeads">—</div><div class="sub">form submissions</div></div>
+        </div>
 
-      <div class="admin-section-head">
-        <h2>Blog Posts</h2>
-        <button class="btn btn--ghost" id="toggleFormBtn" onclick="toggleForm()">+ New Post</button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem">
+          <div class="card">
+            <div class="card-header"><h2>Students by Role</h2></div>
+            <div class="chart-wrap"><canvas id="roleChart"></canvas></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><h2>Signups Last 30 Days</h2></div>
+            <div class="chart-wrap"><canvas id="signupChart"></canvas></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header"><h2>Recent Signups</h2></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+            <tbody id="recentSignups"><tr><td colspan="4" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── STUDENTS ── -->
+      <section class="section" id="sec-students">
+        <div class="page-title">Students</div>
+        <div class="search-bar">
+          <input type="search" id="studentSearch" placeholder="Search by name, email or phone…" oninput="filterStudents()">
+          <button class="btn btn-ghost btn-sm" onclick="loadStudents()">↻ Refresh</button>
+        </div>
+        <div class="card">
+          <div class="table-wrap"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Role</th><th>Joined</th></tr></thead>
+            <tbody id="studentsTbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+          <div id="studentsPager" style="text-align:right;margin-top:1rem;font-size:13px;color:var(--text2)"></div>
+        </div>
+      </section>
+
+      <!-- ── COURSES ── -->
+      <section class="section" id="sec-courses">
+        <div class="page-title">Courses</div>
+        <div class="card">
+          <div class="card-header">
+            <h2>All Courses</h2>
+            <button class="btn btn-primary btn-sm" onclick="openModal('courseModal')">+ Add Course</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>ID / Slug</th><th>Title</th><th>Track</th><th>Price</th><th>Free?</th><th>Actions</th></tr></thead>
+            <tbody id="coursesTbody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── BLOG ── -->
+      <section class="section" id="sec-blog">
+        <div class="page-title">Blog Posts</div>
+        <div class="card">
+          <div class="card-header">
+            <h2>All Posts</h2>
+            <button class="btn btn-primary btn-sm" onclick="openModal('blogModal')">+ New Post</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Title</th><th>Category</th><th>Author</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
+            <tbody id="blogTbody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── VIDEOS ── -->
+      <section class="section" id="sec-videos">
+        <div class="page-title">Video Lessons</div>
+        <div class="card">
+          <div class="card-header">
+            <h2>All Videos</h2>
+            <button class="btn btn-primary btn-sm" onclick="resetVideoModal(); openModal('videoModal')">+ Add Video</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Title</th><th>Course</th><th>Video</th><th>Order</th><th>Actions</th></tr></thead>
+            <tbody id="videosTbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── SYLLABUS / PDFs ── -->
+      <section class="section" id="sec-syllabus">
+        <div class="page-title">Syllabus & Course PDFs</div>
+        <div class="card">
+          <div class="card-header">
+            <h2>All Syllabus Files</h2>
+            <button class="btn btn-primary btn-sm" onclick="openModal('syllabusModal')">+ Upload Syllabus</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Course ID</th><th>File Name</th><th>File Size</th><th>Uploaded</th><th>Actions</th></tr></thead>
+            <tbody id="syllabusTbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── TESTS ── -->
+      <section class="section" id="sec-tests">
+        <div class="page-title">Tests & Practice Papers</div>
+        <div class="card">
+          <div class="card-header">
+            <h2>All Tests</h2>
+            <button class="btn btn-primary btn-sm" onclick="openModal('testModal')">+ Upload Test</button>
+          </div>
+          <div class="search-bar">
+            <input type="search" id="testSearch" placeholder="Search by title, subject or class…" oninput="filterTests()">
+            <button class="btn btn-ghost btn-sm" onclick="loadTests()">↻ Refresh</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Title</th><th>Subject</th><th>Class</th><th>Type</th><th>Status</th><th>Uploaded</th><th>Actions</th></tr></thead>
+            <tbody id="testsTbody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── LIVE CLASSES ── -->
+      <section class="section" id="sec-live">
+        <div class="page-title">Live Classes</div>
+        <div class="card">
+          <div class="card-header">
+            <h2>Scheduled Classes</h2>
+            <button class="btn btn-primary btn-sm" onclick="openModal('liveModal')">+ Schedule Class</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Title</th><th>Date & Time</th><th>Duration</th><th>Meet Link</th><th>Actions</th></tr></thead>
+            <tbody id="liveTbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── DEMO LEADS ── -->
+      <section class="section" id="sec-leads">
+        <div class="page-title">Demo Leads</div>
+        <div class="card">
+          <div class="card-header"><h2>Form Submissions</h2>
+            <button class="btn btn-ghost btn-sm" onclick="loadLeads()">↻ Refresh</button>
+          </div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Name</th><th>Email</th><th>Phone</th><th>Track</th><th>Message</th><th>Date</th></tr></thead>
+            <tbody id="leadsTbody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+      <!-- ── TESTIMONIALS ── -->
+      <section class="section" id="sec-testimonials">
+        <div class="page-title">Testimonials</div>
+        <div class="card">
+          <div class="card-header"><h2>Pending Approval</h2></div>
+          <div class="table-wrap"><table>
+            <thead><tr><th>Name</th><th>Role</th><th>Message</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="testimonialsTbody"><tr><td colspan="5" class="empty">Loading…</td></tr></tbody>
+          </table></div>
+        </div>
+      </section>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ═══════════════════════════ MODALS ════════════════════════════ -->
+
+<!-- Course Modal -->
+<div class="modal-backdrop" id="courseModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="courseModalTitle">Add Course</h3><button class="close-btn" onclick="closeModal('courseModal')">&times;</button></div>
+    <input type="hidden" id="courseId">
+    <div class="form-row">
+      <div class="form-group"><label>Course ID / Slug *</label><input type="text" id="courseSlug" placeholder="e.g. python-ds"></div>
+      <div class="form-group"><label>Track</label>
+        <select id="courseTrack"><option value="career">Career</option><option value="school">School</option></select>
       </div>
-
-      <!-- New / Edit form -->
-      <div id="postForm" hidden>
-        <input type="hidden" id="editingId">
-
-        <div class="field-row">
-          <div class="field">
-            <label>Post Title *</label>
-            <input type="text" id="fTitle" placeholder="e.g. 5 Vedic Maths tricks for Class 10" oninput="autoSlug()">
-          </div>
-          <div class="field">
-            <label>Slug (URL key) *</label>
-            <input type="text" id="fSlug" placeholder="auto-generated from title">
-            <div class="slug-preview" id="slugPreview"></div>
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Excerpt (shown on blog listing)</label>
-          <textarea id="fExcerpt" rows="2" placeholder="A short 1–2 line teaser…"></textarea>
-        </div>
-
-        <div class="field-row">
-          <div class="field">
-            <label>Category</label>
-            <select id="fCategory">
-              <option value="">— None —</option>
-              <option value="school">School</option>
-              <option value="board-prep">Board Prep</option>
-              <option value="competitive">JEE / NEET</option>
-              <option value="career">Career Tools</option>
-            </select>
-          </div>
-          <div class="field">
-            <label>Cover Image URL</label>
-            <input type="url" id="fCover" placeholder="https://…">
-          </div>
-        </div>
-
-        <div class="field">
-          <label>Author Name</label>
-          <input type="text" id="fAuthor" value="Learners Academy">
-        </div>
-
-        <!-- Editor -->
-        <div class="field">
-          <label>Post Content *</label>
-          <div class="editor-toolbar">
-            <button onclick="fmt('bold')"><b>B</b></button>
-            <button onclick="fmt('italic')"><i>I</i></button>
-            <button onclick="fmt('underline')"><u>U</u></button>
-            <div class="sep"></div>
-            <button onclick="insertBlock('h2')">H2</button>
-            <button onclick="insertBlock('h3')">H3</button>
-            <div class="sep"></div>
-            <button onclick="fmt('insertUnorderedList')">• List</button>
-            <button onclick="fmt('insertOrderedList')">1. List</button>
-            <div class="sep"></div>
-            <button onclick="insertBlock('blockquote')">❝ Quote</button>
-            <button onclick="insertLink()">🔗 Link</button>
-            <button onclick="insertImg()">🖼 Image</button>
-            <div class="sep"></div>
-            <button onclick="togglePreview()" id="previewBtn">👁 Preview</button>
-          </div>
-          <div id="contentEditor" contenteditable="true" spellcheck="true">
-            <p>Start writing your post here…</p>
-          </div>
-        </div>
-
-        <div class="preview-box" id="previewBox">
-          <p class="preview-box__label">PREVIEW</p>
-          <div class="preview-box__inner" id="previewInner"></div>
-        </div>
-
-        <div class="action-bar">
-          <button class="btn btn--ghost" onclick="cancelEdit()">Cancel</button>
-          <div class="spacer"></div>
-          <button class="btn btn--ghost" onclick="savePost('draft')">Save as Draft</button>
-          <button class="btn btn--solid" onclick="savePost('published')">Publish →</button>
-        </div>
-      </div>
-
-      <!-- Posts list -->
-      <hr class="section-divider">
-      <div class="posts-section">
-        <h3>All Posts</h3>
-        <div id="postsList"><p class="posts-empty">Loading…</p></div>
-      </div>
-
+    </div>
+    <div class="form-group"><label>Title *</label><input type="text" id="courseTitle" placeholder="Course display name"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Price (₹) *</label><input type="number" id="coursePriceNow" placeholder="1799"></div>
+      <div class="form-group"><label>Old Price (₹)</label><input type="number" id="coursePriceOld" placeholder="2499"></div>
+    </div>
+    <div class="form-group"><label><input type="checkbox" id="courseIsFree" style="width:auto;margin-right:8px"> Free course</label></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('courseModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveCourse()">Save Course</button>
     </div>
   </div>
+</div>
 
-  <!-- ===== TAB: VIDEO UPLOAD ===== -->
-  <div class="tab-panel" id="tab-video">
-    <div class="admin-wrap">
-
-      <div class="admin-section-head">
-        <h2>Upload Lesson Video</h2>
-      </div>
-
-      <p style="font-family:'Poppins',sans-serif;font-size:14px;color:#5b6b81;max-width:600px;margin:0 0 24px;">
-        Pick the subject/course this recording belongs to, then upload. The video file is stored on Cloudinary; its details are saved to Supabase so the list is visible from any device.
-      </p>
-
-      <div id="configBanner" class="config-banner" hidden>
-        <strong>Metadata storage isn't connected yet.</strong> Videos will still upload to Cloudinary, but the course list is only saved in this browser's local storage right now.
-      </div>
-
-      <div class="video-form-wrap">
-        <div class="auth-form" id="videoMetaForm">
-          <label>Subject / Course
-            <select id="videoCourse" required>
-              <option value="" disabled selected>Choose a subject or course…</option>
-              <optgroup label="School — Grade 6–12">
-                <option value="math-grade-6">Mathematics Foundations — Grade 6</option>
-                <option value="science-grade-7">Science Explorer — Grade 7</option>
-                <option value="social-studies-grade-8">Social Studies Made Fun — Grade 8</option>
-                <option value="science-grade-9">Science Explorer — Grade 9</option>
-                <option value="math-grade-10">Mathematics Masterclass — Grade 10</option>
-                <option value="physics-grade-11">Physics Mastery — Grade 11</option>
-                <option value="english-grade-12">English Literature &amp; Grammar — Grade 12</option>
-                <option value="jee-foundation-math">JEE Foundation — Mathematics</option>
-              </optgroup>
-              <optgroup label="Career / Professional">
-                <option value="python-data-science">Python for Data Science &amp; Automation</option>
-                <option value="sql-mastery">SQL — Complete Database Mastery</option>
-                <option value="powerbi-bootcamp">Power BI — Business Intelligence Bootcamp</option>
-                <option value="tableau-dashboard-pro">Tableau — From Zero to Dashboard Pro</option>
-                <option value="excel-sheets-bootcamp">Excel &amp; Google Sheets — Power User Bootcamp</option>
-                <option value="data-analytics-career">Data Analytics — Complete Career Path</option>
-                <option value="ml-ai-fundamentals">Machine Learning &amp; AI Fundamentals</option>
-              </optgroup>
-              <optgroup label="Other">
-                <option value="__custom__">Something not listed yet…</option>
-              </optgroup>
-            </select>
-          </label>
-
-          <label id="customCourseWrap" hidden>Custom course name
-            <input type="text" id="customCourseName" placeholder="e.g. Vedic Maths — Level 1">
-          </label>
-
-          <label>Lesson title
-            <input type="text" id="videoTitle" placeholder="e.g. Lesson 3 — Trigonometry basics" required>
-          </label>
-
-          <button type="button" class="btn btn--solid btn--lg" id="uploadBtn" style="width:100%;margin-top:8px;">Choose &amp; upload video</button>
-          <p class="auth-note" id="uploadStatus" style="text-align:center;margin-top:12px;">No video selected yet.</p>
-        </div>
-      </div>
-
-      <div id="uploadList" style="margin-top:32px;"></div>
-
+<!-- Blog Modal -->
+<div class="modal-backdrop" id="blogModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="blogModalTitle">New Blog Post</h3><button class="close-btn" onclick="closeModal('blogModal')">&times;</button></div>
+    <input type="hidden" id="blogId">
+    <div class="form-group"><label>Title *</label><input type="text" id="blogTitle" placeholder="Post title"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Category</label><input type="text" id="blogCategory" placeholder="JEE / Career / Maths…"></div>
+      <div class="form-group"><label>Author</label><input type="text" id="blogAuthor" placeholder="Author name"></div>
+    </div>
+    <div class="form-group"><label>Slug (URL key)</label><input type="text" id="blogSlug" placeholder="auto-generated if blank"></div>
+    <div class="form-group"><label>Excerpt</label><input type="text" id="blogExcerpt" placeholder="Short summary shown in listings"></div>
+    <div class="form-group"><label>Content *</label><textarea id="blogContent" style="min-height:180px" placeholder="Full article content…"></textarea></div>
+    <div class="form-group"><label>Status</label>
+      <select id="blogStatus"><option value="draft">Draft</option><option value="published">Published</option></select>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('blogModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveBlog()">Save Post</button>
     </div>
   </div>
+</div>
 
-</div><!-- /adminMain -->
+<!-- Video Modal -->
+<div class="modal-backdrop" id="videoModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="videoModalTitle">Add Video</h3><button class="close-btn" onclick="closeModal('videoModal')">&times;</button></div>
+    <input type="hidden" id="videoId">
 
-<!-- Toast -->
-<div class="toast" id="toast"></div>
+    <div class="form-group"><label>Lesson Title *</label><input type="text" id="videoTitle" placeholder="e.g. Introduction to SQL"></div>
 
-<!-- ===== LOCK SCRIPT ===== -->
-<script>
-  const PASSCODE = 'learners2026';
+    <div class="form-row">
+      <div class="form-group">
+        <label>Subject *</label>
+        <select id="videoSubject" onchange="buildVideoCourseId()" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+          <option value="">— Select Subject —</option>
+          <option value="math">Mathematics</option>
+          <option value="science">Science</option>
+          <option value="social-studies">Social Science</option>
+          <option value="english">English</option>
+          <option value="computers">Computers</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Class *</label>
+        <select id="videoGrade" onchange="buildVideoCourseId()" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+          <option value="">— Select Class —</option>
+          <option value="6">Class 6</option>
+          <option value="7">Class 7</option>
+          <option value="8">Class 8</option>
+          <option value="9">Class 9</option>
+          <option value="10">Class 10</option>
+          <option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" id="videoCourseId">
+    <div id="videoCourseIdPreview" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 14px;margin-bottom:1rem;font-size:13px;color:#166534;">
+      📌 Course ID: <strong id="videoCourseIdText"></strong>
+    </div>
 
-  function checkPasscode() {
-    const val = document.getElementById('passcodeInput').value.trim();
-    if (val === PASSCODE) {
-      document.getElementById('lockScreen').style.display = 'none';
-      document.getElementById('adminMain').hidden = false;
-      sessionStorage.setItem('la_admin', '1');
-      // Wait for window._sb to be set by the module script
-      const waitForSb = setInterval(() => {
-        if (window._sb) {
-          clearInterval(waitForSb);
-          checkSupabaseConfig();
-          renderUploadList();
-          loadPosts();
-        }
-      }, 50);
-    } else {
-      document.getElementById('lockError').style.display = 'block';
-      document.getElementById('passcodeInput').focus();
-    }
+    <div class="form-group">
+      <label>Video File *</label>
+      <input type="file" id="videoFile" accept="video/mp4,video/mov,video/avi,video/*" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;width:100%;cursor:pointer">
+      <small style="color:var(--text2);margin-top:4px;display:block">MP4, MOV, AVI — Max 500MB. Uploads to Cloudinary (streamed, compressed).</small>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group"><label>Duration (min)</label><input type="number" id="videoDuration" placeholder="15"></div>
+      <div class="form-group"><label>Order</label><input type="number" id="videoOrder" placeholder="1"></div>
+    </div>
+
+    <div id="videoUploadProgress" style="display:none;margin:1rem 0">
+      <div style="background:var(--border);height:6px;border-radius:4px;overflow:hidden">
+        <div id="videoProgressBar" style="background:var(--teal);height:100%;width:0%;transition:.3s"></div>
+      </div>
+      <small style="color:var(--text2);display:block;margin-top:6px" id="videoUploadStatus">Uploading…</small>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('videoModal')">Cancel</button>
+      <button class="btn btn-primary" id="saveVideoBtn" onclick="saveVideo()">Upload Video</button>
+    </div>
+  </div>
+</div>
+
+<!-- Syllabus Modal -->
+<div class="modal-backdrop" id="syllabusModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Upload Syllabus PDF</h3><button class="close-btn" onclick="closeModal('syllabusModal')">&times;</button></div>
+    <input type="hidden" id="syllabusId">
+
+    <!-- Subject dropdown -->
+    <div class="form-group">
+      <label>Subject *</label>
+      <select id="syllabusSubject" onchange="updateSyllabusGrades()" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+        <option value="">— Select Subject —</option>
+        <option value="math">Mathematics</option>
+        <option value="science">Science</option>
+        <option value="social-studies">Social Science</option>
+        <option value="english">English</option>
+        <option value="computers">Computers</option>
+      </select>
+    </div>
+
+    <!-- Grade dropdown -->
+    <div class="form-group">
+      <label>Class *</label>
+      <select id="syllabusGrade" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+        <option value="">— Select Class —</option>
+        <option value="6">Class 6</option>
+        <option value="7">Class 7</option>
+        <option value="8">Class 8</option>
+        <option value="9">Class 9</option>
+        <option value="10">Class 10</option>
+        <option value="11">Class 11</option>
+        <option value="12">Class 12</option>
+      </select>
+    </div>
+
+    <!-- Auto-generated Course ID preview -->
+    <div id="courseIdPreview" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 14px;margin-bottom:1rem;font-size:13px;color:#166534;">
+      📌 Course ID: <strong id="courseIdPreviewText"></strong>
+    </div>
+
+    <div class="form-group">
+      <label>PDF File *</label>
+      <input type="file" id="syllabusFile" accept=".pdf" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;width:100%;cursor:pointer">
+      <small style="color:var(--text2);margin-top:4px;display:block">Max 20MB. PDF files only.</small>
+    </div>
+    <div class="form-group">
+      <label>File Description (optional)</label>
+      <input type="text" id="syllabusDescription" placeholder="e.g. CBSE Class 6 Mathematics Syllabus">
+    </div>
+    <div id="uploadProgress" style="display:none;margin:1rem 0">
+      <div style="background:var(--border);height:6px;border-radius:4px;overflow:hidden">
+        <div id="progressBar" style="background:var(--teal);height:100%;width:0%;transition:.3s"></div>
+      </div>
+      <small style="color:var(--text2);display:block;margin-top:6px" id="uploadStatus">Uploading…</small>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('syllabusModal')">Cancel</button>
+      <button class="btn btn-primary" id="uploadBtn" onclick="uploadSyllabus()">Upload PDF</button>
+    </div>
+  </div>
+</div>
+
+<!-- Test Modal -->
+<div class="modal-backdrop" id="testModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3>Upload Test / Practice Paper</h3><button class="close-btn" onclick="closeModal('testModal')">&times;</button></div>
+
+    <div class="form-group">
+      <label>Test Title *</label>
+      <input type="text" id="testTitle" placeholder="e.g. Chapter 3 – Quadratic Equations Test">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Subject *</label>
+        <select id="testSubject" onchange="buildTestCourseId()" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+          <option value="">— Select Subject —</option>
+          <option value="math">Mathematics</option>
+          <option value="science">Science</option>
+          <option value="social-studies">Social Science</option>
+          <option value="english">English</option>
+          <option value="computers">Computers</option>
+          <option value="vedic-math">Vedic Maths</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Class *</label>
+        <select id="testGrade" onchange="buildTestCourseId()" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+          <option value="">— Select Class —</option>
+          <option value="6">Class 6</option>
+          <option value="7">Class 7</option>
+          <option value="8">Class 8</option>
+          <option value="9">Class 9</option>
+          <option value="10">Class 10</option>
+          <option value="11">Class 11</option>
+          <option value="12">Class 12</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="testCourseIdPreview" style="display:none;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:8px 14px;margin-bottom:1rem;font-size:13px;color:#166534;">
+      📌 Course ID: <strong id="testCourseIdText"></strong>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label>Test Type</label>
+        <select id="testType" style="width:100%;padding:10px 14px;border:1.5px solid var(--border);border-radius:8px;font-size:14px;outline:none;">
+          <option value="chapter-test">Chapter Test</option>
+          <option value="unit-test">Unit Test</option>
+          <option value="practice-paper">Practice Paper</option>
+          <option value="sample-paper">Sample Paper</option>
+          <option value="mock-test">Mock Test</option>
+          <option value="previous-year">Previous Year Paper</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Total Marks</label>
+        <input type="number" id="testMarks" placeholder="e.g. 50">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Description (optional)</label>
+      <input type="text" id="testDescription" placeholder="e.g. CBSE Chapter 3 test covering quadratic equations">
+    </div>
+
+    <div class="form-group">
+      <label>Test PDF *</label>
+      <input type="file" id="testFile" accept=".html,text/html" style="padding:8px;border:1.5px solid var(--border);border-radius:8px;width:100%;cursor:pointer">
+      <small style="color:var(--text2);margin-top:4px;display:block">HTML files only — Max 20MB. For interactive MCQ tests.</small>
+    </div>
+
+    <div id="testUploadProgress" style="display:none;margin:1rem 0">
+      <div style="background:var(--border);height:6px;border-radius:4px;overflow:hidden">
+        <div id="testProgressBar" style="background:var(--teal);height:100%;width:0%;transition:.3s"></div>
+      </div>
+      <small style="color:var(--text2);display:block;margin-top:6px" id="testUploadStatus">Uploading…</small>
+    </div>
+
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('testModal')">Cancel</button>
+      <button class="btn btn-primary" id="uploadTestBtn" onclick="uploadTest()">Upload Test</button>
+    </div>
+  </div>
+</div>
+
+<!-- Live Class Modal -->
+<div class="modal-backdrop" id="liveModal">
+  <div class="modal-box">
+    <div class="modal-head"><h3 id="liveModalTitle">Schedule Live Class</h3><button class="close-btn" onclick="closeModal('liveModal')">&times;</button></div>
+    <input type="hidden" id="liveId">
+    <div class="form-group"><label>Class Title *</label><input type="text" id="liveTitle" placeholder="e.g. Quadratic Equations – Live Session"></div>
+    <div class="form-row">
+      <div class="form-group"><label>Date *</label><input type="date" id="liveDate"></div>
+      <div class="form-group"><label>Time *</label><input type="time" id="liveTime"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label>Duration (min)</label><input type="number" id="liveDuration" value="90"></div>
+      <div class="form-group"><label>Max Seats</label><input type="number" id="liveSeats" value="100"></div>
+    </div>
+    <div class="form-group"><label>Google Meet / Zoom Link</label><input type="url" id="liveMeet" placeholder="https://meet.google.com/…"></div>
+    <div class="form-group"><label>Course (optional)</label><input type="text" id="liveCourse" placeholder="sql-mastery"></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('liveModal')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLive()">Schedule</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ TEST RESULTS MODAL ══════════════ -->
+<div class="modal-backdrop" id="testResultsModal">
+  <div class="modal-box" style="max-width:900px;width:95%">
+    <div class="modal-head">
+      <h3 id="testResultsTitle">Test Results</h3>
+      <button class="close-btn" onclick="closeModal('testResultsModal')">&times;</button>
+    </div>
+    <!-- Summary stats -->
+    <div id="testResultsSummary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin-bottom:1.25rem"></div>
+    <!-- Attempts table -->
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Student</th>
+            <th>Score</th>
+            <th>Total</th>
+            <th>%</th>
+            <th>Submitted</th>
+            <th>Answer Sheet</th>
+          </tr>
+        </thead>
+        <tbody id="testResultsTbody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════ ANSWER SHEET MODAL ══════════════ -->
+<div class="modal-backdrop" id="answerSheetModal">
+  <div class="modal-box" style="max-width:780px;width:95%;max-height:85vh;overflow-y:auto">
+    <div class="modal-head">
+      <h3 id="answerSheetTitle">Answer Sheet</h3>
+      <button class="close-btn" onclick="closeModal('answerSheetModal')">&times;</button>
+    </div>
+    <div id="answerSheetBody" style="font-size:14px"></div>
+  </div>
+</div>
+
+<!-- ══════════════════════════ SCRIPTS ════════════════════════════ -->
+<script type="module">
+import { supabase } from "./supabase-client.js";
+window._sb = supabase; // make available to non-module helpers
+
+/* ─── helpers ─── */
+function toast(msg, type = "success") {
+  const el = document.createElement("div");
+  el.className = `toast ${type}`;
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+}
+window.toast = toast;
+
+function fmt(date) {
+  if (!date) return "—";
+  return new Date(date).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" });
+}
+window.fmt = fmt;
+
+function esc(s) { return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+window.esc = esc;
+
+/* ─── auth ─── */
+async function doLogin() {
+  const btn = document.getElementById("authBtn");
+  const errEl = document.getElementById("authError");
+  errEl.classList.remove("show");
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Signing in…';
+
+  const email = document.getElementById("authEmail").value.trim();
+  const pw    = document.getElementById("authPassword").value;
+  const token = document.querySelector('[name="cf-turnstile-response"]')?.value;
+
+  if (!token) {
+    errEl.textContent = "Please complete the CAPTCHA.";
+    errEl.classList.add("show");
+    btn.disabled = false;
+    btn.textContent = "Sign in";
+    return;
   }
 
-  document.getElementById('passcodeInput').addEventListener('keydown', e => {
-    if (e.key === 'Enter') checkPasscode();
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
+  btn.disabled = false;
+  btn.textContent = "Sign in";
+
+  if (error) { errEl.textContent = error.message; errEl.classList.add("show"); return; }
+
+  // Admin role check
+  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", data.user.id).single();
+  if (!profile?.is_admin) {
+    await supabase.auth.signOut();
+    errEl.textContent = "Access denied. You are not an admin.";
+    errEl.classList.add("show");
+    return;
+  }
+
+  launchApp(data.user);
+}
+window.doLogin = doLogin;
+
+async function doLogout() {
+  await supabase.auth.signOut();
+  location.reload();
+}
+window.doLogout = doLogout;
+
+function launchApp(user) {
+  document.getElementById("authScreen").style.display = "none";
+  document.getElementById("app").classList.add("active");
+  const initials = (user.email || "AD").slice(0, 2).toUpperCase();
+  document.getElementById("userAvatar").textContent = initials;
+  document.getElementById("userEmail").textContent = user.email;
+  loadDashboard();
+  loadStudents();
+  loadCourses();
+  loadBlog();
+  loadVideos();
+  loadSyllabus();
+  loadTests();
+  loadLive();
+  loadLeads();
+  loadTestimonials();
+}
+
+// Check existing session on load
+const { data: { session } } = await supabase.auth.getSession();
+if (session) {
+  const { data: profile } = await supabase.from("profiles").select("is_admin").eq("id", session.user.id).single();
+  if (profile?.is_admin) {
+    launchApp(session.user);
+  } else {
+    await supabase.auth.signOut();
+  }
+}
+
+document.getElementById("authPassword").addEventListener("keydown", e => { if (e.key === "Enter") doLogin(); });
+
+/* ─── nav ─── */
+document.querySelectorAll(".nav-item[data-section]").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".nav-item").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
+    btn.classList.add("active");
+    const sec = btn.dataset.section;
+    document.getElementById(`sec-${sec}`).classList.add("active");
+    const titles = { dashboard:"Dashboard", students:"Students", courses:"Courses", blog:"Blog Posts", videos:"Video Lessons", syllabus:"Syllabus & PDFs", tests:"Tests & Practice Papers", live:"Live Classes", leads:"Demo Leads", testimonials:"Testimonials" };
+    document.getElementById("pageTitle").textContent = titles[sec] || sec;
+  });
+});
+
+/* ─── modal helpers ─── */
+function openModal(id) { document.getElementById(id).classList.add("open"); }
+function closeModal(id) { document.getElementById(id).classList.remove("open"); }
+window.openModal = openModal;
+window.closeModal = closeModal;
+
+/* ══════════════ DASHBOARD ══════════════ */
+async function loadDashboard() {
+  const [{ count: sc }, { count: cc }, { count: bc }, { count: lc }] = await Promise.all([
+    supabase.from("profiles").select("*", { count: "exact", head: true }),
+    supabase.from("courses").select("*", { count: "exact", head: true }),
+    supabase.from("blog_posts").select("*", { count: "exact", head: true }).eq("status","published"),
+    supabase.from("leads").select("*", { count: "exact", head: true }),
+  ]);
+  document.getElementById("statStudents").textContent = sc ?? "—";
+  document.getElementById("statCourses").textContent  = cc ?? "—";
+  document.getElementById("statBlogs").textContent    = bc ?? "—";
+  document.getElementById("statLeads").textContent    = lc ?? "—";
+
+  // Recent signups table
+  const { data: recent } = await supabase.from("profiles")
+    .select("full_name, email, role, created_at")
+    .order("created_at", { ascending: false }).limit(8);
+
+  const tbody = document.getElementById("recentSignups");
+  if (!recent?.length) { tbody.innerHTML = `<tr><td colspan="4" class="empty">No signups yet.</td></tr>`; }
+  else tbody.innerHTML = recent.map(r => `
+    <tr>
+      <td><strong>${esc(r.full_name||"—")}</strong></td>
+      <td>${esc(r.email||"—")}</td>
+      <td><span class="badge ${r.role==="professional"?"badge-blue":"badge-green"}">${r.role||"student"}</span></td>
+      <td>${fmt(r.created_at)}</td>
+    </tr>`).join("");
+
+  // Charts
+  const { data: roleData } = await supabase.from("profiles").select("role");
+  const roleCounts = { student: 0, professional: 0 };
+  roleData?.forEach(r => { if (r.role in roleCounts) roleCounts[r.role]++; else roleCounts.student++; });
+
+  new Chart(document.getElementById("roleChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["School Students", "Professionals"],
+      datasets: [{ data: [roleCounts.student, roleCounts.professional], backgroundColor: ["#14b8a6","#f59e0b"] }]
+    },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:"bottom" } } }
   });
 
-  function adminLogout() {
-    sessionStorage.removeItem('la_admin');
-    location.reload();
+  // Signups per day last 30 days
+  const since = new Date(); since.setDate(since.getDate()-29);
+  const { data: signups } = await supabase.from("profiles")
+    .select("created_at")
+    .gte("created_at", since.toISOString());
+
+  const counts = {};
+  for (let i=0;i<30;i++) {
+    const d = new Date(since); d.setDate(d.getDate()+i);
+    counts[d.toISOString().slice(0,10)] = 0;
   }
+  signups?.forEach(s => {
+    const k = s.created_at.slice(0,10);
+    if (k in counts) counts[k]++;
+  });
 
-  if (sessionStorage.getItem('la_admin') === '1') {
-    document.getElementById('lockScreen').style.display = 'none';
-    document.getElementById('adminMain').hidden = false;
+  new Chart(document.getElementById("signupChart"), {
+    type: "line",
+    data: {
+      labels: Object.keys(counts).map(d => d.slice(5)),
+      datasets: [{ label:"Signups", data: Object.values(counts), borderColor:"#0f2a4a", backgroundColor:"rgba(15,42,74,.08)", tension:0.4, fill:true, pointRadius:2 }]
+    },
+    options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ ticks:{ maxTicksLimit:8 } } } }
+  });
+}
+
+/* ══════════════ STUDENTS ══════════════ */
+let allStudents = [];
+async function loadStudents() {
+  const tbody = document.getElementById("studentsTbody");
+  tbody.innerHTML = `<tr><td colspan="5" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("profiles")
+    .select("full_name,email,phone,role,created_at")
+    .order("created_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="5" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  allStudents = data || [];
+  renderStudents(allStudents);
+}
+window.loadStudents = loadStudents;
+
+function renderStudents(rows) {
+  const tbody = document.getElementById("studentsTbody");
+  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty">No students found.</td></tr>`; return; }
+  tbody.innerHTML = rows.map(s => `
+    <tr>
+      <td><strong>${esc(s.full_name||"—")}</strong></td>
+      <td>${esc(s.email||"—")}</td>
+      <td>${esc(s.phone||"—")}</td>
+      <td><span class="badge ${s.role==="professional"?"badge-blue":"badge-green"}">${s.role||"student"}</span></td>
+      <td>${fmt(s.created_at)}</td>
+    </tr>`).join("");
+  document.getElementById("studentsPager").textContent = `${rows.length} record${rows.length!==1?"s":""}`;
+}
+
+function filterStudents() {
+  const q = document.getElementById("studentSearch").value.toLowerCase();
+  if (!q) { renderStudents(allStudents); return; }
+  renderStudents(allStudents.filter(s =>
+    (s.full_name||"").toLowerCase().includes(q) ||
+    (s.email||"").toLowerCase().includes(q) ||
+    (s.phone||"").toLowerCase().includes(q)
+  ));
+}
+window.filterStudents = filterStudents;
+
+/* ══════════════ COURSES ══════════════ */
+async function loadCourses() {
+  const tbody = document.getElementById("coursesTbody");
+  tbody.innerHTML = `<tr><td colspan="6" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("courses").select("*").order("id");
+  if (error) { tbody.innerHTML = `<tr><td colspan="6" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty">No courses yet. Add one!</td></tr>`; return; }
+  tbody.innerHTML = data.map(c => `
+    <tr>
+      <td><code style="font-size:12px;background:#f1f5f9;padding:2px 6px;border-radius:4px">${esc(c.id)}</code></td>
+      <td><strong>${esc(c.title||c.id)}</strong></td>
+      <td><span class="badge badge-gray">${esc(c.track||"—")}</span></td>
+      <td>${c.price_now ? "₹"+Number(c.price_now).toLocaleString("en-IN") : "—"}</td>
+      <td>${c.is_free ? '<span class="badge badge-green">Free</span>' : '<span class="badge badge-gray">Paid</span>'}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editCourse(${JSON.stringify(c).replace(/"/g,'&quot;')})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteCourse('${esc(c.id)}')">Delete</button>
+      </td>
+    </tr>`).join("");
+}
+window.loadCourses = loadCourses;
+
+function editCourse(c) {
+  document.getElementById("courseModalTitle").textContent = "Edit Course";
+  document.getElementById("courseId").value       = c.id;
+  document.getElementById("courseSlug").value     = c.id;
+  document.getElementById("courseSlug").disabled  = true;
+  document.getElementById("courseTrack").value    = c.track || "career";
+  document.getElementById("courseTitle").value    = c.title || "";
+  document.getElementById("coursePriceNow").value = c.price_now || "";
+  document.getElementById("coursePriceOld").value = c.price_old || "";
+  document.getElementById("courseIsFree").checked = !!c.is_free;
+  openModal("courseModal");
+}
+window.editCourse = editCourse;
+
+async function saveCourse() {
+  const id      = document.getElementById("courseId").value;
+  const slug    = document.getElementById("courseSlug").value.trim();
+  const title   = document.getElementById("courseTitle").value.trim();
+  const track   = document.getElementById("courseTrack").value;
+  const pnow    = parseFloat(document.getElementById("coursePriceNow").value) || 0;
+  const pold    = parseFloat(document.getElementById("coursePriceOld").value) || null;
+  const is_free = document.getElementById("courseIsFree").checked;
+
+  if (!slug || !title) { toast("Slug and title are required", "error"); return; }
+
+  const payload = { title, track, price_now: pnow, price_old: pold, is_free };
+  let error;
+  if (id) {
+    ({ error } = await supabase.from("courses").update(payload).eq("id", id));
+  } else {
+    ({ error } = await supabase.from("courses").insert({ id: slug, ...payload }));
   }
-</script>
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast(id ? "Course updated!" : "Course added!");
+  closeModal("courseModal");
+  // reset
+  document.getElementById("courseId").value = "";
+  document.getElementById("courseSlug").disabled = false;
+  document.getElementById("courseModalTitle").textContent = "Add Course";
+  loadCourses();
+}
+window.saveCourse = saveCourse;
 
-<!-- ===== TABS ===== -->
-<script>
-  function switchTab(name, btn) {
-    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('is-active'));
-    document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('is-active'));
-    document.getElementById('tab-' + name).classList.add('is-active');
-    btn.classList.add('is-active');
-  }
-</script>
+async function deleteCourse(id) {
+  if (!confirm(`Delete course "${id}"? This cannot be undone.`)) return;
+  const { error } = await supabase.from("courses").delete().eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast("Course deleted");
+  loadCourses();
+}
+window.deleteCourse = deleteCourse;
 
-<!-- ===== BLOG SCRIPTS ===== -->
-<script>
-  function toggleForm(show) {
-    const form = document.getElementById('postForm');
-    const btn  = document.getElementById('toggleFormBtn');
-    const visible = show !== undefined ? show : form.hidden;
-    form.hidden = !visible;
-    btn.textContent = visible ? '✕ Cancel' : '+ New Post';
-    if (visible) { clearForm(); form.scrollIntoView({behavior:'smooth',block:'start'}); }
-  }
+/* ══════════════ BLOG ══════════════ */
+async function loadBlog() {
+  const tbody = document.getElementById("blogTbody");
+  tbody.innerHTML = `<tr><td colspan="6" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("blog_posts")
+    .select("id,title,category,author_name,status,created_at")
+    .order("created_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="6" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty">No posts yet.</td></tr>`; return; }
+  tbody.innerHTML = data.map(p => `
+    <tr>
+      <td><strong>${esc(p.title||"—")}</strong></td>
+      <td>${esc(p.category||"—")}</td>
+      <td>${esc(p.author_name||"—")}</td>
+      <td><span class="badge ${p.status==="published"?"badge-green":"badge-yellow"}">${p.status}</span></td>
+      <td>${fmt(p.created_at)}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editBlog('${p.id}')">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteBlog('${p.id}')">Delete</button>
+      </td>
+    </tr>`).join("");
+}
+window.loadBlog = loadBlog;
 
-  function cancelEdit() {
-    toggleForm(false);
-    clearForm();
-  }
+async function editBlog(id) {
+  const { data } = await supabase.from("blog_posts").select("*").eq("id",id).single();
+  if (!data) return;
+  document.getElementById("blogModalTitle").textContent = "Edit Blog Post";
+  document.getElementById("blogId").value       = data.id;
+  document.getElementById("blogTitle").value    = data.title || "";
+  document.getElementById("blogCategory").value = data.category || "";
+  document.getElementById("blogAuthor").value   = data.author_name || "";
+  document.getElementById("blogSlug").value     = data.slug || "";
+  document.getElementById("blogExcerpt").value  = data.excerpt || "";
+  document.getElementById("blogContent").value  = data.content || "";
+  document.getElementById("blogStatus").value   = data.status || "draft";
+  openModal("blogModal");
+}
+window.editBlog = editBlog;
 
-  function clearForm() {
-    ['editingId','fTitle','fSlug','fExcerpt','fCover'].forEach(id => {
-      document.getElementById(id).value = '';
-    });
-    document.getElementById('fCategory').value = '';
-    document.getElementById('fAuthor').value = 'Learners Academy';
-    document.getElementById('contentEditor').innerHTML = '<p>Start writing your post here…</p>';
-    document.getElementById('slugPreview').textContent = '';
-    document.getElementById('previewBox').classList.remove('is-visible');
-    document.getElementById('previewBtn').textContent = '👁 Preview';
-  }
+async function saveBlog() {
+  const id      = document.getElementById("blogId").value;
+  const title   = document.getElementById("blogTitle").value.trim();
+  const content = document.getElementById("blogContent").value.trim();
+  if (!title || !content) { toast("Title and content are required", "error"); return; }
 
-  function autoSlug() {
-    const title = document.getElementById('fTitle').value;
-    const slug = title.toLowerCase()
-      .replace(/[^a-z0-9\s-]/g,'').trim()
-      .replace(/\s+/g,'-').replace(/-+/g,'-');
-    document.getElementById('fSlug').value = slug;
-    document.getElementById('slugPreview').textContent = slug ? 'blog-post.html?slug=' + slug : '';
-  }
+  const slug = document.getElementById("blogSlug").value.trim() ||
+    title.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 
-  function fmt(cmd) {
-    document.getElementById('contentEditor').focus();
-    document.execCommand(cmd, false, null);
-  }
-
-  function insertBlock(tag) {
-    document.getElementById('contentEditor').focus();
-    document.execCommand('formatBlock', false, tag);
-  }
-
-  function insertLink() {
-    const url = prompt('Enter URL:');
-    if (url) { document.getElementById('contentEditor').focus(); document.execCommand('createLink', false, url); }
-  }
-
-  function insertImg() {
-    const url = prompt('Enter image URL:');
-    if (url) {
-      document.getElementById('contentEditor').focus();
-      document.execCommand('insertHTML', false, `<img src="${url}" alt="Post image" style="width:100%;border-radius:10px;margin:12px 0;">`);
-    }
-  }
-
-  function togglePreview() {
-    const box = document.getElementById('previewBox');
-    const btn = document.getElementById('previewBtn');
-    if (box.classList.contains('is-visible')) {
-      box.classList.remove('is-visible');
-      btn.textContent = '👁 Preview';
-    } else {
-      document.getElementById('previewInner').innerHTML = document.getElementById('contentEditor').innerHTML;
-      box.classList.add('is-visible');
-      btn.textContent = '✕ Close Preview';
-    }
-  }
-
-  function showToast(msg, type = '') {
-    const t = document.getElementById('toast');
-    t.textContent = msg;
-    t.className = 'toast' + (type ? ' toast--' + type : '');
-    t.classList.add('is-visible');
-    setTimeout(() => t.classList.remove('is-visible'), 3500);
-  }
-
-  function escHtml(str) {
-    return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-  async function savePost(status) {
-    const title   = document.getElementById('fTitle').value.trim();
-    const slug    = document.getElementById('fSlug').value.trim();
-    const content = document.getElementById('contentEditor').innerHTML.trim();
-    if (!title)   { showToast('Please enter a title.','error'); return; }
-    if (!slug)    { showToast('Please enter a slug.','error'); return; }
-    if (!content || content === '<p>Start writing your post here…</p>') {
-      showToast('Please write some content.','error'); return;
-    }
-    const payload = {
-      slug, title,
-      excerpt:     document.getElementById('fExcerpt').value.trim() || null,
-      content_html: content,
-      cover_image: document.getElementById('fCover').value.trim() || null,
-      category:    document.getElementById('fCategory').value || null,
-      author_name: document.getElementById('fAuthor').value.trim() || 'Learners Academy',
-      status,
-      published_at: status === 'published' ? new Date().toISOString() : null,
-    };
-    const editingId = document.getElementById('editingId').value;
-    try {
-      const result = editingId
-        ? await window._sb.from('blog_posts').update(payload).eq('id', editingId)
-        : await window._sb.from('blog_posts').insert(payload);
-      if (result.error) throw result.error;
-      showToast(status === 'published' ? '🎉 Post published!' : '📝 Saved as draft.', 'success');
-      cancelEdit();
-      toggleForm(false);
-      loadPosts();
-    } catch(err) {
-      showToast('Error: ' + (err.message || 'Could not save.'), 'error');
-    }
-  }
-
-  async function loadPosts() {
-    if (!window._sb) return;
-    const list = document.getElementById('postsList');
-    list.innerHTML = '<p class="posts-empty">Loading…</p>';
-    try {
-      const { data: posts, error } = await window._sb.from('blog_posts')
-        .select('id,slug,title,category,status,published_at')
-        .order('created_at', { ascending: false });
-      if (error) throw error;
-      if (!posts || !posts.length) {
-        list.innerHTML = '<p class="posts-empty">No posts yet. Click "+ New Post" to write your first one.</p>';
-        return;
-      }
-      list.innerHTML = posts.map(p => `
-        <div class="post-row">
-          <div class="post-row__title">${escHtml(p.title)}</div>
-          ${p.category ? `<span class="post-row__cat">${escHtml(p.category)}</span>` : ''}
-          <span class="post-row__status post-row__status--${p.status}">${p.status}</span>
-          <div class="post-row__actions">
-            <button onclick="editPost('${p.id}')">Edit</button>
-            ${p.status==='draft'
-              ? `<button onclick="quickPublish('${p.id}')">Publish</button>`
-              : `<button onclick="unpublish('${p.id}')">Unpublish</button>`}
-            <button class="btn-delete" onclick="deletePost('${p.id}','${escHtml(p.title)}')">Delete</button>
-          </div>
-        </div>`).join('');
-    } catch(err) {
-      list.innerHTML = '<p class="posts-empty">Could not load posts.</p>';
-    }
-  }
-
-  async function editPost(id) {
-    try {
-      const { data: post, error } = await window._sb.from('blog_posts').select('*').eq('id',id).single();
-      if (error || !post) throw error || new Error('Not found');
-
-      // Show form first (without clearForm running)
-      const form = document.getElementById('postForm');
-      const btn  = document.getElementById('toggleFormBtn');
-      form.hidden = false;
-      btn.textContent = '✕ Cancel';
-
-      // Now fill in the data
-      document.getElementById('editingId').value  = post.id;
-      document.getElementById('fTitle').value     = post.title || '';
-      document.getElementById('fSlug').value      = post.slug || '';
-      document.getElementById('fExcerpt').value   = post.excerpt || '';
-      document.getElementById('fCategory').value  = post.category || '';
-      document.getElementById('fCover').value     = post.cover_image || '';
-      document.getElementById('fAuthor').value    = post.author_name || 'Learners Academy';
-      document.getElementById('contentEditor').innerHTML = post.content_html || '';
-      document.getElementById('slugPreview').textContent = post.slug ? 'blog-post.html?slug='+post.slug : '';
-
-      form.scrollIntoView({behavior:'smooth', block:'start'});
-    } catch(err) { showToast('Could not load post for editing.','error'); }
-  }
-
-  async function quickPublish(id) {
-    const {error} = await window._sb.from('blog_posts').update({status:'published',published_at:new Date().toISOString()}).eq('id',id);
-    if (error) { showToast('Could not publish.','error'); return; }
-    showToast('Post published!','success'); loadPosts();
-  }
-
-  async function unpublish(id) {
-    const {error} = await window._sb.from('blog_posts').update({status:'draft'}).eq('id',id);
-    if (error) { showToast('Could not unpublish.','error'); return; }
-    showToast('Moved to drafts.','success'); loadPosts();
-  }
-
-  async function deletePost(id, title) {
-    if (!confirm(`Delete "${title}"? This cannot be undone.`)) return;
-    const {error} = await window._sb.from('blog_posts').delete().eq('id',id);
-    if (error) { showToast('Could not delete.','error'); return; }
-    showToast('Post deleted.','success'); loadPosts();
-  }
-</script>
-
-<!-- ===== VIDEO UPLOAD SCRIPTS ===== -->
-<script src="https://upload-widget.cloudinary.com/global/all.js"></script>
-<script>
-  const CLOUD_NAME    = 'rdh4ed2g';
-  const UPLOAD_PRESET = 'shrutika';
-
-  const COURSE_TRACK = {
-    'math-grade-6':'school','science-grade-7':'school','social-studies-grade-8':'school',
-    'science-grade-9':'school','math-grade-10':'school','physics-grade-11':'school',
-    'english-grade-12':'school','jee-foundation-math':'school',
-    'python-data-science':'career','sql-mastery':'career','powerbi-bootcamp':'career',
-    'tableau-dashboard-pro':'career','excel-sheets-bootcamp':'career',
-    'data-analytics-career':'career','ml-ai-fundamentals':'career'
+  const payload = {
+    title, content, slug,
+    category: document.getElementById("blogCategory").value.trim(),
+    author_name: document.getElementById("blogAuthor").value.trim(),
+    excerpt: document.getElementById("blogExcerpt").value.trim(),
+    status: document.getElementById("blogStatus").value,
   };
 
-  const courseSelect = document.getElementById('videoCourse');
-  const customWrap   = document.getElementById('customCourseWrap');
-  courseSelect.addEventListener('change', () => {
-    customWrap.hidden = courseSelect.value !== '__custom__';
-  });
+  let error;
+  if (id) {
+    ({ error } = await supabase.from("blog_posts").update(payload).eq("id", id));
+  } else {
+    ({ error } = await supabase.from("blog_posts").insert(payload));
+  }
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast(id ? "Post updated!" : "Post published!");
+  closeModal("blogModal");
+  document.getElementById("blogId").value = "";
+  document.getElementById("blogModalTitle").textContent = "New Blog Post";
+  document.getElementById("blogModal").querySelectorAll("input,textarea,select").forEach(el => { if (el.id !== "blogStatus") el.value = ""; });
+  loadBlog();
+}
+window.saveBlog = saveBlog;
 
-  const uploadStatus = document.getElementById('uploadStatus');
+async function deleteBlog(id) {
+  if (!confirm("Delete this blog post? Cannot be undone.")) return;
+  const { error } = await supabase.from("blog_posts").delete().eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast("Post deleted");
+  loadBlog();
+}
+window.deleteBlog = deleteBlog;
 
-  const widget = cloudinary.createUploadWidget(
-    { cloudName: CLOUD_NAME, uploadPreset: UPLOAD_PRESET, resourceType:'video', sources:['local'], multiple:false, maxFileSize:500000000 },
-    (error, result) => {
-      if (error) { uploadStatus.textContent = 'Upload failed — check console.'; console.error(error); return; }
-      if (result.event === 'queues-start') { uploadStatus.textContent = 'Uploading…'; }
-      if (result.event === 'success') {
-        const courseId   = courseSelect.value;
-        const isCustom   = courseId === '__custom__';
-        const courseName = isCustom
-          ? (document.getElementById('customCourseName').value || 'Untitled course')
-          : courseSelect.options[courseSelect.selectedIndex].text;
-        const track    = isCustom ? 'other' : (COURSE_TRACK[courseId] || 'other');
-        const title    = document.getElementById('videoTitle').value || 'Untitled lesson';
-        saveVideoRecord({
-          title, track,
-          course_id: isCustom ? 'custom' : courseId,
-          course_name: courseName,
-          video_url: result.info.secure_url,
-          thumb_url: result.info.thumbnail_url || '',
-          uploaded_at: new Date().toISOString()
-        });
-        uploadStatus.textContent = 'Uploaded! Saved under ' + courseName + '.';
+/* ══════════════ VIDEOS ══════════════ */
+async function loadVideos() {
+  const tbody = document.getElementById("videosTbody");
+  tbody.innerHTML = `<tr><td colspan="5" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("videos")
+    .select("id,title,course_id,cloudinary_url,duration_min,order_index")
+    .order("course_id").order("order_index");
+  if (error) { tbody.innerHTML = `<tr><td colspan="5" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty">No videos yet.</td></tr>`; return; }
+  tbody.innerHTML = data.map(v => `
+    <tr>
+      <td><strong>${esc(v.title||"—")}</strong></td>
+      <td><code style="font-size:12px">${esc(v.course_id||"—")}</code></td>
+      <td><a href="${esc(v.cloudinary_url||"")}" target="_blank" style="color:var(--teal);font-size:12px">${v.cloudinary_url ? "View ↗" : "—"}</a></td>
+      <td>${v.order_index ?? "—"}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editVideo(${JSON.stringify(v).replace(/"/g,'&quot;')})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteVideo('${v.id}')">Delete</button>
+      </td>
+    </tr>`).join("");
+}
+window.loadVideos = loadVideos;
+
+function buildVideoCourseId() {
+  const subject = document.getElementById("videoSubject").value;
+  const grade   = document.getElementById("videoGrade").value;
+  const preview = document.getElementById("videoCourseIdPreview");
+  const text    = document.getElementById("videoCourseIdText");
+  if (subject && grade) {
+    const cid = `${subject}-grade-${grade}`;
+    document.getElementById("videoCourseId").value = cid;
+    text.textContent = cid;
+    preview.style.display = "block";
+  } else {
+    document.getElementById("videoCourseId").value = "";
+    preview.style.display = "none";
+  }
+}
+window.buildVideoCourseId = buildVideoCourseId;
+
+function editVideo(v) {
+  document.getElementById("videoModalTitle").textContent = "Edit Video";
+  document.getElementById("videoId").value       = v.id;
+  document.getElementById("videoTitle").value    = v.title || "";
+  document.getElementById("videoDuration").value = v.duration_min || "";
+  document.getElementById("videoOrder").value    = v.order_index || "";
+  // Parse course_id back to subject + grade
+  if (v.course_id) {
+    const match = v.course_id.match(/^(.+)-grade-(\d+)$/);
+    if (match) {
+      document.getElementById("videoSubject").value = match[1];
+      document.getElementById("videoGrade").value   = match[2];
+      buildVideoCourseId();
+    }
+  }
+  openModal("videoModal");
+}
+window.editVideo = editVideo;
+
+function resetVideoModal() {
+  document.getElementById("videoId").value       = "";
+  document.getElementById("videoTitle").value    = "";
+  document.getElementById("videoSubject").value  = "";
+  document.getElementById("videoGrade").value    = "";
+  document.getElementById("videoCourseId").value = "";
+  document.getElementById("videoDuration").value = "";
+  document.getElementById("videoOrder").value    = "";
+  document.getElementById("videoFile").value     = "";
+  document.getElementById("videoCourseIdPreview").style.display = "none";
+  document.getElementById("videoUploadProgress").style.display  = "none";
+  document.getElementById("videoProgressBar").style.width       = "0%";
+  document.getElementById("videoModalTitle").textContent        = "Add Video";
+}
+window.resetVideoModal = resetVideoModal;
+
+function uploadToCloudinary(file, progressBar, statusEl) {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "shrutika");
+    formData.append("folder", "learners-academy");
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "https://api.cloudinary.com/v1_1/rdh4ed2g/video/upload");
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        progressBar.style.width = pct + "%";
+        statusEl.textContent = `Uploading… ${pct}%`;
       }
-    }
-  );
+    };
 
-  document.getElementById('uploadBtn').addEventListener('click', () => {
-    if (!courseSelect.value) { alert('Choose a subject/course first.'); return; }
-    if (courseSelect.value === '__custom__' && !document.getElementById('customCourseName').value) { alert('Enter the custom course name.'); return; }
-    if (!document.getElementById('videoTitle').value) { alert('Add a lesson title first.'); return; }
-    widget.open();
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const res = JSON.parse(xhr.responseText);
+        progressBar.style.width = "85%";
+        statusEl.textContent = "Saving to database…";
+        resolve(res.secure_url);
+      } else {
+        let msg = "Upload failed";
+        try { msg = JSON.parse(xhr.responseText)?.error?.message || msg; } catch(e) {}
+        reject(new Error(msg));
+      }
+    };
+    xhr.onerror = () => reject(new Error("Network error — check connection and try again"));
+    xhr.send(formData);
+  });
+}
+
+async function saveVideo() {
+  const id       = document.getElementById("videoId").value;
+  const title    = document.getElementById("videoTitle").value.trim();
+  const courseId = document.getElementById("videoCourseId").value.trim();
+
+  if (!title)    { toast("Please enter a lesson title", "error"); return; }
+  if (!courseId) { toast("Please enter a Course ID", "error"); return; }
+
+  const file = document.getElementById("videoFile").files[0];
+  if (!id && !file) { toast("Please select a video file", "error"); return; }
+  if (file && file.size > 500 * 1024 * 1024) { toast("File too large — max 500MB", "error"); return; }
+
+  const btn         = document.getElementById("saveVideoBtn");
+  const progressDiv = document.getElementById("videoUploadProgress");
+  const progressBar = document.getElementById("videoProgressBar");
+  const statusEl    = document.getElementById("videoUploadStatus");
+
+  btn.disabled = true;
+  btn.innerHTML = `<span class="spinner"></span> ${file ? "Uploading…" : "Saving…"}`;
+
+  try {
+    let videoUrl = null;
+
+    if (file) {
+      progressDiv.style.display = "block";
+      progressBar.style.width = "0%";
+      statusEl.textContent = "Starting upload…";
+      videoUrl = await uploadToCloudinary(file, progressBar, statusEl);
+    }
+
+    const payload = {
+      title,
+      course_id:    courseId,
+      duration_min: parseInt(document.getElementById("videoDuration").value) || null,
+      order_index:  parseInt(document.getElementById("videoOrder").value) || null,
+    };
+    if (videoUrl) payload.cloudinary_url = videoUrl;
+
+    let error;
+    if (id) { ({ error } = await supabase.from("videos").update(payload).eq("id", id)); }
+    else    { ({ error } = await supabase.from("videos").insert(payload)); }
+    if (error) throw new Error(error.message);
+
+    progressBar.style.width = "100%";
+    statusEl.textContent = "✓ Done!";
+
+    toast(id ? "✓ Video updated!" : "✓ Video uploaded to Cloudinary!");
+    setTimeout(() => {
+      closeModal("videoModal");
+      resetVideoModal();
+      loadVideos();
+    }, 700);
+
+  } catch(err) {
+    toast("Error: " + err.message, "error");
+    if (progressDiv) progressDiv.style.display = "none";
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Upload Video";
+  }
+}
+window.saveVideo = saveVideo;
+
+async function deleteVideo(id) {
+  if (!confirm("Delete this video record?")) return;
+  const { error } = await supabase.from("videos").delete().eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast("Video deleted"); loadVideos();
+}
+window.deleteVideo = deleteVideo;
+
+/* ══════════════ SYLLABUS / PDFs ══════════════ */
+async function loadSyllabus() {
+  const tbody = document.getElementById("syllabusTbody");
+  tbody.innerHTML = `<tr><td colspan="5" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("syllabus")
+    .select("id,course_id,file_name,file_size,storage_path,description,created_at")
+    .order("created_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="5" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty">No syllabus files uploaded yet.</td></tr>`; return; }
+  tbody.innerHTML = data.map(s => {
+    const fileSize = s.file_size ? (s.file_size / 1024 / 1024).toFixed(2) + " MB" : "—";
+    const uploadedAt = s.created_at ? new Date(s.created_at).toLocaleDateString("en-IN", {day:"2-digit",month:"short",year:"numeric"}) : "—";
+    const { data: { publicUrl } } = supabase.storage.from("syllabus").getPublicUrl(s.storage_path);
+    return `
+    <tr>
+      <td><strong>${esc(s.course_id||"—")}</strong></td>
+      <td>${esc(s.file_name||"—")}</td>
+      <td>${fileSize}</td>
+      <td>${uploadedAt}</td>
+      <td style="white-space:nowrap">
+        <a href="${esc(publicUrl)}" target="_blank" class="btn btn-teal btn-sm" style="text-decoration:none">⬇ Download</a>
+        <button class="btn btn-danger btn-sm" onclick="deleteSyllabus('${s.id}')">🗑 Delete</button>
+      </td>
+    </tr>`;
+  }).join("");
+}
+window.loadSyllabus = loadSyllabus;
+
+function updateSyllabusGrades() {
+  const subject = document.getElementById("syllabusSubject").value;
+  const grade = document.getElementById("syllabusGrade").value;
+  const preview = document.getElementById("courseIdPreview");
+  const previewText = document.getElementById("courseIdPreviewText");
+  if (subject && grade) {
+    previewText.textContent = `${subject}-grade-${grade}`;
+    preview.style.display = "block";
+  } else {
+    preview.style.display = "none";
+  }
+}
+window.updateSyllabusGrades = updateSyllabusGrades;
+
+// Also update preview when grade changes
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("syllabusGrade")?.addEventListener("change", updateSyllabusGrades);
+});
+
+async function uploadSyllabus() {
+  const subject = document.getElementById("syllabusSubject").value;
+  const grade   = document.getElementById("syllabusGrade").value;
+  const fileInput = document.getElementById("syllabusFile");
+  const file = fileInput.files[0];
+  const description = document.getElementById("syllabusDescription").value.trim();
+
+  if (!subject) { toast("Please select a subject", "error"); return; }
+  if (!grade)   { toast("Please select a class", "error"); return; }
+  if (!file)    { toast("Please select a PDF file", "error"); return; }
+  if (file.type !== "application/pdf") { toast("Only PDF files are allowed", "error"); return; }
+  if (file.size > 20 * 1024 * 1024)   { toast("File must be smaller than 20MB", "error"); return; }
+
+  const courseId = `${subject}-grade-${grade}`;
+  const progressDiv = document.getElementById("uploadProgress");
+  const uploadBtn = document.getElementById("uploadBtn");
+  progressDiv.style.display = "block";
+  uploadBtn.disabled = true;
+
+  const timestamp = Date.now();
+  const fileName = `${courseId}-${timestamp}.pdf`;
+  const storagePath = `${courseId}/${fileName}`;
+
+  try {
+    document.getElementById("progressBar").style.width = "30%";
+    document.getElementById("uploadStatus").textContent = "Uploading to storage…";
+
+    const { error: uploadError } = await supabase.storage
+      .from("syllabus")
+      .upload(storagePath, file);
+
+    if (uploadError) throw new Error(uploadError.message);
+
+    document.getElementById("progressBar").style.width = "70%";
+    document.getElementById("uploadStatus").textContent = "Saving metadata…";
+
+    const { data: { publicUrl: fileUrl } } = supabase.storage.from("syllabus").getPublicUrl(storagePath);
+
+    const { error: insertError } = await supabase.from("syllabus").insert({
+      course_id: courseId,
+      file_name: file.name,
+      file_size: file.size,
+      storage_path: storagePath,
+      file_url: fileUrl,
+      description: description || null
+    });
+
+    if (insertError) throw new Error(insertError.message);
+
+    document.getElementById("progressBar").style.width = "100%";
+    document.getElementById("uploadStatus").textContent = "Done!";
+
+    toast("Syllabus uploaded successfully!");
+    setTimeout(() => {
+      closeModal("syllabusModal");
+      fileInput.value = "";
+      document.getElementById("syllabusSubject").value = "";
+      document.getElementById("syllabusGrade").value = "";
+      document.getElementById("syllabusDescription").value = "";
+      document.getElementById("courseIdPreview").style.display = "none";
+      progressDiv.style.display = "none";
+      document.getElementById("progressBar").style.width = "0%";
+      uploadBtn.disabled = false;
+      loadSyllabus();
+    }, 800);
+  } catch (err) {
+    toast("Error: " + err.message, "error");
+    uploadBtn.disabled = false;
+    progressDiv.style.display = "none";
+  }
+}
+window.uploadSyllabus = uploadSyllabus;
+
+async function deleteSyllabus(id) {
+  if (!confirm("Delete this syllabus file? This cannot be undone.")) return;
+  
+  // Get file path first
+  const { data, error: fetchError } = await supabase.from("syllabus")
+    .select("storage_path").eq("id", id).single();
+  
+  if (fetchError) { toast("Error fetching file: " + fetchError.message, "error"); return; }
+  
+  // Delete from storage
+  const { error: deleteStorageError } = await supabase.storage
+    .from("syllabus")
+    .remove([data.storage_path]);
+  
+  if (deleteStorageError) { toast("Error deleting file: " + deleteStorageError.message, "error"); return; }
+  
+  // Delete metadata from table
+  const { error: deleteError } = await supabase.from("syllabus").delete().eq("id", id);
+  if (deleteError) { toast("Error: " + deleteError.message, "error"); return; }
+  
+  toast("Syllabus deleted");
+  loadSyllabus();
+}
+window.deleteSyllabus = deleteSyllabus;
+
+/* ══════════════ TESTS ══════════════ */
+let allTests = [];
+
+async function loadTests() {
+  const tbody = document.getElementById("testsTbody");
+  tbody.innerHTML = `<tr><td colspan="7" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("tests")
+    .select("id,title,subject,grade,test_type,total_marks,storage_path,description,status,is_active,created_at")
+    .order("created_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="7" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  allTests = data || [];
+  renderTests(allTests);
+}
+window.loadTests = loadTests;
+
+function renderTests(rows) {
+  const tbody = document.getElementById("testsTbody");
+  if (!rows.length) { tbody.innerHTML = `<tr><td colspan="7" class="empty">No tests uploaded yet.</td></tr>`; return; }
+  const subjectLabels = { "math":"Mathematics","science":"Science","social-studies":"Social Science","english":"English","computers":"Computers","vedic-math":"Vedic Maths" };
+  const typeLabels = { "chapter-test":"Chapter Test","unit-test":"Unit Test","practice-paper":"Practice Paper","sample-paper":"Sample Paper","mock-test":"Mock Test","previous-year":"Previous Year" };
+  tbody.innerHTML = rows.map(t => {
+    const { data: { publicUrl } } = supabase.storage.from("tests").getPublicUrl(t.storage_path);
+    const isLive = t.status === "published" && t.is_active === true;
+    return `
+    <tr>
+      <td><strong>${esc(t.title||"—")}</strong>${t.description ? `<br><small style="color:var(--text2)">${esc(t.description)}</small>` : ""}</td>
+      <td>${subjectLabels[t.subject] || esc(t.subject||"—")}</td>
+      <td><span class="badge badge-blue">Class ${esc(String(t.grade||"—"))}</span></td>
+      <td><span class="badge badge-gray">${typeLabels[t.test_type] || esc(t.test_type||"—")}</span></td>
+      <td><span class="badge ${isLive ? "badge-green" : "badge-yellow"}">${isLive ? "Published" : "Draft"}</span></td>
+      <td>${fmt(t.created_at)}</td>
+      <td style="white-space:nowrap">
+        <a href="${esc(publicUrl)}" target="_blank" class="btn btn-teal btn-sm" style="text-decoration:none">🌐 Open</a>
+        ${isLive
+          ? `<button class="btn btn-ghost btn-sm" onclick="setTestPublished('${t.id}', false)">⏸ Unpublish</button>`
+          : `<button class="btn btn-primary btn-sm" onclick="setTestPublished('${t.id}', true)">✓ Publish</button>`}
+        <button class="btn btn-danger btn-sm" onclick="deleteTest('${t.id}')">🗑 Delete</button>
+        <button class="btn btn-sm" style="background:#7c3aed;color:#fff" onclick="viewTestResults('${t.id}','${esc(t.title||'')}')">📊 Results</button>
+      </td>
+    </tr>`;
+  }).join("");
+}
+
+async function setTestPublished(id, publish) {
+  const { error } = await supabase.from("tests")
+    .update({ status: publish ? "published" : "draft", is_active: publish })
+    .eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast(publish ? "✓ Test published!" : "Test unpublished");
+  loadTests();
+}
+window.setTestPublished = setTestPublished;
+
+function filterTests() {
+  const q = document.getElementById("testSearch").value.toLowerCase();
+  if (!q) { renderTests(allTests); return; }
+  renderTests(allTests.filter(t =>
+    (t.title||"").toLowerCase().includes(q) ||
+    (t.subject||"").toLowerCase().includes(q) ||
+    String(t.grade||"").includes(q)
+  ));
+}
+window.filterTests = filterTests;
+
+function buildTestCourseId() {
+  const subject = document.getElementById("testSubject").value;
+  const grade   = document.getElementById("testGrade").value;
+  const preview = document.getElementById("testCourseIdPreview");
+  const text    = document.getElementById("testCourseIdText");
+  if (subject && grade) {
+    text.textContent = `${subject}-grade-${grade}`;
+    preview.style.display = "block";
+  } else {
+    preview.style.display = "none";
+  }
+}
+window.buildTestCourseId = buildTestCourseId;
+
+async function uploadTest() {
+  const title    = document.getElementById("testTitle").value.trim();
+  const subject  = document.getElementById("testSubject").value;
+  const grade    = document.getElementById("testGrade").value;
+  const testType = document.getElementById("testType").value;
+  const marks    = parseInt(document.getElementById("testMarks").value) || null;
+  const desc     = document.getElementById("testDescription").value.trim();
+  const fileInput = document.getElementById("testFile");
+  const file = fileInput.files[0];
+
+  if (!title)   { toast("Please enter a test title", "error"); return; }
+  if (!subject) { toast("Please select a subject", "error"); return; }
+  if (!grade)   { toast("Please select a class", "error"); return; }
+  if (!file)    { toast("Please select an HTML file", "error"); return; }
+  if (!file.name.endsWith(".html") && file.type !== "text/html") { toast("Only HTML files allowed", "error"); return; }
+  if (file.size > 20 * 1024 * 1024) { toast("File must be under 20MB", "error"); return; }
+
+  const courseId = `${subject}-grade-${grade}`;
+  const timestamp = Date.now();
+  const fileName = `${courseId}-${testType}-${timestamp}.html`;
+  const storagePath = `${courseId}/${fileName}`;
+
+  const progressDiv = document.getElementById("testUploadProgress");
+  const progressBar = document.getElementById("testProgressBar");
+  const statusEl    = document.getElementById("testUploadStatus");
+  const btn         = document.getElementById("uploadTestBtn");
+
+  progressDiv.style.display = "block";
+  progressBar.style.width = "20%";
+  statusEl.textContent = "Uploading to storage…";
+  btn.disabled = true;
+
+  try {
+    const { error: uploadError } = await supabase.storage
+      .from("tests")
+      .upload(storagePath, file, { contentType: "text/html" });
+    if (uploadError) throw new Error(uploadError.message);
+
+    progressBar.style.width = "70%";
+    statusEl.textContent = "Saving metadata…";
+
+    const { data: { publicUrl: fileUrl } } = supabase.storage.from("tests").getPublicUrl(storagePath);
+
+    const { error: insertError } = await supabase.from("tests").insert({
+      title,
+      subject,
+      grade,
+      test_type: testType,
+      total_marks: marks,
+      description: desc || null,
+      storage_path: storagePath,
+      file_url: fileUrl,
+      file_name: file.name,
+      file_size: file.size,
+      status: "published",
+      is_active: true,
+    });
+    if (insertError) throw new Error(insertError.message);
+
+    progressBar.style.width = "100%";
+    statusEl.textContent = "✓ Done!";
+    toast("Test uploaded successfully!");
+
+    setTimeout(() => {
+      closeModal("testModal");
+      // reset form
+      ["testTitle","testDescription","testMarks"].forEach(id => document.getElementById(id).value = "");
+      document.getElementById("testSubject").value = "";
+      document.getElementById("testGrade").value = "";
+      document.getElementById("testType").value = "chapter-test";
+      fileInput.value = "";
+      progressDiv.style.display = "none";
+      progressBar.style.width = "0%";
+      document.getElementById("testCourseIdPreview").style.display = "none";
+      btn.disabled = false;
+      loadTests();
+    }, 800);
+  } catch(err) {
+    toast("Error: " + err.message, "error");
+    progressDiv.style.display = "none";
+    btn.disabled = false;
+  }
+}
+window.uploadTest = uploadTest;
+
+async function deleteTest(id) {
+  if (!confirm("Delete this test? This cannot be undone.")) return;
+  const { data, error: fetchErr } = await supabase.from("tests").select("storage_path").eq("id", id).single();
+  if (fetchErr) { toast("Error: " + fetchErr.message, "error"); return; }
+  const { error: storageErr } = await supabase.storage.from("tests").remove([data.storage_path]);
+  if (storageErr) { toast("Storage error: " + storageErr.message, "error"); return; }
+  const { error } = await supabase.from("tests").delete().eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast("Test deleted");
+  loadTests();
+}
+window.deleteTest = deleteTest;
+
+/* ══════════════ TEST RESULTS & ANSWER SHEETS ══════════════ */
+async function viewTestResults(testId, testTitle) {
+  document.getElementById("testResultsTitle").textContent = `Results — ${testTitle}`;
+  document.getElementById("testResultsTbody").innerHTML = `<tr><td colspan="7" class="empty">Loading…</td></tr>`;
+  document.getElementById("testResultsSummary").innerHTML = "";
+  openModal("testResultsModal");
+
+  // Step 1: Fetch attempts (no join — profiles has no FK to test_attempts)
+  const { data: attempts, error } = await supabase
+    .from("test_attempts")
+    .select("id, score, total_marks, percentage, answers, created_at, student_id")
+    .eq("test_id", testId)
+    .order("created_at", { ascending: false });
+
+  if (error) {
+    document.getElementById("testResultsTbody").innerHTML = `<tr><td colspan="7" class="empty" style="color:var(--danger)">Error: ${esc(error.message)}</td></tr>`;
+    return;
+  }
+  if (!attempts || !attempts.length) {
+    document.getElementById("testResultsTbody").innerHTML = `<tr><td colspan="7" class="empty">No attempts yet for this test.</td></tr>`;
+    return;
+  }
+
+  // Step 2: Fetch profiles for those student_ids
+  const studentIds = [...new Set(attempts.map(a => a.student_id).filter(Boolean))];
+  let profileMap = {};
+  if (studentIds.length) {
+    const { data: profiles } = await supabase
+      .from("profiles")
+      .select("id, full_name, email")
+      .in("id", studentIds);
+    (profiles || []).forEach(p => { profileMap[p.id] = p; });
+  }
+
+  // Summary stats
+  const avg     = (attempts.reduce((s, a) => s + (parseFloat(a.percentage) || 0), 0) / attempts.length).toFixed(1);
+  const highest = Math.max(...attempts.map(a => parseFloat(a.percentage) || 0)).toFixed(1);
+  const passed  = attempts.filter(a => (parseFloat(a.percentage) || 0) >= 40).length;
+  document.getElementById("testResultsSummary").innerHTML = `
+    <div class="result-stat"><div class="rs-label">Total Attempts</div><div class="rs-value">${attempts.length}</div></div>
+    <div class="result-stat"><div class="rs-label">Avg Score</div><div class="rs-value">${avg}%</div></div>
+    <div class="result-stat"><div class="rs-label">Highest</div><div class="rs-value">${highest}%</div></div>
+    <div class="result-stat"><div class="rs-label">Passed (≥40%)</div><div class="rs-value">${passed}</div><div class="rs-sub">of ${attempts.length}</div></div>
+  `;
+
+  // Table rows
+  document.getElementById("testResultsTbody").innerHTML = attempts.map((a, i) => {
+    const profile = profileMap[a.student_id] || {};
+    const name    = profile.full_name || "Unknown Student";
+    const email   = profile.email || (a.student_id ? a.student_id.slice(0,8) + "…" : "—");
+    const pct     = parseFloat(a.percentage) || 0;
+    const pctBadge = pct >= 40
+      ? `<span style="color:#065f46;font-weight:700">${pct.toFixed(1)}%</span>`
+      : `<span style="color:#991b1b;font-weight:700">${pct.toFixed(1)}%</span>`;
+    const submitted = a.created_at
+      ? new Date(a.created_at).toLocaleString("en-IN",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"})
+      : "—";
+    const hasAnswers = Array.isArray(a.answers) && a.answers.length > 0;
+    return `<tr>
+      <td>${i + 1}</td>
+      <td><strong>${esc(name)}</strong><br><small style="color:var(--text2)">${esc(email)}</small></td>
+      <td><strong>${a.score ?? "—"}</strong></td>
+      <td>${a.total_marks ?? "—"}</td>
+      <td>${pctBadge}</td>
+      <td style="font-size:12px">${submitted}</td>
+      <td>${hasAnswers
+        ? `<button class="btn btn-sm" style="background:#7c3aed;color:#fff" onclick="viewAnswerSheet('${a.id}','${esc(name)}')">📋 View Sheet</button>`
+        : `<span style="color:var(--text2);font-size:12px">No data</span>`}</td>
+    </tr>`;
+  }).join("");
+}
+window.viewTestResults = viewTestResults;
+
+async function viewAnswerSheet(attemptId, studentName) {
+  document.getElementById("answerSheetTitle").textContent = `Answer Sheet — ${studentName}`;
+  document.getElementById("answerSheetBody").innerHTML = `<p style="padding:1rem;color:var(--text2)">Loading…</p>`;
+  openModal("answerSheetModal");
+
+  const { data: attempt, error } = await supabase
+    .from("test_attempts")
+    .select("score, total_marks, percentage, answers, created_at")
+    .eq("id", attemptId)
+    .single();
+
+  if (error || !attempt) {
+    document.getElementById("answerSheetBody").innerHTML = `<p style="color:var(--danger);padding:1rem">Could not load answer sheet.</p>`;
+    return;
+  }
+
+  const answers = attempt.answers || [];
+  if (!answers.length) {
+    document.getElementById("answerSheetBody").innerHTML = `<p style="padding:1rem;color:var(--text2)">No detailed answer data was recorded for this attempt.</p>`;
+    return;
+  }
+
+  const correct = answers.filter(a => a.is_correct).length;
+  const wrong   = answers.filter(a => !a.is_correct && a.student_answer !== null && a.student_answer !== undefined && a.student_answer !== "").length;
+  const skip    = answers.filter(a => a.student_answer === null || a.student_answer === undefined || a.student_answer === "").length;
+
+  let html = `
+    <div style="display:flex;gap:.75rem;flex-wrap:wrap;margin-bottom:1.25rem">
+      <span style="background:#d1fae5;color:#065f46;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700">✓ Correct: ${correct}</span>
+      <span style="background:#fee2e2;color:#991b1b;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700">✗ Wrong: ${wrong}</span>
+      <span style="background:#e5e7eb;color:#374151;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700">— Skipped: ${skip}</span>
+      <span style="background:#ede9fe;color:#5b21b6;padding:4px 14px;border-radius:20px;font-size:13px;font-weight:700">Score: ${attempt.score}/${attempt.total_marks} (${parseFloat(attempt.percentage||0).toFixed(1)}%)</span>
+    </div>`;
+
+  answers.forEach((a, i) => {
+    const isSkip = a.student_answer === null || a.student_answer === undefined || a.student_answer === "";
+    const cls    = isSkip ? "unattempted" : (a.is_correct ? "correct" : "wrong");
+    const statusTag = isSkip
+      ? `<span class="tag-skip">Skipped</span>`
+      : (a.is_correct ? `<span class="tag-correct">✓ Correct</span>` : `<span class="tag-wrong">✗ Wrong</span>`);
+
+    html += `<div class="ans-q ${cls}">
+      <div class="q-num">Q${i + 1} ${statusTag}</div>
+      <div class="q-text">${esc(a.question || "Question text not recorded")}</div>
+      <div class="ans-row"><span class="label">Student ans:</span> <strong>${esc(String(a.student_answer ?? "—"))}</strong></div>
+      <div class="ans-row"><span class="label">Correct ans:</span> <strong style="color:#065f46">${esc(String(a.correct_answer ?? "—"))}</strong></div>
+      ${a.marks_for_q ? `<div class="ans-row"><span class="label">Marks:</span> ${a.is_correct ? `+${a.marks_for_q}` : "0"} / ${a.marks_for_q}</div>` : ""}
+    </div>`;
   });
 
-  async function saveVideoRecord(record) {
-    if (window._sb) {
-      const { error } = await window._sb.from('videos').insert(record);
-      if (error) { console.error('Supabase insert failed, using localStorage:', error); saveToLocalStorage(record); }
-    } else { saveToLocalStorage(record); }
-    renderUploadList();
+  document.getElementById("answerSheetBody").innerHTML = html;
+}
+window.viewAnswerSheet = viewAnswerSheet;
+
+/* ══════════════ LIVE CLASSES ══════════════ */
+async function loadLive() {
+  const tbody = document.getElementById("liveTbody");
+  tbody.innerHTML = `<tr><td colspan="5" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("live_classes")
+    .select("id,title,scheduled_at,duration_min,meet_link")
+    .order("scheduled_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="5" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty">No classes scheduled.</td></tr>`; return; }
+  tbody.innerHTML = data.map(c => {
+    const dt = c.scheduled_at ? new Date(c.scheduled_at).toLocaleString("en-IN",{dateStyle:"medium",timeStyle:"short"}) : "—";
+    return `
+    <tr>
+      <td><strong>${esc(c.title||"—")}</strong></td>
+      <td>${dt}</td>
+      <td>${c.duration_min ? c.duration_min+"min" : "—"}</td>
+      <td>${c.meet_link ? `<a href="${esc(c.meet_link)}" target="_blank" style="color:var(--teal)">Join ↗</a>` : "—"}</td>
+      <td>
+        <button class="btn btn-ghost btn-sm" onclick="editLive(${JSON.stringify(c).replace(/"/g,'&quot;')})">Edit</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteLive('${c.id}')">Delete</button>
+      </td>
+    </tr>`;
+  }).join("");
+}
+window.loadLive = loadLive;
+
+function editLive(c) {
+  document.getElementById("liveModalTitle").textContent = "Edit Live Class";
+  document.getElementById("liveId").value       = c.id;
+  document.getElementById("liveTitle").value    = c.title || "";
+  if (c.scheduled_at) {
+    const d = new Date(c.scheduled_at);
+    document.getElementById("liveDate").value = d.toISOString().slice(0,10);
+    document.getElementById("liveTime").value = d.toTimeString().slice(0,5);
   }
+  document.getElementById("liveDuration").value = c.duration_min || 90;
+  document.getElementById("liveSeats").value    = c.max_seats || 100;
+  document.getElementById("liveMeet").value     = c.meet_link || "";
+  document.getElementById("liveCourse").value   = c.course_id || "";
+  openModal("liveModal");
+}
+window.editLive = editLive;
 
-  function saveToLocalStorage(record) {
-    const list = JSON.parse(localStorage.getItem('la_videos') || '[]');
-    list.unshift(record);
-    localStorage.setItem('la_videos', JSON.stringify(list));
-  }
+async function saveLive() {
+  const id    = document.getElementById("liveId").value;
+  const title = document.getElementById("liveTitle").value.trim();
+  const date  = document.getElementById("liveDate").value;
+  const time  = document.getElementById("liveTime").value;
+  if (!title || !date || !time) { toast("Title, date and time required", "error"); return; }
 
-  async function fetchVideos() {
-    if (window._sb) {
-      const { data, error } = await window._sb.from('videos').select('*').order('uploaded_at', { ascending: false });
-      if (!error) return data;
-    }
-    return JSON.parse(localStorage.getItem('la_videos') || '[]');
-  }
+  const payload = {
+    title,
+    scheduled_at: new Date(`${date}T${time}:00`).toISOString(),
+    duration_min: parseInt(document.getElementById("liveDuration").value) || 90,
+    max_seats:    parseInt(document.getElementById("liveSeats").value) || 100,
+    meet_link:    document.getElementById("liveMeet").value.trim() || null,
+    course_id:    document.getElementById("liveCourse").value.trim() || null,
+  };
+  let error;
+  if (id) { ({ error } = await supabase.from("live_classes").update(payload).eq("id", id)); }
+  else    { ({ error } = await supabase.from("live_classes").insert(payload)); }
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast(id ? "Class updated!" : "Class scheduled!");
+  closeModal("liveModal");
+  document.getElementById("liveId").value = "";
+  document.getElementById("liveModalTitle").textContent = "Schedule Live Class";
+  loadLive();
+}
+window.saveLive = saveLive;
 
-  async function renderUploadList() {
-    const list = await fetchVideos();
-    const container = document.getElementById('uploadList');
-    if (!list.length) { container.innerHTML = '<p class="auth-note" style="text-align:center;">No videos uploaded yet.</p>'; return; }
-    const groups = {};
-    list.forEach(v => { const k = v.course_name||'Uncategorised'; (groups[k]=groups[k]||[]).push(v); });
-    container.innerHTML = Object.entries(groups).map(([courseName, videos]) => `
-      <div class="upload-group">
-        <div class="upload-group__title">${courseName} <span style="opacity:.5;font-weight:400;">(${videos.length})</span>
-          ${videos[0].course_id && videos[0].course_id !== 'custom'
-            ? `<a href="course-detail.html?course=${videos[0].course_id}" target="_blank" style="font-size:0.78rem;font-weight:600;margin-left:8px;">View on site ↗</a>`
-            : ''}
-        </div>
-        ${videos.map(v => `
-          <div class="upload-row">
-            <div><strong>${v.title}</strong>
-              <div class="upload-row__meta">${v.track==='school'?'School':v.track==='career'?'Career':'Other'} · ${new Date(v.uploaded_at).toLocaleDateString()}</div>
-            </div>
-            <a href="${v.video_url}" target="_blank" rel="noopener">Open ↗</a>
-          </div>`).join('')}
-      </div>`).join('');
-  }
+async function deleteLive(id) {
+  if (!confirm("Delete this class?")) return;
+  const { error } = await supabase.from("live_classes").delete().eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast("Class deleted"); loadLive();
+}
+window.deleteLive = deleteLive;
 
-  function checkSupabaseConfig() {
-    document.getElementById('configBanner').hidden = !!window._sb;
-  }
+/* ══════════════ LEADS ══════════════ */
+async function loadLeads() {
+  const tbody = document.getElementById("leadsTbody");
+  tbody.innerHTML = `<tr><td colspan="6" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("leads")
+    .select("name,email,phone,track,message,created_at")
+    .order("created_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="6" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="6" class="empty">No leads yet.</td></tr>`; return; }
+  tbody.innerHTML = data.map(l => `
+    <tr>
+      <td><strong>${esc(l.name||"—")}</strong></td>
+      <td>${esc(l.email||"—")}</td>
+      <td>${esc(l.phone||"—")}</td>
+      <td>${esc(l.track||"—")}</td>
+      <td style="max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(l.message||"—")}</td>
+      <td>${fmt(l.created_at)}</td>
+    </tr>`).join("");
+}
+window.loadLeads = loadLeads;
 
-  function onUnlocked() {
-    checkSupabaseConfig();
-    renderUploadList();
-    loadPosts();
-  }
-</script>
+/* ══════════════ TESTIMONIALS ══════════════ */
+async function loadTestimonials() {
+  const tbody = document.getElementById("testimonialsTbody");
+  tbody.innerHTML = `<tr><td colspan="5" class="empty">Loading…</td></tr>`;
+  const { data, error } = await supabase.from("testimonials")
+    .select("id,name,role_label,message,status")
+    .order("created_at", { ascending: false });
+  if (error) { tbody.innerHTML = `<tr><td colspan="5" class="empty">Error: ${esc(error.message)}</td></tr>`; return; }
+  if (!data?.length) { tbody.innerHTML = `<tr><td colspan="5" class="empty">No testimonials yet.</td></tr>`; return; }
+  tbody.innerHTML = data.map(t => `
+    <tr>
+      <td><strong>${esc(t.name||"—")}</strong></td>
+      <td>${esc(t.role_label||"—")}</td>
+      <td style="max-width:260px">${esc(t.message||"—")}</td>
+      <td><span class="badge ${t.status==="approved"?"badge-green":t.status==="rejected"?"badge-red":"badge-yellow"}">${t.status||"pending"}</span></td>
+      <td style="white-space:nowrap">
+        ${t.status!=="approved"?`<button class="btn btn-teal btn-sm" onclick="setTestimonial('${t.id}','approved')">✓ Approve</button>`:""}
+        ${t.status!=="rejected"?`<button class="btn btn-danger btn-sm" onclick="setTestimonial('${t.id}','rejected')">✕ Reject</button>`:""}
+      </td>
+    </tr>`).join("");
+}
+window.loadTestimonials = loadTestimonials;
 
-<script src="script.js"></script>
+async function setTestimonial(id, status) {
+  const { error } = await supabase.from("testimonials").update({ status }).eq("id", id);
+  if (error) { toast("Error: " + error.message, "error"); return; }
+  toast(status === "approved" ? "Testimonial approved! ✓" : "Testimonial rejected");
+  loadTestimonials();
+  loadDashboard();
+}
+window.setTestimonial = setTestimonial;
 
-<!-- ===== SUPABASE (module) — must be last ===== -->
-<script type="module">
-  import { supabase } from './supabase-client.js';
-  window._sb = supabase;
-
-  // supabase is now ready — trigger admin init
-  if (sessionStorage.getItem('la_admin') === '1') {
-    setTimeout(() => {
-      checkSupabaseConfig();
-      renderUploadList();
-      loadPosts();
-    }, 50);
-  }
 </script>
 </body>
 </html>

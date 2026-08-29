@@ -1,0 +1,26 @@
+{
+  "name": "files-(4)--latestone",
+  "version": "1.0.0",
+  "description": "",
+  "main": "chatbot-config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shruti182/Learners_Academy.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/shruti182/Learners_Academy/issues"
+  },
+  "homepage": "https://github.com/shruti182/Learners_Academy#readme",
+  "dependencies": {
+    "@capacitor/android": "^8.5.0",
+    "@capacitor/cli": "^8.5.0",
+    "@capacitor/core": "^8.5.0"
+  }
+}
