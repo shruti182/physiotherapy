@@ -112,7 +112,7 @@
   async function loadCart() {
     const { data: items, error } = await supabase
       .from("cart_items")
-      .select("id, course_id, quantity, courses(name, price_now, is_free)")
+      .select("id, course_id, courses(name, price_now, is_free)")
       .eq("user_id", user.id);
 
     if (error) {
@@ -130,25 +130,15 @@
     let total = 0;
     cartList.innerHTML = items.map(item => {
       const course = item.courses;
-      const unitPrice = course?.is_free ? 0 : Number(course?.price_now || 0);
-      const qty = item.quantity || 1;
-      const lineTotal = unitPrice * qty;
-      total += lineTotal;
-      const qtyBadge = qty > 1
-        ? `<span style="display:inline-block;background:var(--purple);color:#fff;font-size:0.7rem;font-weight:700;border-radius:999px;padding:2px 8px;margin-left:8px;">×${qty}</span>`
-        : "";
-      const priceDisplay = course?.is_free
-        ? "Free"
-        : qty > 1
-          ? `${fmt(lineTotal)} <span style="font-size:0.75rem;color:var(--text-soft);font-weight:400;">(${fmt(unitPrice)} × ${qty})</span>`
-          : fmt(unitPrice);
+      const price = course?.is_free ? 0 : Number(course?.price_now || 0);
+      total += price;
       return `
         <div class="dash-row">
           <div>
-            <div class="dash-row__name">${course?.name || item.course_id}${qtyBadge}</div>
+            <div class="dash-row__name">${course?.name || item.course_id}</div>
           </div>
           <div style="display:flex;align-items:center;gap:14px;">
-            <span class="dash-row__price">${priceDisplay}</span>
+            <span class="dash-row__price">${course?.is_free ? "Free" : fmt(price)}</span>
             <button class="dash-remove" data-remove="${item.id}">Remove</button>
           </div>
         </div>`;
@@ -174,7 +164,7 @@
 
     const { data: items } = await supabase
       .from("cart_items")
-      .select("id, course_id, quantity, courses(price_now, is_free)")
+      .select("id, course_id, courses(price_now, is_free)")
       .eq("user_id", user.id);
 
     if (!items || !items.length) {
@@ -183,10 +173,7 @@
       return;
     }
 
-    const total = items.reduce((sum, i) => {
-      const qty = i.quantity || 1;
-      return sum + (i.courses?.is_free ? 0 : Number(i.courses?.price_now || 0) * qty);
-    }, 0);
+    const total = items.reduce((sum, i) => sum + (i.courses?.is_free ? 0 : Number(i.courses?.price_now || 0)), 0);
 
     const { data: order, error: orderErr } = await supabase
       .from("orders")
@@ -206,8 +193,7 @@
     const orderItems = items.map(i => ({
       order_id: order.id,
       course_id: i.course_id,
-      quantity: i.quantity || 1,
-      price: i.courses?.is_free ? 0 : Number(i.courses?.price_now || 0) * (i.quantity || 1)
+      price: i.courses?.is_free ? 0 : Number(i.courses?.price_now || 0)
     }));
     await supabase.from("order_items").insert(orderItems);
     await supabase.from("cart_items").delete().eq("user_id", user.id);

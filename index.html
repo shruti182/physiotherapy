@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-18369083814"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-18369083814');
+</script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learners Academy — Every grade. Every skill. One path forward.</title>
+<meta name="description" content="Video lessons, live classes and real certificates for school students (Grade 6–12) and working professionals.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  /* ===== Hero vision split (right-hand illustration) ===== */
+  .hero .hero__inner.vision-split{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    align-items:center;
+    gap:48px;
+    max-width:1240px;
+    margin:0 auto;
+    text-align:left;
+  }
+  .vision-split__content{ min-width:0; }
+  .vision-split__content .hero__eyebrow,
+  .vision-split__content .hero__title,
+  .vision-split__content .hero__sub{ text-align:left; }
+  .vision-split__content .hero__paths{ justify-content:flex-start; }
+
+  /* Vibrant "affordable" badge */
+  .hero__eyebrow--affordable{
+    background: linear-gradient(90deg, #ff5f6d, #ffc371, #47c9a2, #4facfe);
+    background-size: 300% 100%;
+    animation: badgeShift 6s ease infinite;
+    border: none !important;
+    color: #0b1120 !important;
+    font-weight: 700;
+    box-shadow: 0 4px 18px rgba(79,172,254,0.35);
+  }
+  .hero__eyebrow--affordable .dot{
+    background: #0b1120 !important;
+  }
+  @keyframes badgeShift{
+    0%{ background-position: 0% 50%; }
+    50%{ background-position: 100% 50%; }
+    100%{ background-position: 0% 50%; }
+  }
+
+  .vision-split__visual{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    min-height:420px;
+  }
+  .vs-glow{
+    position:absolute;
+    inset:0;
+    background: radial-gradient(circle at 55% 45%, rgba(20,184,166,0.18), rgba(15,42,74,0.06) 55%, transparent 75%);
+    filter:blur(4px);
+    border-radius:50%;
+    z-index:0;
+  }
+  .vs-illustration{
+    position:relative;
+    z-index:1;
+    width:100%;
+    max-width:400px;
+    height:auto;
+    filter: drop-shadow(0 18px 34px rgba(15,42,74,0.18));
+  }
+  .vs-badge{
+    position:absolute;
+    z-index:2;
+    display:flex;
+    align-items:center;
+    gap:8px;
+    background:#ffffff;
+    border:1px solid #e2e9ef;
+    border-radius:999px;
+    padding:9px 16px 9px 10px;
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:600;
+    color:#0f2a4a;
+    box-shadow:0 10px 24px rgba(15,42,74,0.14);
+    white-space:nowrap;
+    animation: vsFloat 4.5s ease-in-out infinite;
+  }
+  .vs-badge__icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:26px;
+    height:26px;
+    border-radius:50%;
+    background:#eef6f4;
+    font-size:14px;
+  }
+  .vs-badge--top{ top:6%; right:2%; animation-delay:0s; }
+  .vs-badge--mid{ top:46%; left:-4%; animation-delay:0.6s; }
+  .vs-badge--bottom{ bottom:8%; right:4%; animation-delay:1.2s; }
+
+  @keyframes vsFloat{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(-8px); }
+  }
+
+  /* Floating subject chips */
+  .subject-chip{
+    position:absolute;
+    z-index:3;
+    display:flex;
+    align-items:center;
+    gap:7px;
+    border-radius:999px;
+    padding:8px 14px 8px 9px;
+    font-family:'Inter', sans-serif;
+    font-size:13px;
+    font-weight:700;
+    color:#fff;
+    white-space:nowrap;
+    animation: vsFloat 5s ease-in-out infinite;
+  }
+  .subject-chip__icon{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    background:rgba(255,255,255,0.28);
+    font-size:13px;
+  }
+  .subject-chip--math{
+    background: linear-gradient(135deg,#ff6b6b,#f94d6a);
+    top:2%; left:-8%;
+    box-shadow:0 10px 22px rgba(249,77,106,0.35);
+    animation-delay:0s;
+  }
+  .subject-chip--science{
+    background: linear-gradient(135deg,#22c55e,#0ea86c);
+    top:10%; right:-6%;
+    box-shadow:0 10px 22px rgba(14,168,108,0.35);
+    animation-delay:0.5s;
+  }
+  .subject-chip--social{
+    background: linear-gradient(135deg,#f97316,#f59e0b);
+    top:44%; left:-12%;
+    box-shadow:0 10px 22px rgba(249,115,22,0.35);
+    animation-delay:1s;
+  }
+  .subject-chip--english{
+    background: linear-gradient(135deg,#8b5cf6,#6d28d9);
+    top:52%; right:-10%;
+    box-shadow:0 10px 22px rgba(109,40,217,0.35);
+    animation-delay:1.5s;
+  }
+  .subject-chip--computers{
+    background: linear-gradient(135deg,#0ea5e9,#0369a1);
+    bottom:2%; right:2%;
+    box-shadow:0 10px 22px rgba(3,105,161,0.35);
+    animation-delay:2s;
+  }
+
+  @media (max-width: 980px){
+    .hero .hero__inner.vision-split{
+      grid-template-columns:1fr;
+      text-align:center;
+    }
+    .vision-split__content .hero__eyebrow,
+    .vision-split__content .hero__title,
+    .vision-split__content .hero__sub{ text-align:center; }
+    .vision-split__content .hero__paths{ justify-content:center; }
+    .vision-split__visual{ order:-1; min-height:340px; }
+    .vs-badge{ font-size:12px; padding:7px 12px 7px 8px; }
+    .vs-badge--mid{ left:2%; }
+    .subject-chip{ font-size:11px; padding:6px 11px 6px 7px; }
+    .subject-chip--math{ left:0; top:0; }
+    .subject-chip--science{ right:0; top:6%; }
+    .subject-chip--social{ left:0; top:42%; }
+    .subject-chip--english{ right:0; top:50%; }
+    .subject-chip--computers{ right:0; bottom:0; }
+  }
+</style>
+</head>
+<body>
+
+<div class="road-progress" aria-hidden="true"><div class="road-progress__fill" id="roadFill"></div></div>
+
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a href="index.html" class="nav__logo">
+      <span class="nav__logo-mark">LA</span>
+      <span class="nav__logo-text">Learners Academy</span>
+    </a>
+    <nav class="nav__links" id="navLinks">
+      <a href="index.html" class="is-active">Home</a>
+      <a href="courses.html">Courses</a>
+      <a href="live-classes.html">Live Classes</a>
+      <a href="faculty.html">Faculty</a>
+      <a href="blog.html">Blog</a>
+      <a href="dashboard.html">Dashboard</a>
+    </nav>
+    <div class="nav__actions" id="navActions">
+      <a href="admin.html" class="btn btn--ghost" style="opacity:0.7;">Admin</a>
+      <!-- Auth buttons injected by JS below -->
+      <a href="login.html" class="btn btn--ghost" id="navLoginBtn">Log in</a>
+      <button type="button" class="btn btn--ghost" id="navLogoutBtn" style="display:none;">Log out</button>
+      <button type="button" class="btn btn--solid" id="demoOpenBtn">Book a free demo</button>
+    </div>
+    <button class="nav__burger" id="burger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero__inner vision-split">
+
+      <div class="vision-split__content">
+        <div class="hero__eyebrow hero__eyebrow--affordable" style="margin-bottom:8px;">
+          <span class="dot"></span> Quality Education, Affordable Fees. Study With Us.
+        </div>
+        <div class="hero__eyebrow">
+          <span class="dot"></span> Online Teaching &amp; Skill Development Platform
+        </div>
+        <h1 class="hero__title">
+          Class 6th to 12th.<br>
+          Professional Courses.<br>
+          <em>One path forward.</em>
+        </h1>
+        <p class="hero__sub">
+          Master school subjects from 6th to 12th Grade with live online classes,
+          or build professional skills — SQL, Python, Power BI &amp; Data Analytics —
+          for your next job or workplace project.
+        </p>
+
+        <div class="hero__paths">
+          <a href="courses.html?track=school" class="path-card path-card--school">
+            <span class="path-card__km">GRADES 6TH — 12TH</span>
+            <h3>School Learning Platform</h3>
+            <p>Live classes, doubt solving, and chapter tests for Mathematics, Science, English &amp; Social Studies.</p>
+            <span class="path-card__go">Explore Grade 6–12 Subjects →</span>
+          </a>
+          <a href="courses.html?track=career" class="path-card path-card--career">
+            <span class="path-card__km">SKILL DEVELOPMENT</span>
+            <h3>Skill Up Track</h3>
+            <p>Python, SQL, Power BI, Data Analytics, and professional skills with industry certificates.</p>
+            <span class="path-card__go">Explore Skill Courses →</span>
+          </a>
+        </div>
+
+        <svg class="hero__road" viewBox="0 0 1200 140" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0,90 C 200,20 350,140 600,70 S 1000,10 1200,60" stroke="var(--yellow)" stroke-width="3" stroke-dasharray="2 14" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+
+      <!-- VISION VISUAL -->
+      <div class="vision-split__visual" aria-hidden="true">
+        <div class="vs-glow"></div>
+
+        <svg class="vs-illustration" viewBox="0 0 480 520" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="vsScreen" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0f2a4a"/>
+              <stop offset="100%" stop-color="#0a1b30"/>
+            </linearGradient>
+            <linearGradient id="vsBoard" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#14b8a6"/>
+              <stop offset="100%" stop-color="#0f766e"/>
+            </linearGradient>
+          </defs>
+
+          <!-- blob backdrop -->
+          <path d="M240 40c90 0 168 62 190 148 20 78-14 176-92 220-70 40-166 44-232-4-64-46-96-134-78-214C46 108 128 40 240 40Z" fill="#eef6f4"/>
+
+          <!-- laptop / online class -->
+          <rect x="90" y="120" width="300" height="190" rx="14" fill="url(#vsScreen)"/>
+          <rect x="108" y="138" width="264" height="140" rx="6" fill="#132f52"/>
+
+          <!-- tutor on screen (video call) -->
+          <circle cx="188" cy="200" r="30" fill="#fbbf24"/>
+          <circle cx="188" cy="190" r="13" fill="#0a1b30"/>
+          <path d="M158 226c6-18 22-26 30-26s24 8 30 26" fill="#0a1b30"/>
+
+          <!-- student tiles -->
+          <rect x="252" y="152" width="52" height="40" rx="6" fill="#1e4a78"/>
+          <circle cx="278" cy="168" r="8" fill="#7dd3fc"/>
+          <rect x="312" y="152" width="52" height="40" rx="6" fill="#1e4a78"/>
+          <circle cx="338" cy="168" r="8" fill="#f9a8d4"/>
+          <rect x="252" y="200" width="52" height="40" rx="6" fill="#1e4a78"/>
+          <circle cx="278" cy="216" r="8" fill="#86efac"/>
+          <rect x="312" y="200" width="52" height="40" rx="6" fill="#1e4a78"/>
+          <circle cx="338" cy="216" r="8" fill="#fca5a5"/>
+
+          <!-- "LIVE" badge -->
+          <rect x="108" y="138" width="52" height="22" rx="11" fill="#ef4444"/>
+          <text x="134" y="153" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#fff">LIVE</text>
+
+          <!-- laptop base -->
+          <path d="M78 310h324l14 26a10 10 0 0 1-10 14H74a10 10 0 0 1-10-14z" fill="#d9e4ee"/>
+          <rect x="200" y="316" width="80" height="6" rx="3" fill="#a9bacb"/>
+
+          <!-- stack of books, class 6-12 -->
+          <rect x="60" y="380" width="120" height="18" rx="3" fill="#fbbf24"/>
+          <rect x="66" y="362" width="108" height="18" rx="3" fill="#f97316"/>
+          <rect x="72" y="344" width="96" height="18" rx="3" fill="#14b8a6"/>
+          <text x="120" y="358" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#0a1b30">Class 6–12</text>
+
+          <!-- grad cap -->
+          <g transform="translate(300 350)">
+            <path d="M40 0 L80 16 L40 32 L0 16 Z" fill="#0f2a4a"/>
+            <path d="M16 22 v18 c0 8 48 8 48 0 v-18" fill="none" stroke="#0f2a4a" stroke-width="4"/>
+            <circle cx="80" cy="16" r="3" fill="#fbbf24"/>
+            <line x1="80" y1="16" x2="80" y2="40" stroke="#fbbf24" stroke-width="2"/>
+          </g>
+
+          <!-- career / growth chart card -->
+          <rect x="252" y="392" width="150" height="86" rx="12" fill="#ffffff" stroke="#dbe4ea" stroke-width="1.5"/>
+          <text x="270" y="412" font-family="Inter, sans-serif" font-size="11" font-weight="700" fill="#0f2a4a">For Professionals</text>
+          <polyline points="268,462 292,442 312,452 336,424 384,406" fill="none" stroke="url(#vsBoard)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="384" cy="406" r="5" fill="#0f766e"/>
+
+          <!-- online / wifi rays over laptop -->
+          <path d="M228 96c10-10 24-16 40-16s30 6 40 16" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round"/>
+          <path d="M240 106c7-7 16-11 28-11s21 4 28 11" fill="none" stroke="#14b8a6" stroke-width="4" stroke-linecap="round"/>
+          <circle cx="268" cy="118" r="5" fill="#14b8a6"/>
+        </svg>
+
+        <div class="subject-chip subject-chip--math">
+          <span class="subject-chip__icon">📐</span>
+          <span>Mathematics</span>
+        </div>
+        <div class="subject-chip subject-chip--science">
+          <span class="subject-chip__icon">🔬</span>
+          <span>Science</span>
+        </div>
+        <div class="subject-chip subject-chip--social">
+          <span class="subject-chip__icon">🌍</span>
+          <span>Social Science</span>
+        </div>
+        <div class="subject-chip subject-chip--english">
+          <span class="subject-chip__icon">📖</span>
+          <span>English</span>
+        </div>
+        <div class="subject-chip subject-chip--computers">
+          <span class="subject-chip__icon">💻</span>
+          <span>Computers</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <section class="stats">
+    <div class="stat">
+      <span class="stat__num" data-count="18400">0</span>
+      <span class="stat__label">Learners on the path</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num" data-count="64">0</span>
+      <span class="stat__label">Video courses</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num" data-count="47" data-decimal="1">0</span>
+      <span class="stat__label">Average rating ×10</span>
+    </div>
+    <div class="stat">
+      <span class="stat__num-static">100%</span>
+      <span class="stat__label">Verifiable certificates</span>
+    </div>
+  </section>
+
+  <!-- WHY CHOOSE US -->
+  <section class="section" id="why-us">
+    <div class="section__head">
+      <span class="eyebrow eyebrow--marigold">Why Learners Academy</span>
+      <h2>Why Families &amp; Professionals Choose Us</h2>
+      <p>We built this the way we wished learning had worked for us — safe, patient, and genuinely useful.</p>
+    </div>
+    <div class="faculty-grid">
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">🏠</span>
+        <h4>Safe Learning, Right at Home</h4>
+        <p>Your child stays safe at home — no travel, no getting ready to step out, and no parent needs to sit alongside. They can attend the class confidently on their own.</p>
+      </article>
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">🎥</span>
+        <h4>Every Session Recorded</h4>
+        <p>Missed a class or want to revise a concept again? Every live session is recorded and shared, so nothing is ever lost.</p>
+      </article>
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">🌱</span>
+        <h4>Taught with Patience, the Right Way</h4>
+        <p>We've faced the same struggle understanding tough concepts ourselves — that's why we teach with patience, and simplify hard topics using proven methods like Vedic Maths.</p>
+      </article>
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">💼</span>
+        <h4>Real Projects, Not Just Theory</h4>
+        <p>Our experienced instructors take you beyond textbooks and slides — through complete, end-to-end projects that mirror real office work, so you match the pace of the industry.</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- SCHOOL PATH TEASER -->
+  <section class="section" id="school">
+    <div class="section__head section__head--row">
+      <div>
+        <span class="eyebrow eyebrow--coral">Online Teaching · Class 6th to 12th</span>
+        <h2>Complete Subject Coverage for Grades 6–12</h2>
+        <p>Interactive live tuition, syllabus-aligned lessons, and instant doubt clarification for all major subjects.</p>
+      </div>
+      <a href="courses.html?track=school" class="btn btn--ghost">See all →</a>
+    </div>
+
+    <div class="course-grid">
+      <article class="course-card" data-course-id="math-grade-10">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/6238050/pexels-photo-6238050.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Mathematics equations on a blackboard" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Bestseller</span>
+          <span class="course-card__level">Intermediate</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Mathematics · Grade 10</p>
+          <h4>Mathematics Masterclass — Grade 10</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">DP</span> Dr. Priya Sharma</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,240)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹999</span><span class="price-old">₹2,999</span><span class="price-off">-67%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+      <article class="course-card" data-course-id="science-grade-9">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/8544960/pexels-photo-8544960.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Colourful chemistry test tubes in a lab" loading="lazy">
+          <span class="course-card__badge course-card__badge--coral">Bestseller</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Science · Grade 9</p>
+          <h4>Science Explorer — Grade 9</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">PR</span> Prof. Rajesh Kumar</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.7 <span>(890)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹799</span><span class="price-old">₹2,499</span><span class="price-off">-68%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+      <article class="course-card" data-course-id="english-grade-12">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/192928/pexels-photo-192928.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Stack of open books on a wooden table" loading="lazy">
+          <span class="course-card__badge course-card__badge--new">New</span>
+          <span class="course-card__level">Intermediate</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">English · Grade 12</p>
+          <h4>English Literature &amp; Grammar — Grade 12</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">AR</span> Ms. Ananya Rao</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.6 <span>(540)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹699</span><span class="price-old">₹1,999</span><span class="price-off">-65%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+      <article class="course-card" data-course-id="social-studies-grade-8">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/5428002/pexels-photo-5428002.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Teacher pointing at a globe in class" loading="lazy">
+          <span class="course-card__badge course-card__badge--free">Free</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Social Studies · Grade 8</p>
+          <h4>Social Studies Made Fun — Grade 8</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">KM</span> Mr. Karan Mehta</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.5 <span>(410)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">Free</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- CAREER PATH TEASER -->
+  <section class="section section--dark" id="career">
+    <div class="section__head section__head--row">
+      <div>
+        <span class="eyebrow eyebrow--teal">Skill Development Platform</span>
+        <h2>High-Demand Tech &amp; Professional Skills</h2>
+        <p>Learn coding, analytics, and business tools through practical hands-on projects.</p>
+      </div>
+      <a href="courses.html?track=career" class="btn btn--outline">See all →</a>
+    </div>
+
+    <div class="course-grid course-grid--dark">
+      <article class="course-card course-card--dark" data-course-id="sql-mastery">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/17323801/pexels-photo-17323801.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Server room with blue lighting" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">SQL · Career Path</p>
+          <h4>SQL — Complete Database Mastery</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">VS</span> Mr. Vikram Singh</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(3,200)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,499</span><span class="price-old">₹4,499</span><span class="price-off">-67%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+      <article class="course-card course-card--dark" data-course-id="powerbi-bootcamp">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/10653886/pexels-photo-10653886.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Business data chart on a monitor" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Intermediate</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Power BI · Career Path</p>
+          <h4>Power BI — Business Intelligence Bootcamp</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">AV</span> Mr. Arjun Verma</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(1,870)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹2,499</span><span class="price-old">₹6,999</span><span class="price-off">-64%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+      <article class="course-card course-card--dark" data-course-id="python-data-science">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/6424590/pexels-photo-6424590.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Python programming code on a dark screen" loading="lazy">
+          <span class="course-card__badge course-card__badge--teal">Bestseller</span>
+          <span class="course-card__level">Beginner</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Python · Career Path</p>
+          <h4>Python for Data Science &amp; Automation</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">NG</span> Ms. Neha Gupta</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.8 <span>(2,640)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹1,799</span><span class="price-old">₹4,999</span><span class="price-off">-64%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+      <article class="course-card course-card--dark" data-course-id="data-analytics-career">
+        <div class="course-card__media">
+          <img src="https://images.pexels.com/photos/3912976/pexels-photo-3912976.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Data graph analysis on a laptop screen" loading="lazy">
+          <span class="course-card__badge course-card__badge--new">New</span>
+          <span class="course-card__level">Advanced</span>
+        </div>
+        <div class="course-card__body">
+          <p class="course-card__cat">Data Analytics · Career Path</p>
+          <h4>Data Analytics — Complete Career Path</h4>
+          <p class="course-card__instructor"><span class="course-card__avatar">SI</span> Ms. Sneha Iyer</p>
+          <p class="course-card__rating"><span class="star">★</span> 4.9 <span>(3,980)</span></p>
+          <div class="course-card__footer">
+            <p class="course-card__price"><span class="price-now">₹3,999</span><span class="price-old">₹9,999</span><span class="price-off">-60%</span></p>
+            <span class="course-card__cert">🎓 Certificate</span>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 100% FREE -->
+  <section class="section section--free">
+    <div class="free-banner">
+      <div>
+        <span class="eyebrow eyebrow--coral">100% Free</span>
+        <h2>Start for free</h2>
+        <p>No signup needed. No credit card. Just learn.</p>
+      </div>
+      <a href="courses.html?filter=free" class="btn btn--solid">All free courses</a>
+    </div>
+  </section>
+
+  <!-- LIVE CLASSES TEASER -->
+  <section class="section section--live" id="live">
+    <div class="section__head section__head--row">
+      <div>
+        <span class="eyebrow eyebrow--marigold">Interactive Sessions</span>
+        <h2>Upcoming Live Teaching Classes</h2>
+        <p>Join live interactive sessions with top subject tutors and skill instructors.</p>
+      </div>
+      <a href="live-classes.html" class="btn btn--ghost">All live classes →</a>
+    </div>
+
+    <div class="live-grid">
+      <article class="live-card">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/6238050/pexels-photo-6238050.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Trigonometry equations on a blackboard" loading="lazy">
+          <span class="live-card__pill">LIVE · FREE</span>
+          <span class="live-card__seats-badge">44 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Trigonometry Problem-Solving Marathon</h4>
+          <p class="live-card__meta">Wed · 4:00 PM IST · 90 min</p>
+          <p class="live-card__seats">44 seats left</p>
+        </div>
+      </article>
+      <article class="live-card">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/10653886/pexels-photo-10653886.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Business data chart on a monitor" loading="lazy">
+          <span class="live-card__pill live-card__pill--paid">LIVE · ₹299</span>
+          <span class="live-card__seats-badge">18 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Power BI DAX Formulas Workshop</h4>
+          <p class="live-card__meta">Fri · 7:00 PM IST · 120 min</p>
+          <p class="live-card__seats">18 seats left</p>
+        </div>
+      </article>
+      <article class="live-card">
+        <div class="live-card__media">
+          <img src="https://images.pexels.com/photos/3862126/pexels-photo-3862126.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Writing a physics formula on a whiteboard" loading="lazy">
+          <span class="live-card__pill">LIVE · FREE</span>
+          <span class="live-card__seats-badge">91 left</span>
+        </div>
+        <div class="live-card__body">
+          <h4>Physics — Newton's Laws Deep Dive</h4>
+          <p class="live-card__meta">Sun · 5:00 PM IST · 90 min</p>
+          <p class="live-card__seats">91 seats left</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section" id="stories">
+    <div class="section__head">
+      <span class="eyebrow">Student &amp; Learner Stories</span>
+      <h2>Real Feedback from Our Community</h2>
+    </div>
+
+    <div class="quote-grid" id="quoteGrid">
+      <blockquote class="quote-card">
+        <p>"I stopped dreading maths once I could pause a video and rewatch the one step I didn't get. My marks followed."</p>
+        <footer><span class="quote-card__avatar">AV</span> Aditi Verma · Grade 10</footer>
+      </blockquote>
+      <blockquote class="quote-card">
+        <p>"The SQL track used our exact kind of messy data — window functions finally clicked at my actual job, not just in theory."</p>
+        <footer><span class="quote-card__avatar">RN</span> Rahul Nair · Data Analyst</footer>
+      </blockquote>
+      <blockquote class="quote-card">
+        <p>"Live doubt sessions felt like extra tuition, minus the awkwardness of asking in a full classroom."</p>
+        <footer><span class="quote-card__avatar">SK</span> Simran Kaur · Grade 8</footer>
+      </blockquote>
+    </div>
+    <p style="text-align:center;margin-top:24px;">
+      <a href="feedback.html" class="btn btn--ghost">Share your feedback →</a>
+    </p>
+  </section>
+
+  <!-- FACULTY TEASER -->
+  <section class="section" id="faculty">
+    <div class="section__head section__head--row">
+      <div>
+        <span class="eyebrow eyebrow--teal">Qualified Instructors</span>
+        <h2>Learn from Experienced Tutors &amp; Experts</h2>
+        <p>Our educators bring top academic credentials and industry expertise to every lesson.</p>
+      </div>
+      <a href="faculty.html" class="btn btn--ghost">Meet everyone →</a>
+    </div>
+    <div class="faculty-grid">
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">DS</span>
+        <h4>Dr. Neha Sharma</h4>
+        <p>Mathematics · 12 yrs teaching Grade 9–12</p>
+      </article>
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">AK</span>
+        <h4>Aditya Kapoor</h4>
+        <p>Tableau &amp; Power BI · Ex-Analytics Lead, Myntra</p>
+      </article>
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">PK</span>
+        <h4>Prof. Rajesh Kumar</h4>
+        <p>Physics · JEE mentor, 3D-animated lessons</p>
+      </article>
+      <article class="faculty-card">
+        <span class="faculty-card__avatar">SR</span>
+        <h4>Sneha Reddy</h4>
+        <p>SQL &amp; Data Analytics · Senior BI Consultant</p>
+      </article>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta" id="join">
+    <h2>Pick your path. Start today.</h2>
+    <p>Free courses available. No card required.</p>
+    <div class="cta__buttons">
+      <a href="login.html?mode=signup&as=student" class="btn btn--solid btn--lg">I'm a school student</a>
+      <a href="login.html?mode=signup&as=professional" class="btn btn--outline btn--lg">I'm a professional</a>
+    </div>
+  </section>
+
+</main>
+
+<section class="newsletter">
+  <h3>Stay updated with Learners Academy</h3>
+  <p>Free study tips, course updates, and offers — straight to your inbox.</p>
+  <form class="newsletter__form" onsubmit="return false;">
+    <input type="email" placeholder="you@email.com" aria-label="Email address" required>
+    <button type="submit" class="btn btn--solid">Subscribe</button>
+  </form>
+</section>
+
+<footer class="footer">
+  <div class="footer__top">
+    <div class="footer__brand">
+      <span class="nav__logo-mark">LA</span> <span class="nav__logo-text">Learners Academy</span>
+      <p>A path from Grade 6 to your next promotion — video lessons, live classes, real certificates.</p>
+      <p class="footer__contact">
+        <a href="mailto:khandelwalshrutika@gmail.com">khandelwalshrutika@gmail.com</a><br>
+        <a href="tel:+917409859114">+91 7409859114</a><br>
+        Lansdowne, India
+      </p>
+    </div>
+    <div class="footer__col">
+      <h6>School</h6>
+      <a href="courses.html?tag=grade-6">Grade 6–10</a><a href="courses.html?tag=grade-11">Grade 11–12</a><a href="courses.html?tag=board-prep">Board Exam Prep</a><a href="courses.html?tag=competitive">JEE / NEET</a>
+    </div>
+    <div class="footer__col">
+      <h6>Career Tools</h6>
+      <a href="courses.html?subject=python">Python</a><a href="courses.html?subject=sql">SQL</a><a href="courses.html?subject=power-bi">Power BI</a><a href="courses.html?subject=tableau">Tableau</a>
+    </div>
+    <div class="footer__col">
+      <h6>Company</h6>
+      <a href="about.html">About</a><a href="blog.html">Blog</a><a href="teach.html">Teach on Learners Academy</a><a href="#">Careers</a><a href="#">Contact</a>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <span>© 2026 Learners Academy Learning. All rights reserved.</span>
+    <span class="footer__legal"><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></span>
+  </div>
+</footer>
+
+<!-- BOOK A FREE DEMO — POPUP -->
+<div class="demo-modal" id="demoModal" role="dialog" aria-modal="true" aria-labelledby="demoModalTitle" hidden>
+  <div class="demo-modal__backdrop" id="demoModalBackdrop"></div>
+  <div class="demo-modal__panel">
+    <button type="button" class="demo-modal__close" id="demoCloseBtn" aria-label="Close">&times;</button>
+
+    <span class="eyebrow eyebrow--coral">Free · 30 minutes · No card needed</span>
+    <h3 id="demoModalTitle">Book your free demo</h3>
+    <p>See a real lesson, meet an instructor, and get a personalised path — for your grade or your career track.</p>
+
+    <div class="demo-modal__points">
+      <span>✓ Live 1:1 walkthrough</span>
+      <span>✓ Pick School or Career path</span>
+      <span>✓ No commitment required</span>
+    </div>
+
+    <a href="login.html?mode=signup&intent=demo" class="btn btn--solid btn--lg demo-modal__cta">Continue to sign up →</a>
+  </div>
+</div>
+
+<script>
+  // Safety net: if a Supabase password-recovery link ever lands here by mistake
+  // (e.g. Redirect URL allow-list / Site URL misconfigured), forward the visitor
+  // straight to reset-password.html instead of stranding them on the homepage.
+  (function () {
+    var hash = window.location.hash || "";
+    if (hash.includes("type=recovery") && hash.includes("access_token=")) {
+      window.location.replace("reset-password.html" + hash);
+    }
+  })();
+</script>
+<script>
+  // Image fallback: if a photo fails to load (network hiccup, ad-blocker,
+  // host blocking the CDN, etc.), swap it for a clean placeholder instead
+  // of leaving a broken-image icon on the page.
+  (function () {
+    document.querySelectorAll('img').forEach(function (img) {
+      img.addEventListener('error', function () {
+        if (img.dataset.fallbackApplied) return;
+        img.dataset.fallbackApplied = 'true';
+        var label = (img.alt || 'Image unavailable').trim();
+        var svg =
+          '<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500">' +
+          '<rect width="100%" height="100%" fill="#eef2f6"/>' +
+          '<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" ' +
+          'font-family="Inter, sans-serif" font-size="22" fill="#7a8aa0">' +
+          label.replace(/&/g, '&amp;').replace(/</g, '&lt;').slice(0, 60) +
+          '</text></svg>';
+        img.src = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
+      });
+    });
+  })();
+</script>
+<script src="script.js"></script>
+<script type="module">
+  import { supabase } from "./supabase-client.js";
+
+  // Same live-price loader as courses.html — keeps homepage teaser cards
+  // in sync with whatever is set in Supabase → Table Editor → courses.
+  const { data: courses, error } = await supabase
+    .from("courses")
+    .select("id, price_now, price_old, is_free");
+
+  if (error) {
+    console.error("Could not load course prices:", error.message);
+  } else {
+    const bySlug = Object.fromEntries(courses.map(c => [c.id, c]));
+
+    document.querySelectorAll(".course-card[data-course-id]").forEach(card => {
+      const row = bySlug[card.dataset.courseId];
+      if (!row) return;
+
+      const priceEl = card.querySelector(".course-card__price");
+      if (!priceEl) return;
+
+      if (row.is_free) {
+        priceEl.innerHTML = `<span class="price-now">Free</span>`;
+        return;
+      }
+
+      const now = Number(row.price_now);
+      const old = row.price_old ? Number(row.price_old) : null;
+      const fmt = n => "₹" + n.toLocaleString("en-IN");
+
+      let html = `<span class="price-now">${fmt(now)}</span>`;
+      if (old && old > now) {
+        const off = Math.round(((old - now) / old) * 100);
+        html += `<span class="price-old">${fmt(old)}</span><span class="price-off">-${off}%</span>`;
+      }
+      priceEl.innerHTML = html;
+    });
+  }
+
+  // Approved student/professional feedback (submitted via feedback.html,
+  // reviewed in Supabase → Table Editor → testimonials → status column).
+  const { data: testimonials, error: testimonialsError } = await supabase
+    .from("testimonials")
+    .select("name, role_label, message")
+    .eq("status", "approved")
+    .order("created_at", { ascending: false })
+    .limit(6);
+
+  if (testimonialsError) {
+    console.error("Could not load testimonials:", testimonialsError.message);
+  } else if (testimonials && testimonials.length) {
+    const grid = document.getElementById("quoteGrid");
+    const initials = (name) =>
+      name.trim().split(/\s+/).map(w => w[0]).join("").slice(0, 2).toUpperCase();
+
+    testimonials.forEach(t => {
+      const card = document.createElement("blockquote");
+      card.className = "quote-card";
+      card.innerHTML = `
+        <p>"${t.message}"</p>
+        <footer><span class="quote-card__avatar">${initials(t.name)}</span> ${t.name} · ${t.role_label}</footer>
+      `;
+      grid.appendChild(card);
+    });
+  }
+</script>
+<script>
+  (function () {
+    var modal = document.getElementById('demoModal');
+    var openBtn = document.getElementById('demoOpenBtn');
+    var closeBtn = document.getElementById('demoCloseBtn');
+    var backdrop = document.getElementById('demoModalBackdrop');
+    var lastFocused = null;
+
+    function openModal() {
+      lastFocused = document.activeElement;
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeModal() {
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      if (lastFocused) lastFocused.focus();
+    }
+
+    if (openBtn) openBtn.addEventListener('click', openModal);
+    if (closeBtn) closeBtn.addEventListener('click', closeModal);
+    if (backdrop) backdrop.addEventListener('click', closeModal);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && !modal.hidden) closeModal();
+    });
+  })();
+</script>
+
+<!-- ===== AUTH NAV STATE ===== -->
+<script type="module">
+  import { supabase } from "./supabase-client.js";
+
+  const loginBtn  = document.getElementById("navLoginBtn");
+  const logoutBtn = document.getElementById("navLogoutBtn");
+
+  function applySession(session) {
+    if (session) {
+      loginBtn.style.display  = "none";
+      logoutBtn.style.display = "";
+    } else {
+      loginBtn.style.display  = "";
+      logoutBtn.style.display = "none";
+    }
+  }
+
+  // Check session on load
+  const { data: { session } } = await supabase.auth.getSession();
+  applySession(session);
+
+  // Keep in sync if the user logs in / out in another tab
+  supabase.auth.onAuthStateChange((_event, session) => applySession(session));
+
+  // Log out handler
+  logoutBtn.addEventListener("click", async () => {
+    logoutBtn.disabled = true;
+    logoutBtn.textContent = "Signing out…";
+    await supabase.auth.signOut();
+    window.location.href = "login.html";
+  });
+</script>
+
+<!-- ===== FREE CHATBOT WIDGET ===== -->
+<!-- Get your free API key: https://huggingface.co/settings/tokens (Hugging Face)
+     or https://aistudio.google.com/apikey (Google Gemini) -->
+<script src="chatbot-widget.js"></script>
+<!-- To use Gemini instead, replace above with: <script src="chatbot-widget-gemini.js"></script> -->
+
+</body>
+</html>
